@@ -9,14 +9,14 @@ const pool = new Pool({
 });
 
 let users = {
-  1: {
+  [{
     id: '1',
     username: 'Robin Wieruch',
   },
-  2: {
+  {
     id: '2',
     username: 'Dave Davids',
-  },
+  }]
 };
 
 express()
@@ -25,7 +25,10 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
-  .get('/login', (req, res) => res.json(users))
+  .get('/login', (req, res) => res.json({
+    login : req.params.login,
+    password: req.params.password 
+  }))
   .get('/db', async (req, res) => {
     try {
       const client = await pool.connect()
