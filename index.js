@@ -7,7 +7,7 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true
 });
-// 
+//
 // let users = {
 //   [{
 //     id: '1',
@@ -26,8 +26,8 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/login', (req, res) => res.json({
-    login : req.params.login,
-    password: req.params.password
+    login : req.query.login,
+    password: req.query.password
   }))
   .get('/db', async (req, res) => {
     try {
