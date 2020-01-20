@@ -25,10 +25,11 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
-  .get('/login', (req, res) => res.json({
-    login : req.query.login,
-    password: req.query.password
-  }))
+  .get('/login', (req, res) => {
+    res.json({
+      login : req.query.login == "111",
+    })
+  })
   .get('/db', async (req, res) => {
     try {
       const client = await pool.connect()
