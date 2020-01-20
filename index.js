@@ -28,6 +28,7 @@ express()
   .get('/login', (req, res) => {
     res.json({
       login : req.query.login == "111",
+      is_admin : req.query.login == "admin"
     })
   })
   .get('/db', async (req, res) => {
