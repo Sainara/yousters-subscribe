@@ -7,17 +7,17 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true
 });
-
-let users = {
-  [{
-    id: '1',
-    username: 'Robin Wieruch',
-  },
-  {
-    id: '2',
-    username: 'Dave Davids',
-  }]
-};
+// 
+// let users = {
+//   [{
+//     id: '1',
+//     username: 'Robin Wieruch',
+//   },
+//   {
+//     id: '2',
+//     username: 'Dave Davids'
+//   }]
+// };
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
@@ -27,7 +27,7 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .get('/login', (req, res) => res.json({
     login : req.params.login,
-    password: req.params.password 
+    password: req.params.password
   }))
   .get('/db', async (req, res) => {
     try {
