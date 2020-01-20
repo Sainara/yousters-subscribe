@@ -8,11 +8,24 @@ const pool = new Pool({
   ssl: true
 });
 
+let users = {
+  1: {
+    id: '1',
+    username: 'Robin Wieruch',
+  },
+  2: {
+    id: '2',
+    username: 'Dave Davids',
+  },
+};
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
+  .use(express.json())
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
+  .get('/login', (req, res) => res.json(users))
   .get('/db', async (req, res) => {
     try {
       const client = await pool.connect()
