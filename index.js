@@ -48,6 +48,23 @@ express()
       })
     }
   })
+  .post('/delete', async (req, res) => {
+    try {
+      const client = await pool.connect()
+      const result = await client.query('DELETE FROM users WHERE login = $1', [req.body.login]);
+      //const results = { 'results': (result) ? result.rows : null};
+      //res.render('pages/db', results );
+      res.json({
+        result : true
+      })
+      client.release();
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
   .get('/dbtest', async (req, res) => {
     try {
       const client = await pool.connect()
