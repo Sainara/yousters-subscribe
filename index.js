@@ -34,7 +34,7 @@ express()
   .post('/add', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('INSERT INTO users (login, password) VALUES ($1, $2)', ["name", "email"]);
+      const result = await client.query('INSERT INTO users (login, password) VALUES ($1, $2)', [req.body.login, req.body.password]);
       //const results = { 'results': (result) ? result.rows : null};
       //res.render('pages/db', results );
       res.json({
