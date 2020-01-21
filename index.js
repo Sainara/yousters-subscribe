@@ -25,7 +25,7 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
-   .get('/login', (req, res) => {
+   .get('/login', async (req, res) => {
      try {
        const client = await pool.connect()
        const result = await client.query('SELECT * FROM users WHERE login = $1 AND password = $2', [req.query.login, req.query.password]);
