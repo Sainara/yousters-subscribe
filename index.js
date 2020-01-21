@@ -27,7 +27,7 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .get('/login', (req, res) => {
     res.json({
-      login : req.query.login == "111",
+      login : req.query.login == "111" || req.query.login == "admin",
       is_admin : req.query.login == "admin"
     })
   })
