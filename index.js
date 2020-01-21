@@ -69,6 +69,21 @@ express()
       })
     }
   })
+  .post('/addadmin', async (req, res) => {
+    try {
+      const client = await pool.connect()
+      const result = await client.query('INSERT INTO users (login, password, is_admin) VALUES ($1, $2, $3)', [req.body.login, req.body.password, 1]);
+      res.json({
+        result : true
+      })
+      client.release();
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
   .post('/delete', async (req, res) => {
     try {
       const client = await pool.connect()
