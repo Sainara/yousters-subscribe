@@ -32,7 +32,7 @@ express()
        //const results = { 'results': (result) ? result.rows : null};
        //res.render('pages/db', results );
        var logd = false, isA = false
-       if result.rows.length > 0 {
+       if (result.rows.length > 0) {
          logd = true
          isA = result.rows[0].is_admin == 1
        }
