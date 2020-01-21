@@ -25,18 +25,33 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
-  .get('/login', (req, res) => {
-    res.json({
-      login : req.query.login == "111" || req.query.login == "admin",
-      is_admin : req.query.login == "admin"
-    })
-  })
+   .get('/login', (req, res) => {
+     try {
+       const client = await pool.connect()
+       const result = await client.query('SELECT * FROM users WHERE login = $1 AND password = $2', [req.query.login, req.query.password]);
+       //const results = { 'results': (result) ? result.rows : null};
+       //res.render('pages/db', results );
+       res.json({
+         result : result.rows.length
+       })
+       client.release();
+     } catch (err) {
+       console.error(err);
+       res.json({
+         result : false
+       })
+     }
+   })
+   // {
+  //   res.json({
+  //     login : req.query.login == "111" || req.query.login == "admin",
+  //     is_admin : req.query.login == "admin"
+  //   })
+  // })
   .post('/add', async (req, res) => {
     try {
       const client = await pool.connect()
       const result = await client.query('INSERT INTO users (login, password) VALUES ($1, $2)', [req.body.login, req.body.password]);
-      //const results = { 'results': (result) ? result.rows : null};
-      //res.render('pages/db', results );
       res.json({
         result : true
       })
@@ -52,8 +67,6 @@ express()
     try {
       const client = await pool.connect()
       const result = await client.query('DELETE FROM users WHERE login = $1', [req.body.login]);
-      //const results = { 'results': (result) ? result.rows : null};
-      //res.render('pages/db', results );
       res.json({
         result : true
       })
