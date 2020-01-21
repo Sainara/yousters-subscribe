@@ -31,9 +31,15 @@ express()
        const result = await client.query('SELECT * FROM users WHERE login = $1 AND password = $2', [req.query.login, req.query.password]);
        //const results = { 'results': (result) ? result.rows : null};
        //res.render('pages/db', results );
+       var logd = false, isA = false
+       if result.rows.length > 0 {
+         logd = true
+         isA = result.rows[0].is_admin == 1
+       }
        res.json({
-         result : result.rows.length
-       })
+            login : logd,
+            is_admin : isA
+          })
        client.release();
      } catch (err) {
        console.error(err);
