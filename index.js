@@ -24,7 +24,7 @@ express()
   .use(express.json())
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
-  //.get('/', (req, res) => res.render('pages/index'))
+  .get('/support', (req, res) => res.render('pages/index'))
    .get('/login', async (req, res) => {
      try {
        const client = await pool.connect()
