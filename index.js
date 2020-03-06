@@ -2398,7 +2398,7 @@ express()
     try {
       const client = await pool.connect()
       const result = await client.query('SELECT * FROM main_news');
-      res.json(result)
+      res.json(result.rows)
       //const results = { 'results': (result) ? result.rows : null};
       //res.render('pages/db', results );
     //   var logd = false, isA = false
