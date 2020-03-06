@@ -2394,6 +2394,45 @@ express()
       })
     }
   })
+  .get('/news', async (req, res) => {
+    try {
+      const client = await pool.connect()
+      const result = await client.query('SELECT * FROM main_news');
+      res.json(result)
+      //const results = { 'results': (result) ? result.rows : null};
+      //res.render('pages/db', results );
+    //   var logd = false, isA = false
+    //   if (result.rows.length > 0) {
+    //     logd = true
+    //     isA = result.rows[0].is_admin == 1
+    //   }
+    //   res.json({
+    //        login : logd,
+    //        is_admin : isA
+    //      })
+    //   client.release();
+    // } catch (err) {
+    //   console.error(err);
+    //   res.json({
+    //     result : false
+    //   })
+    }
+  })
+  .post('/addnews', async (req, res) => {
+    try {
+      const client = await pool.connect()
+      const result = await client.query('INSERT INTO users (login, password, is_admin) VALUES ($1, $2, $3)', [req.body.login, req.body.password, 1]);
+      res.json({
+        result : true
+      })
+      client.release();
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
   .post('/delete', async (req, res) => {
     try {
       const client = await pool.connect()
