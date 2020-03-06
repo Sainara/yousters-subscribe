@@ -2411,11 +2411,11 @@ express()
     //        is_admin : isA
     //      })
     //   client.release();
-    // } catch (err) {
-    //   console.error(err);
-    //   res.json({
-    //     result : false
-    //   })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
     }
   })
   .post('/addnews', async (req, res) => {
