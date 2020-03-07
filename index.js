@@ -2399,18 +2399,6 @@ express()
       const client = await pool.connect()
       const result = await client.query('SELECT * FROM main_news');
       res.json(result.rows)
-      //const results = { 'results': (result) ? result.rows : null};
-      //res.render('pages/db', results );
-    //   var logd = false, isA = false
-    //   if (result.rows.length > 0) {
-    //     logd = true
-    //     isA = result.rows[0].is_admin == 1
-    //   }
-    //   res.json({
-    //        login : logd,
-    //        is_admin : isA
-    //      })
-    //   client.release();
     } catch (err) {
       console.error(err);
       res.json({
@@ -2421,7 +2409,7 @@ express()
   .post('/addnews', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('INSERT INTO users (login, password, is_admin) VALUES ($1, $2, $3)', [req.body.login, req.body.password, 1]);
+      const result = await client.query('INSERT INTO "main_news" ("author", "liked_by", "author_image_url", "created_on", "news_text") VALUES ($1, $2, $3, $4, $5);', [req.body.author, req.body.liked_by, req.body.authorImage, '2016-06-22T19:10:25.000Z', req.body.news_text]);
       res.json({
         result : true
       })
