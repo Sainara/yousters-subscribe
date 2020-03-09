@@ -2343,13 +2343,17 @@ express()
        //res.render('pages/db', results );
        var logd = false, isA = false
        if (result.rows.length > 0) {
-         logd = true
-         isA = result.rows[0].is_admin == 1
-       }
+         res.json({
+              login : true,
+              is_admin : result.rows[0]
+            })
+         //isA = result.rows[0].is_admin == 1
+       } else {
        res.json({
             login : logd,
             is_admin : isA
           })
+        }
        client.release();
      } catch (err) {
        console.error(err);
