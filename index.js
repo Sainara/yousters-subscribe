@@ -2380,7 +2380,7 @@ express()
     .get('/getuser', async (req, res) => {
        try {
          const client = await pool.connect()
-         const result = await client.query('SELECT * FROM users WHERE id = $0', [req.query.id);
+         const result = await client.query('SELECT * FROM users WHERE id = $0', [req.query.id]);
 
          res.json({
               result : true
