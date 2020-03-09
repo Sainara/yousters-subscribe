@@ -2345,13 +2345,12 @@ express()
        if (result.rows.length > 0) {
          res.json({
               login : true,
-              is_admin : result.rows[0]
+              user : result.rows[0]
             })
          //isA = result.rows[0].is_admin == 1
        } else {
        res.json({
-            login : logd,
-            is_admin : isA
+            login : logd
           })
         }
        client.release();
