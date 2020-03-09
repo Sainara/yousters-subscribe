@@ -2386,7 +2386,6 @@ express()
               result : true
               user : result.row[0]
             })
-          }
          client.release();
        } catch (err) {
          console.error(err);
