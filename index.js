@@ -2364,7 +2364,7 @@ express()
    .get('/edituser', async (req, res) => {
       try {
         const client = await pool.connect()
-        const result = await client.query('UPDATE users SET name = $1, email = $2, city = $3, phone = $4 WHERE id = $0', [req.query.id, req.query.name, req.query.email, req.query.city, req.query.phone]);
+        const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5 WHERE id = $1', [req.query.id, req.query.name, req.query.email, req.query.city, req.query.phone]);
 
         res.json({
              result : true
@@ -2380,7 +2380,7 @@ express()
     .get('/getuser', async (req, res) => {
        try {
          const client = await pool.connect()
-         const result = await client.query('SELECT * FROM users WHERE id = $0', [req.query.id]);
+         const result = await client.query('SELECT * FROM users WHERE id = $1', [req.query.id]);
 
          res.json({
               result : true,
