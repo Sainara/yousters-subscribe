@@ -2383,7 +2383,7 @@ express()
          const result = await client.query('SELECT * FROM users WHERE id = $0', [req.query.id]);
 
          res.json({
-              result : true
+              result : true,
               user : result.row[0]
             })
          client.release();
