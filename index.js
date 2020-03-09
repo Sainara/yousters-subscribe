@@ -2335,7 +2335,7 @@ express()
   .set('view engine', 'ejs')
   .get('/support', (req, res) => res.render('pages/index'))
   .get('/lawyers', (req, res) => res.json(lawyers))
-   .get('/login', async (req, res) => {
+  .get('/login', async (req, res) => {
      try {
        const client = await pool.connect()
        const result = await client.query('SELECT * FROM users WHERE login = $1 AND password = $2', [req.query.login, req.query.password]);
@@ -2361,12 +2361,41 @@ express()
        })
      }
    })
-   // {
-  //   res.json({
-  //     login : req.query.login == "111" || req.query.login == "admin",
-  //     is_admin : req.query.login == "admin"
-  //   })
-  // })
+   .get('/edituser', async (req, res) => {
+      try {
+        const client = await pool.connect()
+        const result = await client.query('UPDATE users SET name = $1, email = $2, city = $3, phone = $4 WHERE id = $0', [req.query.id, req.query.name, req.query.email, req.query.city, req.query.phone]);
+
+        res.json({
+             result : true
+           })
+         }
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.json({
+          result : false
+        })
+      }
+    })
+    .get('/getuser', async (req, res) => {
+       try {
+         const client = await pool.connect()
+         const result = await client.query('SELECT * FROM users WHERE id = $0', [req.query.id);
+
+         res.json({
+              result : true
+              user : result.row[0]
+            })
+          }
+         client.release();
+       } catch (err) {
+         console.error(err);
+         res.json({
+           result : false
+         })
+       }
+     })
   .post('/add', async (req, res) => {
     try {
       const client = await pool.connect()
