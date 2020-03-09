@@ -2384,7 +2384,7 @@ express()
 
          res.json({
               result : true,
-              user : result.row[0]
+              user : result.rows[0]
             })
          client.release();
        } catch (err) {
