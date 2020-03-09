@@ -2369,7 +2369,6 @@ express()
         res.json({
              result : true
            })
-         }
         client.release();
       } catch (err) {
         console.error(err);
