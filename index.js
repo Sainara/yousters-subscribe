@@ -2461,7 +2461,7 @@ express()
   .get('/news', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('SELECT * FROM main_news');
+      const result = await client.query('SELECT * FROM main_news ORDER BY id ASC');
       res.json(result.rows)
     } catch (err) {
       console.error(err);
