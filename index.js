@@ -2369,7 +2369,7 @@ express()
         const id = await client.query('SELECT * FROM users WHERE login = $1', [req.query.login]);
         res.json({
              result : true,
-             userID : id.rows[0]
+             userID : id.rows[0].id
            })
         client.release();
       } catch (err) {
