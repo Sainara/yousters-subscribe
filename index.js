@@ -2428,6 +2428,23 @@ express()
          })
        }
      })
+     .get('/getlawyers', async (req, res) => {
+        try {
+          const client = await pool.connect()
+          const result = await client.query('SELECT * FROM users WHERE user_type = $1 OR user_type = $2', ['Юрист', 'Партнёр']);
+
+          res.json({
+               result : true,
+               lawyers : result.rows
+             })
+          client.release();
+        } catch (err) {
+          console.error(err);
+          res.json({
+            result : false
+          })
+        }
+      })
   .post('/add', async (req, res) => {
     try {
       const client = await pool.connect()
@@ -2488,8 +2505,8 @@ express()
   .post('/addlawyer', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('INSERT INTO "users" ("name", "login", "password", "email", "city", "phone", "user_type", "latitude", "longitude", "cv", "uslugi", "sp", "status", "price", "langs", "link") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12, $13, $14, $15, $16);',
-                                                          [req.body.name, req.body.login, req.body.pass, req.body.email, req.body.city, req.body.phone, req.body.type, req.body.la, req.body.lo, req.body.cv, req.body.uslugi, req.body.sp, req.body.status, req.body.price, req.body.langs, req.body.link]);
+      const result = await client.query('INSERT INTO "users" ("name", "login", "password", "email", "city", "phone", "user_type", "latitude", "longitude", "cv", "uslugi", "sp", "status", "price", "langs", "link", "want") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12, $13, $14, $15, $16, $17);',
+                                                          [req.body.name, req.body.login, req.body.pass, req.body.email, req.body.city, req.body.phone, req.body.type, req.body.la, req.body.lo, req.body.cv, req.body.uslugi, req.body.sp, req.body.status, req.body.price, req.body.langs, req.body.link, req.body.want]);
 
       const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
       res.json({
