@@ -2361,11 +2361,11 @@ express()
        })
      }
    })
-   .get('/adduser', async (req, res) => {
+   .post('/adduser', async (req, res) => {
       try {
         const client = await pool.connect()
-        const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-       [req.query.login, req.query.name, req.query.pass, req.query.type, req.query.email, req.query.city, req.query.phone]);
+        const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+       [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.body.ava]);
         const id = await client.query('SELECT * FROM users WHERE login = $1', [req.query.login]);
         res.json({
              result : true,
