@@ -2330,7 +2330,7 @@ let lawyers = {
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
-  .use(express.bodyParser.json({limit: '5mb'}))
+  .use(express.json({limit: '10mb'}))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/support', (req, res) => res.render('pages/index'))
