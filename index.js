@@ -2398,7 +2398,7 @@ express()
    .get('/edituser', async (req, res) => {
       try {
         const client = await pool.connect()
-        const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5 WHERE id = $1', [req.query.id, req.query.name, req.query.email, req.query.city, req.query.phone]);
+        const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, ava = $6 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone, req.body.ava]);
 
         res.json({
              result : true
