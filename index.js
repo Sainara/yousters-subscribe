@@ -2341,7 +2341,7 @@ var storage = cloudinaryStorage({
     console.log(req.query);
     //console.log(file);
     //console.log(cb);
-    cb(undefined, req.body.id);
+    cb(undefined, req.query.id);
   }
 });
 
