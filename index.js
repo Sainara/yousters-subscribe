@@ -2434,7 +2434,8 @@ express()
     })
     .post('/upload', parser.single('image'), async (req, res) => {
       res.json({
-        result : req.file.secure_url
+        result : true,
+        url : req.file.secure_url
       });
      })
     .get('/getuser', async (req, res) => {
