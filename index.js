@@ -2391,7 +2391,7 @@ express()
     //   }, { public_id: req.body.title }
   });
       ///////
-    fs.createReadStream(req.files.image.path, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
+    fs.createReadStream(req.body.image, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
   })
 
    // .post('/adduser', async (req, res) => {
