@@ -8,41 +8,6 @@ const pool = new Pool({
   ssl: true
 });
 
-// var cloudinary = require('cloudinary').v2;
-//
-// cloudinary.config({
-//     cloud_name: 'dry4ptk4n',
-//     api_key: '425861722671115',
-//     api_secret: 'QCIMafHNlngYIt8QSk63j28xh5M'
-// });
-//
-//
-// var fs = require('fs');
-//
-// var multer = require('multer')
-//
-// var storage = multer.diskStorage()
-
-
-var multer  = require('multer')
-var cloudinary = require('cloudinary')
-var cloudinaryStorage = require('multer-storage-cloudinary')
-
-/* Config cloudinary for the multer-storage-cloudinary object.
-   Notice that the cloudinary object automatically configures itself
-   based on the Heroku env-variables. */
-var storage = cloudinaryStorage({
-  cloudinary: cloudinary,
-  folder: '', // cloudinary folder where you want to store images, empty is root
-  allowedFormats: ['jpg', 'png'],
-});
-
-/* Initialize multer middleware with the multer-storage-cloudinary based
-   storage engine */
-var parser = multer({ storage: storage });
-
-
-
 let lawyers = {
   records: [
     {
@@ -2396,81 +2361,15 @@ express()
        })
      }
    })
-//    .post('/adduser', async (req, res) => {
-//      const upload = multer({ storage }).single('image')
-//      upload(req, res, async(err) => {
-//      if (err) {
-//        return res.send(err)
-//      }
-//    console.log('file uploaded to server')
-//    console.log(req.file)
-//
-//    // SEND FILE TO CLOUDINARY
-//
-//
-//    const path = req.file.path
-//    const uniqueFilename = new Date().toISOString()
-//
-//    cloudinary.uploader.upload(path, { public_id: `blog/${uniqueFilename}`, tags: `blog` }, // directory and tags are optional
-//       async(err, image) => {
-//         if (err) return res.send(err)
-//         console.log('file uploaded to Cloudinary')
-//
-//         fs.unlinkSync(path)
-//
-//         try {
-//           const client = await pool.connect()
-//          //  const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-//          // [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, result.url]);
-//          //  const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
-//           res.json({
-//                result : true,
-//                userID : "id.rows[0].id",
-//                url : image
-//              })
-//           client.release();
-//         } catch (err) {
-//           console.error(err);
-//           res.json({
-//             result : false
-//           })
-//         }
-//
-//
-//       }
-//     )
-//
-//
-//   //  stream = cloudinary.uploader.upload_stream(async(result)=> {
-//
-//     ////////
-//       //   console.log(result);
-//       //   res.send('Done:<br/> <img src="' + result.url + '"/><br/>' +
-//       //            cloudinary.image(result.public_id, { format: "png", width: 100, height: 130, crop: "fill" }));
-//     //   }, { public_id: req.body.title }
-//   });
-//       ///////
-// //    fs.createReadStream(req.files.image.path, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
-//   })
-
-   .post('/adduser', parser.single('image'), async (req, res) => {
+   .post('/adduser', async (req, res) => {
       try {
         const client = await pool.connect()
-        console.log(req.body.is_ava_sel)
-        //var avaUrl = ""
-        if (req.body.is_ava_sel == "true") {
-          const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.file.secure_url]);
-          //avaUrl = req.file.url
-          console.log("eeeeeeeeeee")
-        } else {
-          const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone) VALUES ($1, $2, $3, $4, $5, $6, $7)', [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone]);
-        }
-        //const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, avaUrl]);
+        const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+       [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.body.ava]);
         const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
         res.json({
              result : true,
-             userID : id.rows[0].id,
-             imageURL : id.rows[0].ava
+             userID : id.rows[0].id
            })
         client.release();
       } catch (err) {
@@ -2499,16 +2398,10 @@ express()
    .post('/edituser', async (req, res) => {
       try {
         const client = await pool.connect()
-        if (req.body.is_ava_sel == "true") {
-          const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, ava = $6 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone, req.file.secure_url]);
-          console.log("eeeeeeeeeee")
-        } else {
-          const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone]);
-        }
-        const id = await client.query('SELECT * FROM users WHERE id = $1', [req.body.id]);
+        const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, ava = $6 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone, req.body.ava]);
+
         res.json({
-             result : true,
-             url : id.rows[0].ava,
+             result : true
            })
         client.release();
       } catch (err) {
@@ -2587,9 +2480,7 @@ express()
       const client = await pool.connect()
       const result = await client.query('Select c.*, u.name, u.ava From main_news as c Inner Join users as u on c.author = u.id ORDER BY c.id ASC');
       res.json({
-        result: true,
-        news :result.rows
-      })
+        result: result.rows})
     } catch (err) {
       console.error(err);
       res.json({
@@ -2600,7 +2491,7 @@ express()
   .post('/addnews', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('INSERT INTO "main_news" ("author", "liked_by", "stringtime", "news_text") VALUES ($1, $2, $3, $4);', [req.body.author, req.body.liked_by, req.body.date, req.body.news_text]);
+      const result = await client.query('INSERT INTO "main_news" ("author", "liked_by", "author_image_url", "stringtime", "news_text") VALUES ($1, $2, $3, $4, $5);', [req.body.author, req.body.liked_by, req.body.authorImage, req.body.date, req.body.news_text]);
       res.json({
         result : true
       })
