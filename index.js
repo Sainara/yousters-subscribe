@@ -2478,9 +2478,23 @@ express()
   .get('/news', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('Select c.*, u.name, u.ava From main_news as c Inner Join users as u on c.author = u.id ORDER BY c.id ASC');
+      const result = await client.query('Select c.*, u.name, u.id From main_news as c Inner Join users as u on c.author = u.id ORDER BY c.id ASC');
       res.json({
         result: result.rows
+      })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
+  .get('/useravatar', async (req, res) => {
+    try {
+      const client = await pool.connect()
+      const result = await client.query('SELECT ava FROM users WHERE id = $1', [req.query.id]);
+      res.json({
+        result: result.rows[0].ava.data
       })
     } catch (err) {
       console.error(err);
