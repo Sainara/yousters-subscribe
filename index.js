@@ -2435,7 +2435,7 @@ express()
     .post('/upload', parser.single('image'), async (req, res) => {
       try {
         const client = await pool.connect()
-        const result = await client.query('UPDATE users SET avaurl = $2 WHERE id = $1', [req.query.id, req.file.secure_url]));
+        const result = await client.query('UPDATE users SET avaurl = $2 WHERE id = $1', [req.query.id, req.file.secure_url]);
         res.json({
           result : true,
           url : req.file.secure_url
