@@ -2366,7 +2366,7 @@ express()
      }
    })
    .post('/adduser', async (req, res) => {
-    stream = cloudinary.uploader.upload_stream(function(result) {
+    stream = cloudinary.uploader.upload_stream(async(result)=> {
       try {
         const client = await pool.connect()
         const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
