@@ -2491,7 +2491,7 @@ express()
   .post('/addnews', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('INSERT INTO "main_news" ("author", "liked_by", "author_image_url", "stringtime", "news_text") VALUES ($1, $2, $3, $4, $5);', [req.body.author, req.body.liked_by, req.body.authorImage, req.body.date, req.body.news_text]);
+      const result = await client.query('INSERT INTO "main_news" ("author", "liked_by", "stringtime", "news_text") VALUES ($1, $2, $3, $4);', [req.body.author, req.body.liked_by, req.body.date, req.body.news_text]);
       res.json({
         result : true
       })
