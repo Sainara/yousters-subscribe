@@ -2394,24 +2394,24 @@ express()
     fs.createReadStream(req.files.image.path, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
   });
 
-   .post('/adduser', async (req, res) => {
-      try {
-        const client = await pool.connect()
-        const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-       [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.body.ava]);
-        const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
-        res.json({
-             result : true,
-             userID : id.rows[0].id
-           })
-        client.release();
-      } catch (err) {
-        console.error(err);
-        res.json({
-          result : false
-        })
-      }
-    })
+   // .post('/adduser', async (req, res) => {
+   //    try {
+   //      const client = await pool.connect()
+   //      const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+   //     [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.body.ava]);
+   //      const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
+   //      res.json({
+   //           result : true,
+   //           userID : id.rows[0].id
+   //         })
+   //      client.release();
+   //    } catch (err) {
+   //      console.error(err);
+   //      res.json({
+   //        result : false
+   //      })
+   //    }
+   //  })
     .get('/updatelikes', async (req, res) => {
        try {
          const client = await pool.connect()
