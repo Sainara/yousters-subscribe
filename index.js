@@ -2459,7 +2459,7 @@ express()
         console.log(req.body.is_ava_sel)
         //var avaUrl = ""
         if (req.body.is_ava_sel == "true") {
-          const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.file.url]);
+          const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.file.secure_url]);
           //avaUrl = req.file.url
           console.log("eeeeeeeeeee")
         } else {
