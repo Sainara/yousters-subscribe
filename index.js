@@ -8,8 +8,28 @@ const pool = new Pool({
   ssl: true
 });
 
-var cloudinary = require('cloudinary');
+var cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+    cloud_name: 'dry4ptk4n',
+    api_key: '425861722671115',
+    api_secret: 'QCIMafHNlngYIt8QSk63j28xh5M'
+});
+
+
 var fs = require('fs');
+
+var multer = require('multer')
+
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function(req, file, cb) {
+    console.log(file)
+    cb(null, file.originalname)
+  }
+})
 
 
 let lawyers = {
@@ -2391,7 +2411,7 @@ express()
     //   }, { public_id: req.body.title }
   });
       ///////
-    fs.createReadStream(req.body.image, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
+    fs.createReadStream(req.files.image.path, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
   })
 
    // .post('/adduser', async (req, res) => {
