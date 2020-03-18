@@ -2463,14 +2463,10 @@ express()
         }
         const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, avaUrl]);
         const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
-        var urlres = ""
-        if (req.body.is_ava_sel) {
-          urlres = req.file.url
-        }
         res.json({
              result : true,
              userID : id.rows[0].id,
-             imageURL : urlres
+             imageURL : avaUrl
            })
         client.release();
       } catch (err) {
