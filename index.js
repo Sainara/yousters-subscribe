@@ -2460,7 +2460,7 @@ express()
        //[req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.body.ava]);
         //const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
         res.json({
-             result : true,
+             result : req.body.name, //true
              userID : req.file //id.rows[0].id
            })
         client.release();
