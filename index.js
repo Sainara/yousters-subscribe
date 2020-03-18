@@ -2387,10 +2387,10 @@ express()
    })
    .post('/adduser', async (req, res) => {
      const upload = multer({ storage }).single('image')
-     upload(req, res, function(err) {
-   if (err) {
-     return res.send(err)
-   }
+     upload(req, res, async(err) => {
+     if (err) {
+       return res.send(err)
+     }
    console.log('file uploaded to server')
    console.log(req.file)
 
@@ -2401,7 +2401,7 @@ express()
    const uniqueFilename = new Date().toISOString()
 
    cloudinary.uploader.upload(path, { public_id: `blog/${uniqueFilename}`, tags: `blog` }, // directory and tags are optional
-      function(err, image) {
+      async(err, image) => {
         if (err) return res.send(err)
         console.log('file uploaded to Cloudinary')
 
