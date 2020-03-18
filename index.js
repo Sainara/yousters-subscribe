@@ -2338,7 +2338,7 @@ var storage = cloudinaryStorage({
   folder: 'avas',
   allowedFormats: ['jpg', 'png'],
   filename: function (req, file, cb) {
-    console.log(req.query);
+    //console.log(req.query);
     //console.log(file);
     //console.log(cb);
     cb(undefined, req.query.id);
@@ -2416,7 +2416,7 @@ express()
          })
        }
      })
-   .post('/edituser', parser.single('image'), async (req, res) => {
+   .post('/edituser', async (req, res) => {
       try {
         const client = await pool.connect()
         const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, ava = $6 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone, req.body.ava]);
@@ -2433,7 +2433,9 @@ express()
       }
     })
     .post('/upload', parser.single('image'), async (req, res) => {
-       console.log(req.file);
+      res.json({
+        result : req.file.secure_url
+      });
      })
     .get('/getuser', async (req, res) => {
        try {
