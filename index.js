@@ -2457,10 +2457,10 @@ express()
       try {
         const client = await pool.connect()
         console.log(req.body.is_ava_sel)
-        var avaUrl = ""
+        //var avaUrl = ""
         if (req.body.is_ava_sel == "true") {
           const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.file.url]);
-          avaUrl = req.file.url
+          //avaUrl = req.file.url
           console.log("eeeeeeeeeee")
         } else {
           const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone) VALUES ($1, $2, $3, $4, $5, $6, $7)', [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone]);
@@ -2470,7 +2470,7 @@ express()
         res.json({
              result : true,
              userID : id.rows[0].id,
-             imageURL : avaUrl
+             imageURL : id.rows[0].id.ava
            })
         client.release();
       } catch (err) {
