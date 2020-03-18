@@ -2330,7 +2330,7 @@ let lawyers = {
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
-  .use(express.json({limit: '10mb'}))
+  .use(express.json({limit: '50mb'}))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/support', (req, res) => res.render('pages/index'))
@@ -2480,7 +2480,8 @@ express()
       const client = await pool.connect()
       const result = await client.query('Select c.*, u.name, u.ava From main_news as c Inner Join users as u on c.author = u.id ORDER BY c.id ASC');
       res.json({
-        result: result.rows})
+        result: result.rows
+      })
     } catch (err) {
       console.error(err);
       res.json({
