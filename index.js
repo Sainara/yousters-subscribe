@@ -2335,7 +2335,7 @@ var cloudinaryStorage = require('multer-storage-cloudinary')
 
 var storage = cloudinaryStorage({
   cloudinary: cloudinary,
-  folder: '',
+  folder: 'avas',
   allowedFormats: ['jpg', 'png'],
   filename: function (req, file, cb) {
     console.log(req.query);
