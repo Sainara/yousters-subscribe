@@ -2464,10 +2464,14 @@ express()
          [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone]);
         }
         const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
+        var urlres = ""
+        if (req.body.is_ava_sel) {
+          urlres = req.file.url
+        }
         res.json({
              result : true,
              userID : id.rows[0].id,
-             imageURL : req.file.url
+             imageURL : urlres
            })
         client.release();
       } catch (err) {
