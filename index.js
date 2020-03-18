@@ -2328,6 +2328,24 @@ let lawyers = {
   ]
 }
 
+var multer  = require('multer')
+var cloudinary = require('cloudinary')
+var cloudinaryStorage = require('multer-storage-cloudinary')
+
+
+var storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: '',
+  allowedFormats: ['jpg', 'png'],
+  filename: function (req, file, cb) {
+    cb(undefined, req.body.id);
+  }
+});
+
+/* Initialize multer middleware with the multer-storage-cloudinary based
+   storage engine */
+var parser = multer({ storage: storage });
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(express.json({limit: '50mb'}))
@@ -2395,11 +2413,11 @@ express()
          })
        }
      })
-   .post('/edituser', async (req, res) => {
+   .post('/edituser', parser.single('image'), async (req, res) => {
       try {
         const client = await pool.connect()
         const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, ava = $6 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone, req.body.ava]);
-
+        console.log(req.file);
         res.json({
              result : true
            })
@@ -2478,7 +2496,7 @@ express()
   .get('/news', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('Select c.*, u.name, u.id From main_news as c Inner Join users as u on c.author = u.id ORDER BY c.id ASC');
+      const result = await client.query('Select c.*, u.name From main_news as c Inner Join users as u on c.author = u.id ORDER BY c.id ASC');
       res.json({
         result: result.rows
       })
