@@ -2500,7 +2500,7 @@ express()
       try {
         const client = await pool.connect()
         if (req.body.is_ava_sel == "true") {
-          const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, ava = $6 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone, req.body.ava]);
+          const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, ava = $6 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone, req.file.secure_url]);
           console.log("eeeeeeeeeee")
         } else {
           const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone]);
