@@ -8,6 +8,10 @@ const pool = new Pool({
   ssl: true
 });
 
+var cloudinary = require('cloudinary');
+var fs = require('fs');
+
+
 let lawyers = {
   records: [
     {
@@ -2361,6 +2365,35 @@ express()
        })
      }
    })
+   .post('/adduser', function(req, res) {
+    stream = cloudinary.uploader.upload_stream(function(result) {
+      try {
+        const client = await pool.connect()
+        const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+       [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, result.url]);
+        const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
+        res.json({
+             result : true,
+             userID : id.rows[0].id,
+             url : result.url
+           })
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.json({
+          result : false
+        })
+      }
+    ////////
+      //   console.log(result);
+      //   res.send('Done:<br/> <img src="' + result.url + '"/><br/>' +
+      //            cloudinary.image(result.public_id, { format: "png", width: 100, height: 130, crop: "fill" }));
+    //   }, { public_id: req.body.title }
+     );
+      ///////
+    fs.createReadStream(req.files.image.path, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
+  });
+
    .post('/adduser', async (req, res) => {
       try {
         const client = await pool.connect()
