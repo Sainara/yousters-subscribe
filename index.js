@@ -2457,6 +2457,7 @@ express()
       try {
         const client = await pool.connect()
         console.log(req.body.is_ava_sel)
+        var avaUrl = ""
         if (req.body.is_ava_sel == true) {
           avaUrl = req.file.url
         }
