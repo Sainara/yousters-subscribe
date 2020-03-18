@@ -24,6 +24,25 @@ const pool = new Pool({
 // var storage = multer.diskStorage()
 
 
+var multer  = require('multer')
+var cloudinary = require('cloudinary')
+var cloudinaryStorage = require('multer-storage-cloudinary')
+
+/* Config cloudinary for the multer-storage-cloudinary object.
+   Notice that the cloudinary object automatically configures itself
+   based on the Heroku env-variables. */
+var storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: '', // cloudinary folder where you want to store images, empty is root
+  allowedFormats: ['jpg', 'png'],
+});
+
+/* Initialize multer middleware with the multer-storage-cloudinary based
+   storage engine */
+var parser = multer({ storage: storage });
+
+
+
 let lawyers = {
   records: [
     {
@@ -2434,15 +2453,15 @@ express()
 // //    fs.createReadStream(req.files.image.path, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
 //   })
 
-   .post('/adduser', async (req, res) => {
+   .post('/adduser', parser.single('image'), async (req, res) => {
       try {
         const client = await pool.connect()
-        const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-       [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.body.ava]);
-        const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
+        //const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+       //[req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.body.ava]);
+        //const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
         res.json({
              result : true,
-             userID : id.rows[0].id
+             userID : req.file //id.rows[0].id
            })
         client.release();
       } catch (err) {
