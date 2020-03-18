@@ -2365,7 +2365,7 @@ express()
        })
      }
    })
-   .post('/adduser', function(req, res) {
+   .post('/adduser', async (req, res) => {
     stream = cloudinary.uploader.upload_stream(function(result) {
       try {
         const client = await pool.connect()
