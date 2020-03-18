@@ -2494,7 +2494,7 @@ express()
       const client = await pool.connect()
       const result = await client.query('SELECT ava FROM users WHERE id = $1', [req.query.id]);
       res.json({
-        result: result.rows[0].ava.data
+        result: result.rows
       })
     } catch (err) {
       console.error(err);
