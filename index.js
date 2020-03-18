@@ -2457,12 +2457,12 @@ express()
       try {
         const client = await pool.connect()
         const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-       [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.file]);
+       [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.file.url]);
         const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
         res.json({
              result : true,
              userID : id.rows[0].id,
-             imageURL : req.file
+             imageURL : req.file.url
            })
         client.release();
       } catch (err) {
