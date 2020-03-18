@@ -2338,7 +2338,7 @@ var storage = cloudinaryStorage({
   folder: '',
   allowedFormats: ['jpg', 'png'],
   filename: function (req, file, cb) {
-    console.log(req.body);
+    console.log(req.query);
     //console.log(file);
     //console.log(cb);
     cb(undefined, req.body.id);
