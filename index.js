@@ -2470,7 +2470,7 @@ express()
         res.json({
              result : true,
              userID : id.rows[0].id,
-             imageURL : id.rows[0].id.ava
+             imageURL : id.rows[0].ava
            })
         client.release();
       } catch (err) {
