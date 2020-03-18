@@ -2433,10 +2433,21 @@ express()
       }
     })
     .post('/upload', parser.single('image'), async (req, res) => {
-      res.json({
-        result : true,
-        url : req.file.secure_url
-      });
+      try {
+        const client = await pool.connect()
+        const result = await client.query('UPDATE users SET avaurl = $2 WHERE id = $1', [req.query.id, req.file.secure_url]));
+        res.json({
+          result : true,
+          url : req.file.secure_url
+        });
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.json({
+          result : false
+        })
+      }
+
      })
     .get('/getuser', async (req, res) => {
        try {
@@ -2458,7 +2469,7 @@ express()
      .get('/getlawyers', async (req, res) => {
         try {
           const client = await pool.connect()
-          const result = await client.query('SELECT * FROM users WHERE user_type = $1 OR user_type = $2', ['Юрист', 'Партнёр']);
+          const result = await client.query('SELECT id, name, login, password, email, is_admin, city, phone, user_type, latitude, longitude, cv, uslugi, sp, status, price, langs, link, want, avaurl FROM users WHERE user_type = $1 OR user_type = $2', ['Юрист', 'Партнёр']);
 
           res.json({
                result : true,
