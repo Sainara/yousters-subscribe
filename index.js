@@ -8,20 +8,20 @@ const pool = new Pool({
   ssl: true
 });
 
-var cloudinary = require('cloudinary').v2;
-
-cloudinary.config({
-    cloud_name: 'dry4ptk4n',
-    api_key: '425861722671115',
-    api_secret: 'QCIMafHNlngYIt8QSk63j28xh5M'
-});
-
-
-var fs = require('fs');
-
-var multer = require('multer')
-
-var storage = multer.diskStorage()
+// var cloudinary = require('cloudinary').v2;
+//
+// cloudinary.config({
+//     cloud_name: 'dry4ptk4n',
+//     api_key: '425861722671115',
+//     api_secret: 'QCIMafHNlngYIt8QSk63j28xh5M'
+// });
+//
+//
+// var fs = require('fs');
+//
+// var multer = require('multer')
+//
+// var storage = multer.diskStorage()
 
 
 let lawyers = {
@@ -2377,81 +2377,81 @@ express()
        })
      }
    })
+//    .post('/adduser', async (req, res) => {
+//      const upload = multer({ storage }).single('image')
+//      upload(req, res, async(err) => {
+//      if (err) {
+//        return res.send(err)
+//      }
+//    console.log('file uploaded to server')
+//    console.log(req.file)
+//
+//    // SEND FILE TO CLOUDINARY
+//
+//
+//    const path = req.file.path
+//    const uniqueFilename = new Date().toISOString()
+//
+//    cloudinary.uploader.upload(path, { public_id: `blog/${uniqueFilename}`, tags: `blog` }, // directory and tags are optional
+//       async(err, image) => {
+//         if (err) return res.send(err)
+//         console.log('file uploaded to Cloudinary')
+//
+//         fs.unlinkSync(path)
+//
+//         try {
+//           const client = await pool.connect()
+//          //  const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+//          // [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, result.url]);
+//          //  const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
+//           res.json({
+//                result : true,
+//                userID : "id.rows[0].id",
+//                url : image
+//              })
+//           client.release();
+//         } catch (err) {
+//           console.error(err);
+//           res.json({
+//             result : false
+//           })
+//         }
+//
+//
+//       }
+//     )
+//
+//
+//   //  stream = cloudinary.uploader.upload_stream(async(result)=> {
+//
+//     ////////
+//       //   console.log(result);
+//       //   res.send('Done:<br/> <img src="' + result.url + '"/><br/>' +
+//       //            cloudinary.image(result.public_id, { format: "png", width: 100, height: 130, crop: "fill" }));
+//     //   }, { public_id: req.body.title }
+//   });
+//       ///////
+// //    fs.createReadStream(req.files.image.path, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
+//   })
+
    .post('/adduser', async (req, res) => {
-     const upload = multer({ storage }).single('image')
-     upload(req, res, async(err) => {
-     if (err) {
-       return res.send(err)
-     }
-   console.log('file uploaded to server')
-   console.log(req.file)
-
-   // SEND FILE TO CLOUDINARY
-
-
-   const path = req.file.path
-   const uniqueFilename = new Date().toISOString()
-
-   cloudinary.uploader.upload(path, { public_id: `blog/${uniqueFilename}`, tags: `blog` }, // directory and tags are optional
-      async(err, image) => {
-        if (err) return res.send(err)
-        console.log('file uploaded to Cloudinary')
-
-        fs.unlinkSync(path)
-
-        try {
-          const client = await pool.connect()
-         //  const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-         // [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, result.url]);
-         //  const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
-          res.json({
-               result : true,
-               userID : "id.rows[0].id",
-               url : image
-             })
-          client.release();
-        } catch (err) {
-          console.error(err);
-          res.json({
-            result : false
-          })
-        }
-
-
+      try {
+        const client = await pool.connect()
+        const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+       [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.body.ava]);
+        const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
+        res.json({
+             result : true,
+             userID : id.rows[0].id
+           })
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.json({
+          result : false
+        })
       }
-    )
-
-
-  //  stream = cloudinary.uploader.upload_stream(async(result)=> {
-
-    ////////
-      //   console.log(result);
-      //   res.send('Done:<br/> <img src="' + result.url + '"/><br/>' +
-      //            cloudinary.image(result.public_id, { format: "png", width: 100, height: 130, crop: "fill" }));
-    //   }, { public_id: req.body.title }
-  });
-      ///////
-//    fs.createReadStream(req.files.image.path, {encoding: 'binary'}).on('data', stream.write).on('end', stream.end);
-  })
-
-   // .post('/adduser', async (req, res) => {
-   //    try {
-   //      const client = await pool.connect()
-   //      const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-   //     [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.body.ava]);
-   //      const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
-   //      res.json({
-   //           result : true,
-   //           userID : id.rows[0].id
-   //         })
-   //      client.release();
-   //    } catch (err) {
-   //      console.error(err);
-   //      res.json({
-   //        result : false
-   //      })
-   //    }
-   //  })
+    })
     .get('/updatelikes', async (req, res) => {
        try {
          const client = await pool.connect()
