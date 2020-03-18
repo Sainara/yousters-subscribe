@@ -2429,6 +2429,9 @@ express()
         })
       }
     })
+    .post('/upload', parser.single('image'), async (req, res) => {
+       console.log(req.file);
+     })
     .get('/getuser', async (req, res) => {
        try {
          const client = await pool.connect()
