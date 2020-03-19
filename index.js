@@ -2626,7 +2626,7 @@ express()
   .post('/delete', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('DELETE FROM users WHERE login = $1', [req.body.login]);
+      const result = await client.query('DELETE FROM users WHERE id = $1', [req.body.id]);
       res.json({
         result : true
       })
