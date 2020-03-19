@@ -2501,7 +2501,7 @@ express()
      .get('/getlawyers', async (req, res) => {
         try {
           const client = await pool.connect()
-          const result = await client.query('SELECT id, name, login, password, email, is_admin, city, phone, user_type, latitude, longitude, cv, uslugi, sp, status, price, langs, link, want, avaurl FROM users WHERE user_type = $1 OR user_type = $2', ['Юрист', 'Партнёр']);
+          const result = await client.query('SELECT id, name, login, password, email, is_admin, city, phone, user_type, latitude, longitude, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive FROM users WHERE user_type = $1 OR user_type = $2', ['Юрист', 'Партнёр']);
 
           res.json({
                result : true,
