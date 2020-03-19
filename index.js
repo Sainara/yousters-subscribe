@@ -2448,6 +2448,22 @@ express()
          })
        }
      })
+     .post('/makeactive', async (req, res) => {
+        try {
+          const client = await pool.connect()
+          const result = await client.query('UPDATE users SET isactive = true WHERE id = $1', [req.body.id]);
+          //console.log(req.file)
+          res.json({
+               result : true
+             })
+          client.release();
+        } catch (err) {
+          console.error(err);
+          res.json({
+            result : false
+          })
+        }
+      })
     .post('/upload', parser.single('image'), async (req, res) => {
       try {
         const client = await pool.connect()
