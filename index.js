@@ -2432,6 +2432,22 @@ express()
         })
       }
     })
+    .post('/editlawyer', async (req, res) => {
+       try {
+         const client = await pool.connect()
+         const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, latitude = $6, longitude = $7, cv = $8, uslugi = $9, sp = 10, status = $11, price = $12, langs = $13, link = $14, ava = $15, address = $16 WHERE id = $1', [req.body.name, req.body.email, req.body.city, req.body.phone, req.body.la, req.body.lo, req.body.cv, req.body.uslugi, req.body.sp, req.body.status, req.body.price, req.body.langs, req.body.link, req.body.ava, req.body.address]);
+         //console.log(req.file)
+         res.json({
+              result : true
+            })
+         client.release();
+       } catch (err) {
+         console.error(err);
+         res.json({
+           result : false
+         })
+       }
+     })
     .post('/upload', parser.single('image'), async (req, res) => {
       try {
         const client = await pool.connect()
@@ -2559,8 +2575,8 @@ express()
   .post('/addlawyer', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('INSERT INTO "users" ("name", "login", "password", "email", "city", "phone", "user_type", "latitude", "longitude", "cv", "uslugi", "sp", "status", "price", "langs", "link", "want", "ava") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12, $13, $14, $15, $16, $17, $18);',
-                                                          [req.body.name, req.body.login, req.body.pass, req.body.email, req.body.city, req.body.phone, req.body.type, req.body.la, req.body.lo, req.body.cv, req.body.uslugi, req.body.sp, req.body.status, req.body.price, req.body.langs, req.body.link, req.body.want, req.body.ava]);
+      const result = await client.query('INSERT INTO "users" ("name", "login", "password", "email", "city", "phone", "user_type", "latitude", "longitude", "cv", "uslugi", "sp", "status", "price", "langs", "link", "want", "ava", "address") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12, $13, $14, $15, $16, $17, $18, $19);',
+                                                          [req.body.name, req.body.login, req.body.pass, req.body.email, req.body.city, req.body.phone, req.body.type, req.body.la, req.body.lo, req.body.cv, req.body.uslugi, req.body.sp, req.body.status, req.body.price, req.body.langs, req.body.link, req.body.want, req.body.ava, req.body.address]);
 
       const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
       res.json({
