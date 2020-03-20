@@ -2549,7 +2549,7 @@ express()
      .get('/getlawyers', async (req, res) => {
         try {
           const client = await pool.connect()
-          const result = await client.query('SELECT id, name, login, password, email, is_admin, city, phone, user_type, latitude, longitude, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive FROM users WHERE user_type = $1 OR user_type = $2', ['Юрист', 'Партнёр']);
+          const result = await client.query('SELECT id, name, login, password, email, is_admin, city, phone, user_type, latitude, longitude, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive FROM users WHERE user_type = $1 OR user_type = $2 ORDER BY id DESC', ['Юрист', 'Партнёр']);
 
           res.json({
                result : true,
@@ -2596,7 +2596,7 @@ express()
   .get('/news', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('Select c.*, u.name, u.avaurl From main_news as c Inner Join users as u on c.author = u.id ORDER BY c.id ASC');
+      const result = await client.query('Select c.*, u.name, u.avaurl From main_news as c Inner Join users as u on c.author = u.id ORDER BY c.id DESC');
       res.json({
         result: result.rows
       })
