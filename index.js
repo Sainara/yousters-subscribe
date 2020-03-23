@@ -2416,6 +2416,21 @@ express()
          })
        }
      })
+     .post('/updatefavs', async (req, res) => {
+        try {
+          const client = await pool.connect()
+          const result = await client.query('UPDATE users SET favs = $2 WHERE id = $1', [req.body.id, req.body.favs]);
+          res.json({
+               result : true
+             })
+          client.release();
+        } catch (err) {
+          console.error(err);
+          res.json({
+            result : false
+          })
+        }
+      })
    .post('/edituser', async (req, res) => {
       try {
         const client = await pool.connect()
