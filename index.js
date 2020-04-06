@@ -2416,6 +2416,22 @@ express()
          })
        }
      })
+     .get('/updatelawyerlikes', async (req, res) => {
+        try {
+          const client = await pool.connect()
+          const result = await client.query('UPDATE users SET liked_by = $2 WHERE id = $1', [req.query.id, req.query.liked_by]);
+
+          res.json({
+               result : true
+             })
+          client.release();
+        } catch (err) {
+          console.error(err);
+          res.json({
+            result : false
+          })
+        }
+      })
      .post('/updatefavs', async (req, res) => {
         try {
           const client = await pool.connect()
