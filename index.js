@@ -2643,7 +2643,7 @@ express()
       const client = await pool.connect()
       const result = await client.query('SELECT m.*, u.name, u.avaurl From messages as m Inner Join users as u on m.recevier = u.id WHERE m.sender = $1 ORDER BY m.id DESC', [req.query.id]);
       res.json({
-        result: result
+        result: result.rows
       })
     } catch (err) {
       console.error(err);
