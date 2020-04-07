@@ -2638,10 +2638,10 @@ express()
       })
     }
   })
-  .get('/useravatar', async (req, res) => {
+  .get('/messages', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('SELECT * FROM messages WHERE id = $1', [req.query.id]);
+      const result = await client.query('SELECT m.*, u.name, u.avaurl From messages as m Inner Join users as u on m.recevier = u.id WHERE m.sender = $1 ORDER BY m.id DESC', [req.query.id]);
       res.json({
         result: result
       })
