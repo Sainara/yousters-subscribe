@@ -2641,7 +2641,7 @@ express()
   .get('/messages', async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('SELECT m.*, u.name, u.avaurl From messages as m Inner Join users as u on m.recevier = u.id WHERE m.sender = $1 ORDER BY m.id DESC', [req.query.id]);
+      const result = await client.query('SELECT m.*, r.name as r_name, r.avaurl as r_url, s.name as s_name, s.avaurl as s_url From messages as m Inner Join users as r on m.recevier = r.id Inner Join users as s on m.sender = s.id WHERE m.sender = $1 OR m.recevier = $1 ORDER BY m.id DESC', [req.query.id]);
       res.json({
         result: result.rows
       })
