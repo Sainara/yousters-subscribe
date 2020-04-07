@@ -2641,6 +2641,20 @@ express()
   .get('/useravatar', async (req, res) => {
     try {
       const client = await pool.connect()
+      const result = await client.query('SELECT * FROM messages WHERE id = $1', [req.query.id]);
+      res.json({
+        result: result
+      })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
+  .get('/useravatar', async (req, res) => {
+    try {
+      const client = await pool.connect()
       const result = await client.query('SELECT ava FROM users WHERE id = $1', [req.query.id]);
       res.json({
         result: result.rows[0].ava
