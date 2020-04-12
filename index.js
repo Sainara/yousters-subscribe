@@ -2670,7 +2670,7 @@ express()
   .post('/uploadmessage', parser.single('image'), async (req, res) => {
     try {
       const client = await pool.connect()
-      const result = await client.query('INSERT INTO messages (sender, recevier, message, m_type) VALUES ($1, $2, $3, $4)', [req.body.sender, req.body.recevier, req.file.secure_url, 'image']);
+      const result = await client.query('INSERT INTO messages (sender, recevier, message, m_type) VALUES ($1, $2, $3, $4)', [req.query.sender, req.query.recevier, req.file.secure_url, 'image']);
       res.json({
         result : true,
       });
