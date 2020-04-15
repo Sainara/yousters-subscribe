@@ -2348,6 +2348,7 @@ var storage = cloudinaryStorage({
 /* Initialize multer middleware with the multer-storage-cloudinary based
    storage engine */
 var parser = multer({ storage: storage });
+const client = await pool.connect()
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
@@ -2358,7 +2359,7 @@ express()
   .get('/lawyers', (req, res) => res.json(lawyers))
   .get('/login', async (req, res) => {
      try {
-       const client = await pool.connect()
+
        const result = await client.query('SELECT * FROM users WHERE login = $1 AND password = $2', [req.query.login, req.query.password]);
        //const results = { 'results': (result) ? result.rows : null};
        //res.render('pages/db', results );
@@ -2384,7 +2385,6 @@ express()
    })
    .post('/adduser', async (req, res) => {
       try {
-        const client = await pool.connect()
         const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
        [req.body.login, req.body.name, req.body.pass, req.body.type, req.body.email, req.body.city, req.body.phone, req.body.ava]);
         const id = await client.query('SELECT * FROM users WHERE login = $1', [req.body.login]);
@@ -2402,7 +2402,6 @@ express()
     })
     .get('/updatelikes', async (req, res) => {
        try {
-         const client = await pool.connect()
          const result = await client.query('UPDATE main_news SET liked_by = $2 WHERE id = $1', [req.query.id, req.query.liked_by]);
 
          res.json({
@@ -2418,7 +2417,6 @@ express()
      })
      .get('/updatelawyerlikes', async (req, res) => {
         try {
-          const client = await pool.connect()
           const result = await client.query('UPDATE users SET liked_by = $2 WHERE id = $1', [req.query.id, req.query.liked_by]);
 
           res.json({
@@ -2434,7 +2432,6 @@ express()
       })
      .post('/updatefavs', async (req, res) => {
         try {
-          const client = await pool.connect()
           const result = await client.query('UPDATE users SET favs = $2 WHERE id = $1', [req.body.id, req.body.favs]);
           res.json({
                result : true
@@ -2449,7 +2446,6 @@ express()
       })
    .post('/edituser', async (req, res) => {
       try {
-        const client = await pool.connect()
         const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, ava = $6 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone, req.body.ava]);
         console.log(req.file);
         res.json({
@@ -2465,7 +2461,6 @@ express()
     })
     .post('/editlawyer', async (req, res) => {
        try {
-         const client = await pool.connect()
          const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, latitude = $6, longitude = $7, cv = $8, uslugi = $9, sp = $10, status = $11, price = $12, langs = $13, link = $14, ava = $15, address = $16 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone, req.body.la, req.body.lo, req.body.cv, req.body.uslugi, req.body.sp, req.body.status, req.body.price, req.body.langs, req.body.link, req.body.ava, req.body.address]);
          //console.log(req.file)
          res.json({
@@ -2481,7 +2476,6 @@ express()
      })
      .post('/makeactive', async (req, res) => {
         try {
-          const client = await pool.connect()
           const result = await client.query('UPDATE users SET isactive = true WHERE id = $1', [req.body.id]);
           //console.log(req.file)
           res.json({
@@ -2497,7 +2491,6 @@ express()
       })
       .post('/makedeactive', async (req, res) => {
          try {
-           const client = await pool.connect()
            const result = await client.query('UPDATE users SET isactive = false WHERE id = $1', [req.body.id]);
            //console.log(req.file)
            res.json({
@@ -2513,7 +2506,6 @@ express()
        })
        .post('/makepartner', async (req, res) => {
           try {
-            const client = await pool.connect()
             const result = await client.query('UPDATE users SET user_type = $2 WHERE id = $1', [req.body.id, "Партнёр"]);
             //console.log(req.file)
             res.json({
@@ -2529,7 +2521,6 @@ express()
         })
         .post('/makelawyer', async (req, res) => {
            try {
-             const client = await pool.connect()
              const result = await client.query('UPDATE users SET user_type = $2 WHERE id = $1', [req.body.id, "Юрист"]);
              //console.log(req.file)
              res.json({
@@ -2545,7 +2536,6 @@ express()
          })
     .post('/upload', parser.single('image'), async (req, res) => {
       try {
-        const client = await pool.connect()
         const result = await client.query('UPDATE users SET avaurl = $2 WHERE id = $1', [req.query.id, req.file.secure_url]);
         res.json({
           result : true,
@@ -2562,7 +2552,6 @@ express()
      })
     .get('/getuser', async (req, res) => {
        try {
-         const client = await pool.connect()
          const result = await client.query('SELECT * FROM users WHERE id = $1', [req.query.id]);
 
          res.json({
@@ -2579,7 +2568,6 @@ express()
      })
      .get('/getlawyers', async (req, res) => {
         try {
-          const client = await pool.connect()
           const result = await client.query('SELECT id, name, login, password, email, is_admin, city, phone, user_type, latitude, longitude, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive, liked_by FROM users WHERE user_type = $1 OR user_type = $2 ORDER BY id DESC', ['Юрист', 'Партнёр']);
 
           res.json({
@@ -2596,7 +2584,6 @@ express()
       })
   .post('/add', async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('INSERT INTO users (login, password) VALUES ($1, $2)', [req.body.login, req.body.password]);
       res.json({
         result : true
@@ -2611,7 +2598,6 @@ express()
   })
   .post('/addadmin', async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('INSERT INTO users (login, password, is_admin) VALUES ($1, $2, $3)', [req.body.login, req.body.password, 1]);
       res.json({
         result : true
@@ -2626,7 +2612,6 @@ express()
   })
   .get('/news', async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('Select c.*, u.name, u.avaurl From main_news as c Inner Join users as u on c.author = u.id ORDER BY c.id DESC');
       res.json({
         result: result.rows
@@ -2640,7 +2625,6 @@ express()
   })
   .get('/messages', async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('SELECT m.*, r.name as r_name, r.avaurl as r_url, s.name as s_name, s.avaurl as s_url From messages as m Inner Join users as r on m.recevier = r.id Inner Join users as s on m.sender = s.id WHERE m.sender = $1 OR m.recevier = $1 ORDER BY m.id DESC', [req.query.id]);
       res.json({
         result: result.rows
@@ -2654,7 +2638,6 @@ express()
   })
   .post('/sendmessage', async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('INSERT INTO messages (sender, recevier, message, m_type) VALUES ($1, $2, $3, $4)', [req.body.sender, req.body.recevier, req.body.message, 'text']);
       res.json({
         result : true
@@ -2669,7 +2652,6 @@ express()
   })
   .post('/uploadmessage', parser.single('image'), async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('INSERT INTO messages (sender, recevier, message, m_type) VALUES ($1, $2, $3, $4)', [req.query.sender, req.query.recevier, req.file.secure_url, 'image']);
       res.json({
         result : true,
@@ -2685,7 +2667,6 @@ express()
    })
   .get('/useravatar', async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('SELECT ava FROM users WHERE id = $1', [req.query.id]);
       res.json({
         result: result.rows[0].ava
@@ -2699,7 +2680,6 @@ express()
   })
   .post('/addnews', async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('INSERT INTO "main_news" ("author", "liked_by", "stringtime", "news_text") VALUES ($1, $2, $3, $4);', [req.body.author, req.body.liked_by, req.body.date, req.body.news_text]);
       res.json({
         result : true
@@ -2714,7 +2694,6 @@ express()
   })
   .post('/addlawyer', async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('INSERT INTO "users" ("name", "login", "password", "email", "city", "phone", "user_type", "latitude", "longitude", "cv", "uslugi", "sp", "status", "price", "langs", "link", "want", "ava", "address") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12, $13, $14, $15, $16, $17, $18, $19);',
                                                           [req.body.name, req.body.login, req.body.pass, req.body.email, req.body.city, req.body.phone, req.body.type, req.body.la, req.body.lo, req.body.cv, req.body.uslugi, req.body.sp, req.body.status, req.body.price, req.body.langs, req.body.link, req.body.want, req.body.ava, req.body.address]);
 
@@ -2733,7 +2712,6 @@ express()
   })
   .post('/delete', async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('DELETE FROM users WHERE id = $1', [req.body.id]);
       res.json({
         result : true
@@ -2748,7 +2726,6 @@ express()
   })
   .get('/dbtest', async (req, res) => {
     try {
-      const client = await pool.connect()
       const result = await client.query('SELECT * FROM users');
       const results = { 'results': (result) ? result.rows : null};
       res.render('pages/db', results );
