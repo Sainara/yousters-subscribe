@@ -72,6 +72,52 @@ express()
        })
      }
    })
+   .get('/checklogin', async (req, res) => {
+      try {
+        const result = await client.query('SELECT * FROM users WHERE login = $1', [req.query.login]);
+        var isFree = true
+        if (result.rows.length > 0) {
+          isFree = false
+        }
+        res.json({
+             result : true,
+             is_free : isFree
+           })
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.json({
+          result : false
+        })
+      }
+    })
+    .post('/updatepassword', async (req, res) => {
+       try {
+         const result = await client.query('SELECT id, password FROM users WHERE id = $1', [req.body.id]);
+         if (result.rows.length > 0) {
+           if (result.rows[0].password == req.body.oldpass) {
+             const update = await client.query('UPDATE users SET password = $2 WHERE id = $1', [req.body.id, req.body.newpass]);
+             res.json({
+                  result : true
+                })
+           } else {
+             res.json({
+                  result : false
+              })
+           }
+         } else {
+           res.json({
+                result : false
+            })
+         }
+         client.release();
+       } catch (err) {
+         console.error(err);
+         res.json({
+           result : false
+         })
+       }
+     })
    .post('/adduser', async (req, res) => {
       try {
         const result = await client.query('INSERT INTO users (login, name, password, user_type, email, city, phone, ava) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
