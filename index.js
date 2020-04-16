@@ -74,7 +74,7 @@ express()
    })
    .get('/checklogin', async (req, res) => {
       try {
-        const result = await client.query('SELECT * FROM users WHERE login = $1', [req.query.login]);
+        const result = await client.query('SELECT login FROM users WHERE login = $1', [req.query.login]);
         var isFree = true
         if (result.rows.length > 0) {
           isFree = false
