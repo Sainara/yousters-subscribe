@@ -150,6 +150,21 @@ express()
          })
        }
      })
+     .get('/subhints', async (req, res) => {
+        try {
+          const result = await client.query('SELECT * FROM sub_hints WHERE parent_hint = $1', [req.query.id]);
+          res.json({
+               result : true,
+               hints : result.rows
+             })
+          client.release();
+        } catch (err) {
+          console.error(err);
+          res.json({
+            result : false
+          })
+        }
+      })
     .get('/updatelikes', async (req, res) => {
        try {
          const result = await client.query('UPDATE main_news SET liked_by = $2 WHERE id = $1', [req.query.id, req.query.liked_by]);
