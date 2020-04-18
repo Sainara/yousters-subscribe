@@ -27,6 +27,8 @@
       <th scope="col">Город</th>
       <th scope="col">Телефон</th>
       <th scope="col">Тип</th>
+      <th scope="col">Адресс</th>
+      <th scope="col">Фото</th>
       <!-- <th>Actions</th> -->
     </tr>
   </thead>
@@ -41,6 +43,12 @@
           <td><%= r.city %></td>
           <td><%= r.phone %></td>
           <td><%= r.user_type %></td>
+          <td><%= r.address %></td>
+          <td uk-lightbox="animation: slide">
+            <a class="uk-inline" href="<%= r.avaurl %>" data-caption="<%= r.name %>">
+              <img src="<%= r.avaurl %>" alt="">
+            </a>
+          </td>
           <!-- <td>
             <ul class="uk-iconnav">
                 <li><a href="#" uk-icon="icon: trash"></a></li>
