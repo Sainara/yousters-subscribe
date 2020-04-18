@@ -45,7 +45,7 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/support', (req, res) => res.render('pages/index'))
-  .get('/lawyers', (req, res) => res.json(lawyers))
+  //.get('/lawyers', (req, res) => res.json(lawyers))
   .get('/login', async (req, res) => {
      try {
 
@@ -333,7 +333,7 @@ express()
      })
      .get('/getlawyers', async (req, res) => {
         try {
-          const result = await client.query('SELECT id, name, login, password, email, is_admin, city, phone, user_type, latitude, longitude, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive, liked_by FROM users WHERE user_type = $1 OR user_type = $2 ORDER BY id DESC', ['Юрист', 'Партнёр']);
+          const result = await client.query('SELECT id, name, login, email, is_admin, city, phone, user_type, latitude, longitude, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive, liked_by FROM users WHERE user_type = $1 OR user_type = $2 ORDER BY id DESC', ['Юрист', 'Партнёр']);
 
           res.json({
                result : true,
@@ -505,10 +505,47 @@ express()
   })
   .get('/dbtest', async (req, res) => {
     try {
-      const result = await client.query('SELECT * FROM users');
+      const result = await client.query('SELECT id, name, login, password, email, is_admin, city, phone, user_type, latitude, longitude, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive, liked_by FROM users WHERE user_type = $1 OR user_type = $2 ORDER BY id DESC', ['Юрист', 'Партнёр']);
+
       const results = { 'results': (result) ? result.rows : null};
       res.render('pages/db', results );
       client.release();
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/admin/lawyers', async (req, res) => {
+    try {
+      const result = await client.query('SELECT id, name, login, email, is_admin, city, phone, user_type, latitude, longitude, address, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive, liked_by FROM users WHERE user_type = $1 OR user_type = $2 ORDER BY id DESC', ['Юрист', 'Партнёр']);
+
+      const results = { 'results': (result) ? result.rows : null};
+      res.render('pages/lawyers', results );
+      //.render('pages/main')
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/admin/lawyers/:id', async (req, res) => {
+    try {
+      const result = await client.query('SELECT id, name, login, email, is_admin, city, phone, user_type, latitude, longitude, address, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive, liked_by FROM users WHERE id = $1', [req.params.id]);
+
+      const results = { 'results': (result) ? result.rows : null};
+      //res.json(result.rows)
+      res.render('pages/person/lawyer', results);
+      //.render('pages/main')
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/admin/users', async (req, res) => {
+    try {
+      const result = await client.query('SELECT id, name, login, email, city, phone, user_type FROM users WHERE user_type = $1 ORDER BY id DESC', ['Пользователь']);
+
+      const results = { 'results': (result) ? result.rows : null};
+      res.render('pages/users', results );
     } catch (err) {
       console.error(err);
       res.send("Error " + err);
