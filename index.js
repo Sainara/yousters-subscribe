@@ -52,7 +52,7 @@ express()
        const result = await client.query('SELECT * FROM users WHERE login = $1 AND password = $2', [req.query.login, req.query.password]);
        //const results = { 'results': (result) ? result.rows : null};
        //res.render('pages/db', results );
-       var logd = false, isA = false
+       var logd = false
        if (result.rows.length > 0) {
          res.json({
               login : true,
@@ -64,11 +64,10 @@ express()
             login : logd
           })
         }
-       client.release();
      } catch (err) {
        console.error(err);
        res.json({
-         result : false
+          login : false
        })
      }
    })
@@ -83,7 +82,6 @@ express()
              result : true,
              is_free : isFree
            })
-        client.release();
       } catch (err) {
         console.error(err);
         res.json({
@@ -110,7 +108,6 @@ express()
                 result : false
             })
          }
-         client.release();
        } catch (err) {
          console.error(err);
          res.json({
@@ -127,7 +124,6 @@ express()
              result : true,
              userID : id.rows[0].id
            })
-        client.release();
       } catch (err) {
         console.error(err);
         res.json({
@@ -142,7 +138,6 @@ express()
               result : true,
               hints : result.rows
             })
-         client.release();
        } catch (err) {
          console.error(err);
          res.json({
@@ -157,7 +152,6 @@ express()
                result : true,
                hints : result.rows
              })
-          client.release();
         } catch (err) {
           console.error(err);
           res.json({
@@ -172,7 +166,6 @@ express()
          res.json({
               result : true
             })
-         client.release();
        } catch (err) {
          console.error(err);
          res.json({
@@ -187,7 +180,6 @@ express()
           res.json({
                result : true
              })
-          client.release();
         } catch (err) {
           console.error(err);
           res.json({
@@ -201,7 +193,6 @@ express()
           res.json({
                result : true
              })
-          client.release();
         } catch (err) {
           console.error(err);
           res.json({
@@ -216,7 +207,6 @@ express()
         res.json({
              result : true
            })
-        client.release();
       } catch (err) {
         console.error(err);
         res.json({
@@ -231,7 +221,6 @@ express()
          res.json({
               result : true
             })
-         client.release();
        } catch (err) {
          console.error(err);
          res.json({
@@ -246,7 +235,6 @@ express()
           res.json({
                result : true
              })
-          client.release();
         } catch (err) {
           console.error(err);
           res.json({
@@ -261,7 +249,6 @@ express()
            res.json({
                 result : true
               })
-           client.release();
          } catch (err) {
            console.error(err);
            res.json({
@@ -276,7 +263,6 @@ express()
             res.json({
                  result : true
                })
-            client.release();
           } catch (err) {
             console.error(err);
             res.json({
@@ -291,7 +277,6 @@ express()
              res.json({
                   result : true
                 })
-             client.release();
            } catch (err) {
              console.error(err);
              res.json({
@@ -306,7 +291,6 @@ express()
           result : true,
           url : req.file.secure_url
         });
-        client.release();
       } catch (err) {
         console.error(err);
         res.json({
@@ -323,7 +307,6 @@ express()
               result : true,
               user : result.rows[0]
             })
-         client.release();
        } catch (err) {
          console.error(err);
          res.json({
@@ -339,7 +322,6 @@ express()
                result : true,
                lawyers : result.rows
              })
-          client.release();
         } catch (err) {
           console.error(err);
           res.json({
@@ -353,7 +335,6 @@ express()
       res.json({
         result : true
       })
-      client.release();
     } catch (err) {
       console.error(err);
       res.json({
@@ -367,7 +348,6 @@ express()
       res.json({
         result : true
       })
-      client.release();
     } catch (err) {
       console.error(err);
       res.json({
@@ -394,7 +374,6 @@ express()
       res.json({
         result : true
       })
-      client.release();
     } catch (err) {
       console.error(err);
       res.json({
@@ -421,7 +400,6 @@ express()
       res.json({
         result : true
       })
-      client.release();
     } catch (err) {
       console.error(err);
       res.json({
@@ -435,7 +413,6 @@ express()
       res.json({
         result : true,
       });
-      client.release();
     } catch (err) {
       console.error(err);
       res.json({
@@ -463,7 +440,6 @@ express()
       res.json({
         result : true
       })
-      client.release();
     } catch (err) {
       console.error(err);
       res.json({
@@ -481,7 +457,6 @@ express()
            result : true,
            userID : id.rows[0].id
          })
-      client.release();
     } catch (err) {
       console.error(err);
       res.json({
@@ -495,7 +470,6 @@ express()
       res.json({
         result : true
       })
-      client.release();
     } catch (err) {
       console.error(err);
       res.json({
@@ -509,7 +483,6 @@ express()
 
       const results = { 'results': (result) ? result.rows : null};
       res.render('pages/db', results );
-      client.release();
     } catch (err) {
       console.error(err);
       res.send("Error " + err);
