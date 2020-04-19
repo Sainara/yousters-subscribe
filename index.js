@@ -200,6 +200,20 @@ express()
           })
         }
       })
+    .post('/editsubhint', async (req, res) => {
+         try {
+           const result = await client.query('UPDATE sub_hints SET hintkey = $2, hinttext = $3 WHERE id = $1', [req.body.id, req.body.key, req.body.text]);
+           //console.log(req.file);
+           res.json({
+                result : true
+              })
+         } catch (err) {
+           console.error(err);
+           res.json({
+             result : false
+           })
+         }
+    })
    .post('/edituser', async (req, res) => {
       try {
         const result = await client.query('UPDATE users SET name = $2, email = $3, city = $4, phone = $5, ava = $6 WHERE id = $1', [req.body.id, req.body.name, req.body.email, req.body.city, req.body.phone, req.body.ava]);
