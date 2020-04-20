@@ -356,6 +356,32 @@ express()
       })
     }
   })
+  .post('/addhint', async (req, res) => {
+    try {
+      const result = await client.query('INSERT INTO hints (hintkey, hinttext) VALUES ($1, $2)', [req.body.key, req.body.text]);
+      res.json({
+        result : true
+      })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
+  .post('/addsubhint', async (req, res) => {
+    try {
+      const result = await client.query('INSERT INTO sub_hints (parent_hint, hintkey, hinttext) VALUES ($1, $2, $3)', [req.body.parent, req.body.key, req.body.text]);
+      res.json({
+        result : true
+      })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
   .post('/addadmin', async (req, res) => {
     try {
       const result = await client.query('INSERT INTO users (login, password, is_admin) VALUES ($1, $2, $3)', [req.body.login, req.body.password, 1]);
@@ -481,6 +507,32 @@ express()
   .post('/delete', async (req, res) => {
     try {
       const result = await client.query('DELETE FROM users WHERE id = $1', [req.body.id]);
+      res.json({
+        result : true
+      })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
+  .post('/deletehint', async (req, res) => {
+    try {
+      const result = await client.query('DELETE FROM hints WHERE id = $1', [req.body.id]);
+      res.json({
+        result : true
+      })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
+  .post('/deletesubhint', async (req, res) => {
+    try {
+      const result = await client.query('DELETE FROM sub_hints WHERE id = $1', [req.body.id]);
       res.json({
         result : true
       })
