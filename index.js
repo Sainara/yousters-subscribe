@@ -486,12 +486,18 @@ express()
         return
       }
 
+      const result_name = await client.query('SELECT name FROM users WHERE id = $1', [req.body.sender]);
+
       console.error(result_device.rows[0].device_token);
+      console.error(result_name.rows[0].name);
+
+      var name = result_name.rows[0].name
 
       let notification = new apn.Notification();
 
-      notification.alert = "Hello, world!";
-      notification.badge = 1;
+      notification.title = name;
+      notification.body = req.body.message;
+      //notification.badge = 1;
       notification.topic = "com.yousters.youstersapp";
 
       var deviceToken = result_device.rows[0].device_token
