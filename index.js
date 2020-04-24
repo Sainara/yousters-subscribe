@@ -520,6 +520,34 @@ express()
       res.json({
         result : true,
       });
+
+      const result_device = await client.query('SELECT device_token FROM users WHERE id = $1', [req.body.recevier]);
+
+      if (result_device.rows[0].device_token === null) {
+        return
+      }
+
+      const result_name = await client.query('SELECT name FROM users WHERE id = $1', [req.body.sender]);
+
+      console.error(result_device.rows[0].device_token);
+      console.error(result_name.rows[0].name);
+
+      var name = result_name.rows[0].name
+
+      let notification = new apn.Notification();
+
+      notification.title = name;
+      notification.body = "🖼 Изображение";
+      //notification.badge = 1;
+      notification.topic = "com.yousters.youstersapp";
+
+      var deviceToken = result_device.rows[0].device_token
+
+      apnProvider.send(notification, deviceToken).then( (result) => {
+        console.log(result.sent);
+        console.log(result.failed);
+      });
+
     } catch (err) {
       console.error(err);
       res.json({
