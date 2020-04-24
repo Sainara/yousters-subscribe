@@ -497,7 +497,7 @@ express()
 
       notification.title = name;
       notification.body = req.body.message;
-      //notification.badge = 1;
+      notification.sound = "default";
       notification.topic = "com.yousters.youstersapp";
 
       var deviceToken = result_device.rows[0].device_token
