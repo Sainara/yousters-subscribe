@@ -497,7 +497,7 @@ express()
       var deviceToken = result_device.rows[0].device_token
 
       apnProvider.send(notification, deviceToken).then( (result) => {
-        console.log(response.sent);
+        console.log(result.sent);
       });
 
     } catch (err) {
