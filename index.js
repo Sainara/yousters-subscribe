@@ -12,7 +12,6 @@ var multer  = require('multer')
 var cloudinary = require('cloudinary')
 var cloudinaryStorage = require('multer-storage-cloudinary')
 
-
 var storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: 'avas',
@@ -38,6 +37,18 @@ const client = new Client({
 
 client.connect();
 
+var apn = require('apn');
+
+var options = {
+  token: {
+    key: "AuthKey_P7K88X6929.p8",
+    keyId: "P7K88X6929",
+    teamId: "A7FRCYXJJN"
+  },
+  production: true
+};
+
+var apnProvider = new apn.Provider(options);
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
@@ -468,6 +479,30 @@ express()
       res.json({
         result : true
       })
+
+      const result_device = await client.query('SELECT device_token FROM users WHERE id = $1', [req.body.recevier]);
+
+      if result_device.rows[0].device_token === null {
+        return
+      }
+
+      console.error(result_device.rows[0].device_token);
+
+      var note = new apn.Notification();
+
+      note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+      note.badge = 1;
+      note.sound = "ping.aiff";
+      note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
+      note.payload = {'messageFrom': 'John Appleseed'};
+      note.topic = "com.yousters.youstersapp";
+
+      var deviceToken = result_device.rows[0].device_token
+
+      apnProvider.send(note, deviceToken).then( (result) => {
+        // see documentation for an explanation of result
+      });
+
     } catch (err) {
       console.error(err);
       res.json({
