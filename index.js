@@ -482,7 +482,7 @@ express()
 
       const result_device = await client.query('SELECT device_token FROM users WHERE id = $1', [req.body.recevier]);
 
-      if result_device.rows[0].device_token === null {
+      if (result_device.rows[0].device_token === null) {
         return
       }
 
