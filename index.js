@@ -89,6 +89,20 @@ express()
         })
       }
     })
+    .post('/updatedevicetoken', async (req, res) => {
+       try {
+         const result = await client.query('UPDATE users SET device_token = $2 WHERE id = $1', [req.body.id, req.body.token]);
+         //console.log(req.file)
+         res.json({
+              result : true
+            })
+       } catch (err) {
+         console.error(err);
+         res.json({
+           result : false
+         })
+       }
+     })
     .post('/updatepassword', async (req, res) => {
        try {
          const result = await client.query('SELECT id, password FROM users WHERE id = $1', [req.body.id]);
