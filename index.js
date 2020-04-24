@@ -498,6 +498,7 @@ express()
 
       apnProvider.send(notification, deviceToken).then( (result) => {
         console.log(result.sent);
+        console.log(result.failed);
       });
 
     } catch (err) {
