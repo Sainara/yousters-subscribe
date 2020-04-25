@@ -114,6 +114,20 @@ express()
          })
        }
      })
+     .post('/resetdevicetoken', async (req, res) => {
+        try {
+          const result = await client.query('UPDATE users SET device_token = $2 WHERE id = $1', [req.body.id, null]);
+          //console.log(req.file)
+          res.json({
+               result : true
+             })
+        } catch (err) {
+          console.error(err);
+          res.json({
+            result : false
+          })
+        }
+      })
     .post('/updatepassword', async (req, res) => {
        try {
          const result = await client.query('SELECT id, password FROM users WHERE id = $1', [req.body.id]);
@@ -159,9 +173,11 @@ express()
     .get('/hints', async (req, res) => {
        try {
          const result = await client.query('SELECT * FROM hints');
+         const result2 = await client.query('SELECT * FROM sub_hints');
          res.json({
               result : true,
-              hints : result.rows
+              hints : result.rows,
+              subhints : result2.rows
             })
        } catch (err) {
          console.error(err);
