@@ -383,6 +383,21 @@ express()
          })
        }
      })
+     .get('/services', async (req, res) => {
+        try {
+          const result = await client.query('SELECT * FROM uslugi');
+
+          res.json({
+               result : true,
+               services : result.rows
+             })
+        } catch (err) {
+          console.error(err);
+          res.json({
+            result : false
+          })
+        }
+      })
      .get('/getlawyers', async (req, res) => {
         try {
           const result = await client.query('SELECT id, name, login, email, is_admin, city, phone, user_type, latitude, longitude, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive, liked_by FROM users WHERE user_type = $1 OR user_type = $2 ORDER BY id DESC', ['Юрист', 'Партнёр']);
@@ -401,6 +416,19 @@ express()
   .post('/add', async (req, res) => {
     try {
       const result = await client.query('INSERT INTO users (login, password) VALUES ($1, $2)', [req.body.login, req.body.password]);
+      res.json({
+        result : true
+      })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
+  .post('/addservice', async (req, res) => {
+    try {
+      const result = await client.query('INSERT INTO hints (title) VALUES ($1)', [req.body.title]);
       res.json({
         result : true
       })
@@ -466,6 +494,19 @@ express()
   .get('/deletenews', async (req, res) => {
     try {
       const result = await client.query('DELETE FROM main_news WHERE id = $1', [req.query.id]);
+      res.json({
+        result : true
+      })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
+  .post('/deleteservice', async (req, res) => {
+    try {
+      const result = await client.query('DELETE FROM uslugi WHERE id = $1', [req.body.id]);
       res.json({
         result : true
       })
