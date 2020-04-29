@@ -428,7 +428,7 @@ express()
   })
   .post('/addservice', async (req, res) => {
     try {
-      const result = await client.query('INSERT INTO hints (title) VALUES ($1)', [req.body.title]);
+      const result = await client.query('INSERT INTO uslugi (title) VALUES ($1)', [req.body.title]);
       res.json({
         result : true
       })
