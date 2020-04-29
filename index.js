@@ -102,7 +102,7 @@ express()
     })
     .post('/updatedevicetoken', async (req, res) => {
        try {
-         const result = await client.query('UPDATE users SET device_token = $2 WHERE id = $1', [req.body.id, req.body.token]);
+         const result = await client.query('UPDATE users SET device_token = $2, device_type = $3 WHERE id = $1', [req.body.id, req.body.token, req.body.type]);
          //console.log(req.file)
          res.json({
               result : true
@@ -667,7 +667,7 @@ express()
   })
   .get('/admin/lawyers', async (req, res) => {
     try {
-      const result = await client.query('SELECT id, name, login, email, is_admin, city, phone, user_type, latitude, longitude, address, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive, liked_by FROM users WHERE user_type = $1 OR user_type = $2 ORDER BY id DESC', ['Юрист', 'Партнёр']);
+      const result = await client.query('SELECT id, name, login, password, email, is_admin, city, phone, user_type, latitude, longitude, address, cv, uslugi, sp, status, price, langs, link, want, avaurl, isactive, liked_by FROM users WHERE user_type = $1 OR user_type = $2 ORDER BY id DESC', ['Юрист', 'Партнёр']);
 
       const results = { 'results': (result) ? result.rows : null};
       res.render('pages/lawyers', results );
@@ -692,7 +692,7 @@ express()
   })
   .get('/admin/users', async (req, res) => {
     try {
-      const result = await client.query('SELECT id, name, login, email, city, phone, user_type FROM users WHERE user_type = $1 ORDER BY id DESC', ['Пользователь']);
+      const result = await client.query('SELECT id, name, login, password email, city, phone, user_type FROM users WHERE user_type = $1 ORDER BY id DESC', ['Пользователь']);
 
       const results = { 'results': (result) ? result.rows : null};
       res.render('pages/users', results );
