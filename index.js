@@ -692,7 +692,7 @@ express()
   })
   .get('/admin/users', async (req, res) => {
     try {
-      const result = await client.query('SELECT id, name, login, password email, city, phone, user_type FROM users WHERE user_type = $1 ORDER BY id DESC', ['Пользователь']);
+      const result = await client.query('SELECT id, name, login, password, email, city, phone, user_type FROM users WHERE user_type = $1 ORDER BY id DESC', ['Пользователь']);
 
       const results = { 'results': (result) ? result.rows : null};
       res.render('pages/users', results );
