@@ -385,7 +385,7 @@ express()
      })
      .get('/services', async (req, res) => {
         try {
-          const result = await client.query('SELECT * FROM uslugi');
+          const result = await client.query('SELECT * FROM uslugi ORDER BY title ASC');
 
           res.json({
                result : true,
