@@ -50,8 +50,8 @@ var options = {
 
 var apnProvider = new apn.Provider(options);
 
-var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
-
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
@@ -546,41 +546,23 @@ express()
         return
       }
 
-      var request = sg.emptyRequest({
-        method: 'POST',
-        path: '/v3/mail/send',
-        body: {
-          personalizations: [
-            {
-              to: [
-                {
-                  email: result_device.rows[0].email,
-                },
-              ],
-              subject: 'Вам пришло письмо в приложении Юстерс',
-            },
-          ],
-          from: {
-            email: 'no_reply@yousters.com',
-          },
-          content: [
-            {
-              type: 'text/plain',
-              value: req.body.message,
-            },
-          ],
-        },
-      });
+      const msg = {
+        to: result_device.rows[0].email,
+        from: 'notification@yousters.ru',
+        subject: 'Вам пришло письмо в приложении Юстерс',
+        text: req.body.message,
+        html: '<strong>Ответьте в приложении</strong>',
+      };
+      //ES6
+      sgMail
+        .send(msg)
+        .then(() => {}, error => {
+          console.error(error);
 
-      //With callback
-      sg.API(request, function(error, response) {
-        if (error) {
-          console.log('Error response received');
-        }
-        console.log(response.statusCode);
-        console.log(response.body);
-        console.log(response.headers);
-      });
+          if (error.response) {
+            console.error(error.response.body)
+          }
+        });
 
       if (result_device.rows[0].device_token === null) {
         return
