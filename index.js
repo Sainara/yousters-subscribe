@@ -546,12 +546,13 @@ express()
         return
       }
 
+      const result_name = await client.query('SELECT name FROM users WHERE id = $1', [req.body.sender]);
+
       const msg = {
         to: result_device.rows[0].email,
         from: 'notification@yousters.ru',
         subject: 'Вам пришло письмо в приложении Юстерс',
-        text: req.body.message,
-        html: '<strong>Ответьте в приложении</strong>',
+        html: '<p><strong>'+ result_name.rows[0].name +'</strong><br/>'+ req.body.message +'<br/><br/><strong>Ответьте в приложении</strong></p>',
       };
       //ES6
       sgMail
@@ -567,8 +568,6 @@ express()
       if (result_device.rows[0].device_token === null) {
         return
       }
-
-      const result_name = await client.query('SELECT name FROM users WHERE id = $1', [req.body.sender]);
 
       console.error(result_device.rows[0].device_token);
       console.error(result_name.rows[0].name);
