@@ -50,6 +50,9 @@ var options = {
 
 var apnProvider = new apn.Provider(options);
 
+var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
+
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(express.json({limit: '50mb'}))
@@ -537,7 +540,47 @@ express()
         result : true
       })
 
-      const result_device = await client.query('SELECT device_token FROM users WHERE id = $1', [req.body.recevier]);
+      const result_device = await client.query('SELECT device_token, email FROM users WHERE id = $1', [req.body.recevier]);
+
+      if (result_device.rows[0].email === null) {
+        return
+      }
+
+      var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: {
+          personalizations: [
+            {
+              to: [
+                {
+                  email: result_device.rows[0].email,
+                },
+              ],
+              subject: 'Вам пришло письмо в приложении Юстерс',
+            },
+          ],
+          from: {
+            email: 'no_reply@yousters.com',
+          },
+          content: [
+            {
+              type: 'text/plain',
+              value: message,
+            },
+          ],
+        },
+      });
+
+      //With callback
+      sg.API(request, function(error, response) {
+        if (error) {
+          console.log('Error response received');
+        }
+        console.log(response.statusCode);
+        console.log(response.body);
+        console.log(response.headers);
+      });
 
       if (result_device.rows[0].device_token === null) {
         return
