@@ -602,13 +602,34 @@ express()
         result : true,
       });
 
-      const result_device = await client.query('SELECT device_token FROM users WHERE id = $1', [req.query.recevier]);
+      const result_device = await client.query('SELECT device_token, email FROM users WHERE id = $1', [req.body.recevier]);
+
+      if (result_device.rows[0].email === null) {
+        return
+      }
+
+      const result_name = await client.query('SELECT name FROM users WHERE id = $1', [req.body.sender]);
+
+      const msg = {
+        to: result_device.rows[0].email,
+        from: 'notification@yousters.ru',
+        subject: 'Вам пришло письмо в приложении Юстерс',
+        html: '<p><strong>'+ result_name.rows[0].name +'</strong><br/>🖼 Изображение<br/><br/><strong>Ответьте в приложении</strong></p>',
+      };
+      //ES6
+      sgMail
+        .send(msg)
+        .then(() => {}, error => {
+          console.error(error);
+
+          if (error.response) {
+            console.error(error.response.body)
+          }
+        });
 
       if (result_device.rows[0].device_token === null) {
         return
       }
-
-      const result_name = await client.query('SELECT name FROM users WHERE id = $1', [req.query.sender]);
 
       console.error(result_device.rows[0].device_token);
       console.error(result_name.rows[0].name);
