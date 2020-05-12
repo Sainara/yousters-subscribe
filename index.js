@@ -566,7 +566,7 @@ express()
           content: [
             {
               type: 'text/plain',
-              value: message,
+              value: req.body.message,
             },
           ],
         },
