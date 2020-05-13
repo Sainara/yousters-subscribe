@@ -787,4 +787,17 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/docs/:id', async (req, res) => {
+    try {
+      const result = await client.query('SELECT * FROM docs WHERE creator_id = $1', [req.params.id]);
+
+      //const results = { 'results': (result) ? result.rows : null};
+      res.json(result.rows)
+      //res.render('pages/person/lawyer', results);
+      //.render('pages/main')
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
