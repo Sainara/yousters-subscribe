@@ -569,6 +569,9 @@ express()
           return
       }
 
+      const result_name = await client.query('SELECT name FROM users WHERE id = $1', [req.body.sender]);
+
+
       console.error(result_device.rows[0].device_token);
       console.error(result_name.rows[0].name);
 
@@ -629,6 +632,9 @@ express()
           });
         return
       }
+
+      const result_name = await client.query('SELECT name FROM users WHERE id = $1', [req.query.sender]);
+
 
       console.error(result_device.rows[0].device_token);
       console.error(result_name.rows[0].name);
