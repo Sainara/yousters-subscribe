@@ -602,13 +602,13 @@ express()
         result : true,
       });
 
-      const result_device = await client.query('SELECT device_token, email FROM users WHERE id = $1', [req.body.recevier]);
+      const result_device = await client.query('SELECT device_token, email FROM users WHERE id = $1', [req.query.recevier]);
 
       if (result_device.rows[0].email === null) {
         return
       }
 
-      const result_name = await client.query('SELECT name FROM users WHERE id = $1', [req.body.sender]);
+      const result_name = await client.query('SELECT name FROM users WHERE id = $1', [req.query.sender]);
 
       const msg = {
         to: result_device.rows[0].email,
