@@ -53,6 +53,20 @@ var apnProvider = new apn.Provider(options);
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+const AWS = require('aws-sdk');
+
+// Enter copied or downloaded access ID and secret key here
+const ID = 'AKIAIC7YAIR2JRJPVQBQ';
+const SECRET = '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';
+
+// The name of the bucket that you have created
+const BUCKET_NAME = 'yousters';
+
+const s3 = new AWS.S3({
+    accessKeyId: ID,
+    secretAccessKey: SECRET
+});
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(express.json({limit: '50mb'}))

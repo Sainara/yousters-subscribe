@@ -13,12 +13,14 @@
   "dependencies": {
     "@sendgrid/mail": "^7.1.0",
     "apn": "^2.2.0",
+    "aws-sdk": "^2.678.0",
     "bootstrap": "^4.4.1",
     "cloudinary": "^1.20.0",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "express-fileupload": "^1.1.6",
     "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
     "multer-storage-cloudinary": "^2.2.1",
     "pg": "^7.17.1"
   },
