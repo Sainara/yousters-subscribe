@@ -54,6 +54,7 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const AWS = require('aws-sdk');
+var multerS3 = require('multer-s3')
 
 // Enter copied or downloaded access ID and secret key here
 const ID = 'AKIAIC7YAIR2JRJPVQBQ';
@@ -66,6 +67,20 @@ const s3 = new AWS.S3({
     accessKeyId: ID,
     secretAccessKey: SECRET
 });
+
+var upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: BUCKET_NAME,
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    metadata: function (req, file, cb) {
+      cb(null, {fieldName: file.fieldname});
+    },
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString())
+    }
+  })
+})
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
@@ -834,4 +849,21 @@ express()
       })
     }
   })
+  .post('/initdocwithfile', upload.single('file'), async (req, res) => {
+    // try {
+    //   const result = await client.query('UPDATE users SET avaurl = $2 WHERE id = $1', [req.query.id, req.file.secure_url]);
+    //   res.json({
+    //     result : true,
+    //     url : req.file.secure_url
+    //   });
+    // } catch (err) {
+    //   console.error(err);
+    //   res.json({
+    //     result : false
+    //   })
+    // }
+
+    console.log(req.file.secure_url);
+
+   })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
