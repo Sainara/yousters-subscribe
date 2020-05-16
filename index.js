@@ -850,22 +850,22 @@ express()
     }
   })
   .post('/initdocwithfile', upload.single('file'), async (req, res) => {
-    // try {
-    //   const result = await client.query('UPDATE users SET avaurl = $2 WHERE id = $1', [req.query.id, req.file.secure_url]);
-    //   res.json({
-    //     result : true,
-    //     url : req.file.secure_url
-    //   });
-    // } catch (err) {
-    //   console.error(err);
-    //   res.json({
-    //     result : false
-    //   })
-    // }
+    try {
+      const result = await client.query('INSERT INTO "docs" ("title", "status", "creator_id", "link_to_doc") VALUES ($1, $2, $3, $4);', [req.body.title, req.body.status, req.body.creatorId, req.file.location]);
+      res.json({
+        result : true,
+        location : req.file.location
+      })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
 
-    console.log(req.file);
-
-    res.send("Done!")
+    // console.log(req.file);
+    //
+    // res.send("Done!")
 
    })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
