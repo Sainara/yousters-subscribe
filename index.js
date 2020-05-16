@@ -863,7 +863,9 @@ express()
     //   })
     // }
 
-    console.log(req.file.secure_url);
+    console.log(req.file);
+
+    res.send("Done!")
 
    })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
