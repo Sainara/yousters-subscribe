@@ -807,4 +807,17 @@ express()
       res.send("Error " + err);
     }
   })
+  .post('/initdocwithlink', async (req, res) => {
+    try {
+      const result = await client.query('INSERT INTO "docs" ("title", "status", "creator_id", "link_to_doc") VALUES ($1, $2, $3, $4);', [req.body.title, req.body.status, req.body.creatorId, req.body.link]);
+      res.json({
+        result : true
+      })
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
