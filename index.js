@@ -78,7 +78,9 @@ var upload = multer({
       cb(null, {fieldName: file.fieldname});
     },
     key: function (req, file, cb) {
-      cb(null, Date.now().toString() + req.body.creatorId)
+      console.log(req);
+      console.log(file);
+      cb(null, Date.now().toString())
     }
   })
 })
