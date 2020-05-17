@@ -842,7 +842,7 @@ express()
       const result = await client.query('INSERT INTO "docs" ("title", "status", "creator_id", "link_to_doc") VALUES ($1, $2, $3, $4) RETURNING id;', [req.body.title, req.body.status, req.body.creatorId, req.body.link]);
       res.json({
         result : true,
-        created : result
+        created : result.rows[0].id
       })
     } catch (err) {
       console.error(err);
@@ -853,15 +853,16 @@ express()
   })
   .post('/initdocwithfile', upload.single('file'), async (req, res) => {
     try {
-      const result = await client.query('INSERT INTO "docs" ("title", "status", "creator_id", "link_to_doc") VALUES ($1, $2, $3, $4);', [req.body.title, req.body.status, req.body.creatorId, req.file.location]);
+      const result = await client.query('INSERT INTO "docs" ("title", "status", "creator_id", "link_to_doc") VALUES ($1, $2, $3, $4) RETURNING id;', [req.body.title, req.body.status, req.body.creatorId, req.file.location]);
       res.json({
         result : true,
-        location : req.file.location
+        location : req.file.location,
+        created : result.rows[0].id
       })
     } catch (err) {
       console.error(err);
       res.json({
-        result : false
+        result : false,
       })
     }
    })
