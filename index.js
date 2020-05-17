@@ -839,6 +839,21 @@ express()
   })
   .delete('/docs/:id', async (req, res) => {
     try {
+
+      const resultID = await client.query('SELECT link_to_doc FROM docs WHERE id = $1', [req.params.id]);
+
+      var key = resultID.rows[0].link_to_doc.split('/').pop()
+
+      var params = {
+        Bucket: BUCKET_NAME,
+        Key: key
+      };
+
+      s3.deleteObject(params, function(err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else     console.log(data);           // successful response
+      });
+
       const result = await client.query('DELETE FROM docs WHERE id = $1', [req.params.id]);
 
       res.json({
