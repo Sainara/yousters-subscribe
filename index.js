@@ -837,6 +837,21 @@ express()
       res.send("Error " + err);
     }
   })
+  .delete('/docs/:id', async (req, res) => {
+    try {
+      const result = await client.query('DELETE FROM docs WHERE id = $1', [req.params.id]);
+
+      res.json({
+        result : true
+      })
+
+    } catch (err) {
+      console.error(err);
+      res.json({
+        result : false
+      })
+    }
+  })
   .post('/initdocwithlink', async (req, res) => {
     try {
       const result = await client.query('INSERT INTO "docs" ("title", "status", "creator_id", "link_to_doc") VALUES ($1, $2, $3, $4) RETURNING id;', [req.body.title, req.body.status, req.body.creatorId, req.body.link]);
@@ -866,6 +881,19 @@ express()
       })
     }
    })
+   .post('/makevalid', async (req, res) => {
+      try {
+        const result = await client.query('UPDATE docs SET status = $2, link_to_legium = $3 WHERE id = $1', [req.body.id, "Подтверждён в Legium", req.body.link]);
+        res.json({
+             result : true
+           })
+      } catch (err) {
+        console.error(err);
+        res.json({
+          result : false
+        })
+      }
+    })
    .post('/makesubscribed', async (req, res) => {
       try {
         const result = await client.query('UPDATE docs SET status = $2 WHERE id = $1', [req.body.id, "Подписан"]);
