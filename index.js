@@ -844,6 +844,8 @@ express()
 
       var key = resultID.rows[0].link_to_doc.split('/').pop()
 
+      console.log(key);
+
       var params = {
         Bucket: BUCKET_NAME,
         Key: key
