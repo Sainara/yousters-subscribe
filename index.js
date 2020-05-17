@@ -839,9 +839,10 @@ express()
   })
   .post('/initdocwithlink', async (req, res) => {
     try {
-      const result = await client.query('INSERT INTO "docs" ("title", "status", "creator_id", "link_to_doc") VALUES ($1, $2, $3, $4);', [req.body.title, req.body.status, req.body.creatorId, req.body.link]);
+      const result = await client.query('INSERT INTO "docs" ("title", "status", "creator_id", "link_to_doc") VALUES ($1, $2, $3, $4) RETURNING id;', [req.body.title, req.body.status, req.body.creatorId, req.body.link]);
       res.json({
-        result : true
+        result : true,
+        created : result
       })
     } catch (err) {
       console.error(err);
@@ -863,10 +864,18 @@ express()
         result : false
       })
     }
-
-    // console.log(req.file);
-    //
-    // res.send("Done!")
-
    })
+   .post('/makesubscribed', async (req, res) => {
+      try {
+        const result = await client.query('UPDATE docs SET status = $2 WHERE id = $1', [req.body.id, "Подписан"]);
+        res.json({
+             result : true
+           })
+      } catch (err) {
+        console.error(err);
+        res.json({
+          result : false
+        })
+      }
+    })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
