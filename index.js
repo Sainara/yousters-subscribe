@@ -78,8 +78,8 @@ var upload = multer({
       cb(null, {fieldName: file.fieldname});
     },
     key: function (req, file, cb) {
-      console.log(req);
-      console.log(file);
+      //console.log(req);
+      //console.log(file);
       cb(null, Date.now().toString())
     }
   })
@@ -902,7 +902,25 @@ express()
    })
    .post('/makevalid', async (req, res) => {
       try {
-        const result = await client.query('UPDATE docs SET status = $2, link_to_legium = $3 WHERE id = $1', [req.body.id, "Подтверждён в Legium", req.body.link]);
+
+        const resultID = await client.query('SELECT link_to_doc FROM docs WHERE id = $1', [req.body.id]);
+
+        var key = resultID.rows[0].link_to_doc.split('/').pop()
+
+        console.log(key);
+
+        var params = {
+          Bucket: BUCKET_NAME,
+          Key: key
+        };
+
+        s3.deleteObject(params, function(err, data) {
+          if (err) console.log(err, err.stack); // an error occurred
+          else     console.log(data);           // successful response
+        });
+
+        const result = await client.query('UPDATE docs SET status = $2, link_to_legium = $3, link_to_doc = $4 WHERE id = $1', [req.body.id, "Подтверждён в Legium", req.body.legiumlink, req.body.doclink]);
+
         res.json({
              result : true
            })
