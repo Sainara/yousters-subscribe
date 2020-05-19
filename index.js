@@ -635,6 +635,7 @@ express()
       const result = await client.query('INSERT INTO messages (sender, recevier, message, m_type) VALUES ($1, $2, $3, $4)', [req.query.sender, req.query.recevier, req.file.secure_url, 'image']);
       res.json({
         result : true,
+        location : req.file.secure_url
       });
 
       const result_device = await client.query('SELECT device_token, email FROM users WHERE id = $1', [req.query.recevier]);
@@ -813,6 +814,30 @@ express()
       res.send("Error " + err);
     }
   })
+  // .get('/admin/docs/listp', async (req, res) => {
+  //   try {
+  //     res.render('pages/docus/listprocess');
+  //   } catch (err) {
+  //     console.error(err);
+  //     res.send("Error " + err);
+  //   }
+  // })
+  // .get('/admin/docs/listt', async (req, res) => {
+  //   try {
+  //     res.render('pages/docus/listtemplates');
+  //   } catch (err) {
+  //     console.error(err);
+  //     res.send("Error " + err);
+  //   }
+  // })
+  // .get('/admin/docs/run', async (req, res) => {
+  //   try {
+  //     res.render('pages/docus/runprocess', scheme);
+  //   } catch (err) {
+  //     console.error(err);
+  //     res.send("Error " + err);
+  //   }
+  // })
   .get('/admin/users', async (req, res) => {
     try {
       const result = await client.query('SELECT id, name, login, password, email, city, phone, user_type FROM users WHERE user_type = $1 ORDER BY id DESC', ['Пользователь']);
