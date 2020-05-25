@@ -971,7 +971,7 @@ express()
     })
     .post('/needhelp', async (req, res) => {
        try {
-         const result = await client.query('SELECT name, email, city, phone FROM id = $1', [req.body.id]);
+         const result = await client.query('SELECT name, email, city, phone FROM users WHERE id = $1', [req.body.id]);
 
          const msg = {
            to: 'artem102040@gmail.com',
