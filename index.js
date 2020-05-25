@@ -974,7 +974,7 @@ express()
          const result = await client.query('SELECT name, email, city, phone FROM users WHERE id = $1', [req.body.id]);
 
          const msg = {
-           to: 'artem102040@gmail.com',
+           to: 'alexeysirenko@yousters.ru',
            from: 'notification@yousters.ru',
            subject: 'Пришёл запрос на помощь в написании договора',
            html: '<p>' + req.body.desc + ' <strong>'+ result.rows[0].name +'</strong><br/>'+ result.rows[0].email +'<br/><br/>'+ result.rows[0].phone +'<br/><br/>'+ result.rows[0].city +'<br/></p>',
