@@ -969,4 +969,35 @@ express()
         })
       }
     })
+    .post('/needhelp', async (req, res) => {
+       try {
+         const result = await client.query('SELECT name, email, city, phone FROM id = $1', [req.body.id]);
+
+         const msg = {
+           to: 'alexeysirenko@yousters.ru',
+           from: 'notification@yousters.ru',
+           subject: 'Пришёл запрос на помощь в написании договора',
+           html: '<p>' + req.body.desc + ' <strong>'+ result_name.rows[0].name +'</strong><br/>'+ result_name.rows[0].email +'<br/><br/>'+ result_name.rows[0].phone +'<br/><br/>'+ result_name.rows[0].city +'<br/></p>',
+         };
+         //ES6
+         sgMail
+           .send(msg)
+           .then(() => {}, error => {
+             console.error(error);
+
+             if (error.response) {
+               console.error(error.response.body)
+             }
+           });
+
+         res.json({
+            result : true
+          })
+       } catch (err) {
+         console.error(err);
+         res.json({
+           result : false
+         })
+       }
+     })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
