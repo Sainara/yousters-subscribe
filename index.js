@@ -977,7 +977,7 @@ express()
            to: 'artem102040@gmail.com',
            from: 'notification@yousters.ru',
            subject: 'Пришёл запрос на помощь в написании договора',
-           html: '<p>' + req.body.desc + ' <strong>'+ result_name.rows[0].name +'</strong><br/>'+ result_name.rows[0].email +'<br/><br/>'+ result_name.rows[0].phone +'<br/><br/>'+ result_name.rows[0].city +'<br/></p>',
+           html: '<p>' + req.body.desc + ' <strong>'+ result.rows[0].name +'</strong><br/>'+ result.rows[0].email +'<br/><br/>'+ result.rows[0].phone +'<br/><br/>'+ result.rows[0].city +'<br/></p>',
          };
          //ES6
          sgMail
