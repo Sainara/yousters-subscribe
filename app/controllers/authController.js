@@ -93,7 +93,7 @@ const validate = async (req, res) => {
 
         const token = generateUserToken(dbResponse3.id, dbResponse3.phone, dbResponse3.user_name);
         successMessage.data = dbResponse3;
-        successMessage.data.token = token;
+        successMessage.token = token;
 
         return res.status(status.success).send(successMessage);
       } else {
