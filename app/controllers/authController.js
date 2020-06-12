@@ -34,7 +34,7 @@ const auth = async (req, res) => {
 
     const sessionid = uuidv4();
     const code = generateCode(6);
-    const exp = moment().add(15, 'm');
+    const exp = moment().add(5, 'm');
 
     const { rows } = await dbQuery.query(addquery, [sessionid, code, 0, exp, phoneNumber.number]);
 
@@ -100,7 +100,7 @@ const validate = async (req, res) => {
         //console.log("!!!!!");
         const token = generateUserToken(dbResponse2.id, dbResponse2.phone, dbResponse2.user_name);
         successMessage.data = dbResponse2;
-        successMessage.data.token = token;
+        successMessage.token = token;
         return res.status(status.success).send(successMessage);
       }
 
