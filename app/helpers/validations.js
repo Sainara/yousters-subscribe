@@ -88,11 +88,11 @@ const generateCode = (n) => {
    * @param {string} id
    * @returns {string} token
    */
-const generateUserToken = (id, phone, user_name) => {
+const generateUserToken = (id, phone, isvalidated) => {
   const token = jwt.sign({
     id,
     phone,
-    user_name,
+    isvalidated,
   },
   env.secret, { expiresIn: '1y' });
   return token;
