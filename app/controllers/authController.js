@@ -72,17 +72,17 @@ const validate = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
     if (dbResponse.code == code) {
-      const findUserQuery = 'SELECT phone, isvalidated FROM users WHERE phone = $1'
-      console.log(dbResponse.number);
+      const findUserQuery = 'SELECT id, phone, isvalidated, is_on_validation FROM users WHERE phone = $1';
+      //console.log(dbResponse.number);
       const { rows } = await dbQuery.query(findUserQuery, [dbResponse.number]);
-      console.log(rows);
+      //console.log(rows);
       const dbResponse2 = rows[0];
 
       if (!dbResponse2) {
         const createUserQuery = `INSERT INTO
                users(phone, created_on)
                VALUES($1, $2)
-               returning phone, isvalidated`;
+               returning id, phone, isvalidated, is_on_validation`;
 
         const values = [
            dbResponse.number, moment(),
@@ -92,6 +92,7 @@ const validate = async (req, res) => {
         const dbResponse3 = rows[0];
 
         const token = generateUserToken(dbResponse3.id, dbResponse3.phone, dbResponse3.isvalidated);
+        delete dbResponse3.id
         successMessage.data = dbResponse3;
         successMessage.token = token;
 
@@ -99,6 +100,7 @@ const validate = async (req, res) => {
       } else {
         //console.log("!!!!!");
         const token = generateUserToken(dbResponse2.id, dbResponse2.phone, dbResponse2.isvalidated);
+        delete dbResponse2.id
         successMessage.data = dbResponse2;
         successMessage.token = token;
         return res.status(status.success).send(successMessage);
