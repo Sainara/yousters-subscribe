@@ -29,8 +29,15 @@ const auth = async (req, res) => {
   }
 
   const addquery = 'INSERT INTO entersessions (sessionid, code, trycounter, expiretime, number) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+  const checkquery = 'SELECT * FROM blacklist WHERE phone = $1'
 
   try {
+
+    const check = await dbQuery.query(checkquery, [phoneNumber.number]);
+    if (check.rows[0]) {
+      errorMessage.message = "number blocked";
+      return res.status(status.conflict).send(errorMessage);
+    }
 
     const sessionid = uuidv4();
     const code = generateCode(6);
