@@ -7,7 +7,9 @@ import {
   isValidEmail,
   validatePassword,
   isEmpty,
+  generateCode,
 } from '../helpers/validations';
+
 
 import {
   errorMessage, successMessage, status,

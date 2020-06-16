@@ -36,5 +36,5 @@ const verifyToken = async (req, res, next) => {
     return res.status(status.unauthorized).send(errorMessage);
   }
 };
-
+//
 export default verifyToken;

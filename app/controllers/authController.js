@@ -12,6 +12,12 @@ import {
   generateUserToken,
 } from '../helpers/validations';
 
+// import {
+//   generateCode,
+//   generateUserToken,
+//   generateFileHash,
+// } from '../helpers/generators';
+
 import {
   errorMessage, successMessage, status,
 } from '../helpers/status';

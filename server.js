@@ -6,6 +6,7 @@ const path = require('path')
 import env from './env';
 import authRoute from './app/routes/authRoute';
 import docsValidationRoute from './app/routes/docsValidationRoute';
+import agreementsRoute from './app/routes/agreementsRoute'
 
 
 
@@ -24,7 +25,8 @@ app.use(express.json({limit: '50mb'}));
 
 app.use(API_PATH, authRoute);
 app.use(API_PATH, docsValidationRoute);
-
+app.use(API_PATH, agreementsRoute);
+//
 
 
 
