@@ -91,6 +91,14 @@ const getAgreementSubs = async (req, res) => {
     // const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location , req.user.id]
     // const result = await dbQuery.query(updateQuery, values);
     //
+
+    rows.forEach(function(item, i, arr) {
+      for (var g = 6; g < 10; g++) {
+          var index = g;
+          item.phone = item.phone.substring(0, index) + '*' + item.phone.substring(index + 1);
+      }
+
+    });
     successMessage.data = rows
     return res.status(status.success).send(successMessage);
   } catch (error) {
