@@ -85,7 +85,7 @@ const validate = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
     if (dbResponse.code == code) {
-      const findUserQuery = 'SELECT id, phone, isvalidated, is_on_validation, user_name FROM users WHERE phone = $1';
+      const findUserQuery = 'SELECT id, phone, isvalidated, is_on_validation, user_name, inn, email FROM users WHERE phone = $1';
       //console.log(dbResponse.number);
       const { rows } = await dbQuery.query(findUserQuery, [dbResponse.number]);
       //console.log(rows);
@@ -141,7 +141,7 @@ const validate = async (req, res) => {
 
 const me = async (req, res) => {
 
-  const getQuery = 'SELECT phone, isvalidated, is_on_validation, user_name FROM users WHERE id = $1';
+  const getQuery = 'SELECT phone, isvalidated, is_on_validation, user_name, inn, email FROM users WHERE id = $1';
 
   try {
 
