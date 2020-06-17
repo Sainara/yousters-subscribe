@@ -85,7 +85,7 @@ const validate = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
     if (dbResponse.code == code) {
-      const findUserQuery = 'SELECT id, phone, isvalidated, is_on_validation FROM users WHERE phone = $1';
+      const findUserQuery = 'SELECT id, phone, isvalidated, is_on_validation, user_name FROM users WHERE phone = $1';
       //console.log(dbResponse.number);
       const { rows } = await dbQuery.query(findUserQuery, [dbResponse.number]);
       //console.log(rows);
@@ -139,6 +139,27 @@ const validate = async (req, res) => {
   }
 };
 
+const me = async (req, res) => {
+
+  const getQuery = 'SELECT phone, isvalidated, is_on_validation, user_name FROM users WHERE id = $1';
+
+  try {
+
+    const { rows } = await dbQuery.query(getQuery, [req.user.id]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "userNotFound";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
 // /**
 //    * Create A Admin
 //    * @param {object} req
@@ -249,4 +270,5 @@ const validate = async (req, res) => {
 export {
   auth,
   validate,
+  me
 };

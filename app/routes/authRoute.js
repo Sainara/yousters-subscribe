@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { auth, validate } from '../controllers/authController';
-//import verifyAuth from '../middlewares/verifyAuth';
+import { auth, validate, me } from '../controllers/authController';
+import verifyAuth from '../middlewares/verifyAuth';
 
 const router = express.Router();
 
@@ -9,5 +9,6 @@ const router = express.Router();
 
 router.post('/auth', auth);
 router.post('/validate', validate);
+router.post('/me', verifyAuth, me);
 ////
 export default router;
