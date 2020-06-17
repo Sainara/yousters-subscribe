@@ -22,7 +22,7 @@ import {
 
 const getAgreements = async (req, res) => {
 
-  const getQuery = 'SELECT * FROM agreements where creator_id = $1';
+  const getQuery = 'SELECT a.*, s.title as stitle, s.key_ as skey, s.color as scolor FROM agreements as a INNER join agr_status as s on a.status_id = s.id where a.creator_id = $1 ';
 
   try {
 
