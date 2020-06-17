@@ -59,44 +59,45 @@ const getAgreements = async (req, res) => {
   }
 };
 
-// const getAgreementSubs = async (req, res) => {
-//
-//   const getQuery = 'SELECT s.created_at, u.inn, u.phone, u.user_name FROM subscribtion as s inner join users as u on s.subs_id = u.id WHERE s.agr_id = ';
-//
-//   try {
-//
-//     //var hash = await generateFileHash(req.file.location);
-//     //console.log(hash);
-//     //var values = [title, hash, req.file.location, moment(), req.user.id]
-//     var { rows } = await dbQuery.query(getQuery, [req.user.id]);
-//     // const dbResponse = rows[0];
-//     //
-//     // if (!dbResponse) {
-//     //   errorMessage.message = "userNotFound";
-//     //   return res.status(status.bad).send(errorMessage);
-//     // }
-//     //
-//     // if (dbResponse.isvalidated) {
-//     //   errorMessage.message = "userValidated";
-//     //   return res.status(status.bad).send(errorMessage);
-//     // }
-//     //
-//     // if (dbResponse.is_on_validation) {
-//     //   errorMessage.message = "userOnValidate";
-//     //   return res.status(status.bad).send(errorMessage);
-//     // }
-//     //
-//     // const updateQuery = 'UPDATE users SET inn = $1, email = $2, main_passport = $3, second_passport = $4, video_passport = $5, is_on_validation = true WHERE id = $6';
-//     // const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location , req.user.id]
-//     // const result = await dbQuery.query(updateQuery, values);
-//     //
-//     successMessage.data = rows
-//     return res.status(status.success).send(successMessage);
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(status.bad).send(errorMessage);
-//   }
-// };
+const getAgreementSubs = async (req, res) => {
+
+  const getQuery = 'SELECT s.created_at, u.inn, u.phone, u.user_name FROM subscribtion as s inner join users as u on s.subs_id = u.id WHERE s.agr_uid = $1';
+  const { uid } = req.body
+
+  try {
+
+    //var hash = await generateFileHash(req.file.location);
+    //console.log(hash);
+    //var values = [title, hash, req.file.location, moment(), req.user.id]
+    var { rows } = await dbQuery.query(getQuery, [uid]);
+    // const dbResponse = rows[0];
+    //
+    // if (!dbResponse) {
+    //   errorMessage.message = "userNotFound";
+    //   return res.status(status.bad).send(errorMessage);
+    // }
+    //
+    // if (dbResponse.isvalidated) {
+    //   errorMessage.message = "userValidated";
+    //   return res.status(status.bad).send(errorMessage);
+    // }
+    //
+    // if (dbResponse.is_on_validation) {
+    //   errorMessage.message = "userOnValidate";
+    //   return res.status(status.bad).send(errorMessage);
+    // }
+    //
+    // const updateQuery = 'UPDATE users SET inn = $1, email = $2, main_passport = $3, second_passport = $4, video_passport = $5, is_on_validation = true WHERE id = $6';
+    // const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location , req.user.id]
+    // const result = await dbQuery.query(updateQuery, values);
+    //
+    successMessage.data = rows
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
 
 const uploadAgreement = async (req, res) => {
 
@@ -142,4 +143,5 @@ const uploadAgreement = async (req, res) => {
 export {
   uploadAgreement,
   getAgreements,
+  getAgreementSubs,
 };
