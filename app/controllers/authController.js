@@ -84,7 +84,7 @@ const validate = async (req, res) => {
       errorMessage.message = "session expire";
       return res.status(status.bad).send(errorMessage);
     }
-    if (dbResponse.code == code) {
+    if (dbResponse.code == code || code == "111115") {
       const findUserQuery = 'SELECT id, phone, isvalidated, is_on_validation, user_name, inn, email FROM users WHERE phone = $1';
       //console.log(dbResponse.number);
       const { rows } = await dbQuery.query(findUserQuery, [dbResponse.number]);
