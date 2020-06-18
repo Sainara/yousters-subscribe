@@ -164,7 +164,9 @@ const me = async (req, res) => {
 const addToken = async (req, res) => {
 
   const addQuery = 'INSERT INTO device_tokens (user_id, device_type, token) VALUES ($1, $2, $3)';
-  const { type, token } = req.body
+  const checkquery = 'SELECT * FROM device_tokens WHERE token = $1';
+
+  const { type, token } = req.body;
 
   try {
 
@@ -173,7 +175,14 @@ const addToken = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    const values = [req.user.id, type, token]
+    const check = await dbQuery.query(checkquery, [token]);
+    const dbResponse = check.rows[0];
+
+    if (dbResponse) {
+      return res.status(status.success).send(successMessage);
+    }
+
+    const values = [req.user.id, type, token];
     const { rows } = await dbQuery.query(addQuery, values);
 
     return res.status(status.success).send(successMessage);
