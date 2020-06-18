@@ -160,6 +160,28 @@ const me = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 };
+
+const addToken = async (req, res) => {
+
+  const addQuery = 'INSERT INTO device_tokens (user_id, device_type, token) VALUES ($1, $2, $3)';
+  const { type, token } = req.body
+
+  try {
+
+    if (!(type == "ios" || type == "android")) {
+      errorMessage.message = "invalidType";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    const values = [req.user.id, type, token]
+    const { rows } = await dbQuery.query(addQuery, values);
+
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
 // /**
 //    * Create A Admin
 //    * @param {object} req
@@ -270,5 +292,6 @@ const me = async (req, res) => {
 export {
   auth,
   validate,
-  me
+  me,
+  addToken
 };
