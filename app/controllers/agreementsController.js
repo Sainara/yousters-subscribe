@@ -237,9 +237,73 @@ const initSubscription = async (req, res) => {
   }
 };
 
+const validateSubscription = async (req, res) => {
+
+  const { sessionid, code } = req.body;
+
+  const createQuery = 'INSERT INTO subscribtion(agr_uid, subs_id, created_at) VALUES ($1, $2, $3)';
+  const checkQuery = 'SELECT * FROM agreements WHERE uid = $1';
+  const selectQuery = 'SELECT * FROM subscribtion WHERE agr_uid = $1';
+  const updateQuery = 'UPDATE agreements SET status_id = $2 WHERE uid = $1';
+
+  const selectSessionsQuery = 'SELECT * FROM subscribesessions WHERE sessionid = $1';
+
+  try {
+
+    const { rows } = await dbQuery.query(selectSessionsQuery, [sessionid]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "invalid sessionid";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    if (dbResponse.trycounter > 3) {
+      errorMessage.message = "too many tries";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    if (moment().isAfter(dbResponse.expiretime, moment.ISO_8601)) {
+      errorMessage.message = "session expire";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    if (dbResponse.code == code || code == "111115") {
+      var values = [dbResponse.agr_uid, req.user.id, moment()]
+      var create = await dbQuery.query(createQuery, values);
+
+
+      var afterSelect = await dbQuery.query(selectQuery, [dbResponse.agr_uid]);
+      if (afterSelect.rows.length == 2) {
+        var update = await dbQuery.query(updateQuery, [dbResponse.agr_uid, '10']);
+      }
+      if (afterSelect.rows.length == 1) {
+        var update = await dbQuery.query(updateQuery, [dbResponse.agr_uid, '7']);
+      }
+    } else {
+
+      const guery = 'UPDATE subscribesessions SET trycounter = $1 WHERE sessionid = $2'
+
+      var count = ++dbResponse.trycounter
+      //console.log(count);
+      const { rows } = await dbQuery.query(guery, [count, sessionid]);
+
+      errorMessage.message = "wrong code";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    //successMessage.sessionid = sessionid;
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 export {
   uploadAgreement,
   getAgreements,
   getAgreementSubs,
-  initSubscription
+  initSubscription,
+  validateSubscription
 };

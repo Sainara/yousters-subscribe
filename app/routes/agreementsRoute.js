@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getAgreements, getAgreementSubs, uploadAgreement, initSubscription } from '../controllers/agreementsController';
+import { getAgreements, getAgreementSubs, uploadAgreement, initSubscription, validateSubscription } from '../controllers/agreementsController';
 import verifyAuth from '../middlewares/verifyAuth';
 import uploader from '../helpers/s3';
 
@@ -14,6 +14,8 @@ router.post('/getagreements', verifyAuth, getAgreements);
 router.post('/getagreementssubs', verifyAuth, getAgreementSubs);
 
 router.post('/initsubscribe', verifyAuth, initSubscription);
+router.post('/validatesubscribe', verifyAuth, validateSubscription);
+
 
 router.post('/uploadagreement', verifyAuth, uploader.single('doc'), uploadAgreement);
 ////
