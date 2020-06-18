@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getAgreements, getAgreementSubs, uploadAgreement, addSubscrbier } from '../controllers/agreementsController';
+import { getAgreements, getAgreementSubs, uploadAgreement, initSubscription } from '../controllers/agreementsController';
 import verifyAuth from '../middlewares/verifyAuth';
 import uploader from '../helpers/s3';
 
@@ -12,7 +12,9 @@ const router = express.Router();
 //router.post('/uploaddocs', verifyAuth, cpUpload, uploadDocs);
 router.post('/getagreements', verifyAuth, getAgreements);
 router.post('/getagreementssubs', verifyAuth, getAgreementSubs);
-router.post('/subscribe', verifyAuth, addSubscrbier);
+
+router.post('/initsubscribe', verifyAuth, initSubscription);
+
 router.post('/uploadagreement', verifyAuth, uploader.single('doc'), uploadAgreement);
 ////
 //console.log(uploader);

@@ -148,7 +148,7 @@ const uploadAgreement = async (req, res) => {
   }
 };
 
-const addSubscrbier = async (req, res) => {
+const initSubscription = async (req, res) => {
 
   const { uid } = req.body;
 
@@ -156,6 +156,8 @@ const addSubscrbier = async (req, res) => {
   const checkQuery = 'SELECT * FROM agreements WHERE uid = $1';
   const selectQuery = 'SELECT * FROM subscribtion WHERE agr_uid = $1';
   const updateQuery = 'UPDATE agreements SET status_id = $2 WHERE uid = $1';
+
+  const addquery = 'INSERT INTO subscribesessions (sessionid, code, trycounter, expiretime, agr_uid, to_num) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
 
   try {
 
@@ -186,24 +188,32 @@ const addSubscrbier = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
+    const sessionid = uuidv4();
+    const code = generateCode(6);
+    const exp = moment().add(5, 'm');
 
-    var values = [uid, req.user.id, moment()]
-    var { rows } = await dbQuery.query(createQuery, values);
+    const values = [sessionid, code, 0, exp, uid, req.user.phone]
+    const { rows } = await dbQuery.query(addquery, values);
 
-    var afterSelect = await dbQuery.query(selectQuery, [uid]);
-    if (afterSelect.rows.length == 2) {
-      var update = await dbQuery.query(updateQuery, [uid, '10']);
+    const dbResponseResult = rows[0];
+
+    if (!dbResponseResult) {
+      errorMessage.message = "Error";
+      return res.status(status.bad).send(errorMessage);
     }
-    if (afterSelect.rows.length == 1) {
-      var update = await dbQuery.query(updateQuery, [uid, '7']);
-    }
 
-    // const dbResponse = rows[0];
+    // var values = [uid, req.user.id, moment()]
+    // var { rows } = await dbQuery.query(createQuery, values);
     //
-    // if (!dbResponse) {
-    //   errorMessage.message = "userNotFound";
-    //   return res.status(status.bad).send(errorMessage);
+    // var afterSelect = await dbQuery.query(selectQuery, [uid]);
+    // if (afterSelect.rows.length == 2) {
+    //   var update = await dbQuery.query(updateQuery, [uid, '10']);
     // }
+    // if (afterSelect.rows.length == 1) {
+    //   var update = await dbQuery.query(updateQuery, [uid, '7']);
+    // }
+
+
     //
     // if (dbResponse.isvalidated) {
     //   errorMessage.message = "userValidated";
@@ -219,7 +229,7 @@ const addSubscrbier = async (req, res) => {
     // const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location , req.user.id]
     // const result = await dbQuery.query(updateQuery, values);
     //
-
+    successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
@@ -231,5 +241,5 @@ export {
   uploadAgreement,
   getAgreements,
   getAgreementSubs,
-  addSubscrbier
+  initSubscription
 };
