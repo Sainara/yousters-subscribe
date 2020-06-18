@@ -192,10 +192,10 @@ const addSubscrbier = async (req, res) => {
 
     var afterSelect = await dbQuery.query(selectQuery, [uid]);
     if (afterSelect.rows.length == 2) {
-      var update = await dbQuery.query(updateQuery, [iud, '10']);
+      var update = await dbQuery.query(updateQuery, [uid, '10']);
     }
     if (afterSelect.rows.length == 1) {
-      var update = await dbQuery.query(updateQuery, [iud, '7']);
+      var update = await dbQuery.query(updateQuery, [uid, '7']);
     }
 
     // const dbResponse = rows[0];
