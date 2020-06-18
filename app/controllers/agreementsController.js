@@ -148,8 +148,78 @@ const uploadAgreement = async (req, res) => {
   }
 };
 
+const addSubscrbier = async (req, res) => {
+
+  const { uid } = req.body;
+
+  const createQuery = 'INSERT INTO subscribtion(agr_uid, subs_id, created_at) VALUES ($1, $2, $3)';
+  const checkQuery = 'SELECT * FROM agreements WHERE uid = $1'
+  const selectQuery = 'SELECT * FROM subscribtion WHERE agr_uid = $1'
+
+  try {
+
+    var check = await dbQuery.query(checkQuery, [uid]);
+    const dbResponse = check.rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "agreementNotFound";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    if (dbResponse.status_id < 5) {
+      errorMessage.message = "agreementNotPaid";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var select = await dbQuery.query(selectQuery, [uid]);
+
+    for (var i = 0; i < select.rows.length; i++) {
+      if (select.rows[i].subs_id == req.user.id) {
+        errorMessage.message = "alreadySubscribed";
+        return res.status(status.bad).send(errorMessage);
+      }
+    }
+
+    if (select.rows.length > 2) {
+      errorMessage.message = "tooMuch";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+
+    var values = [uid, req.user.id, moment()]
+    var { rows } = await dbQuery.query(createQuery, values);
+    // const dbResponse = rows[0];
+    //
+    // if (!dbResponse) {
+    //   errorMessage.message = "userNotFound";
+    //   return res.status(status.bad).send(errorMessage);
+    // }
+    //
+    // if (dbResponse.isvalidated) {
+    //   errorMessage.message = "userValidated";
+    //   return res.status(status.bad).send(errorMessage);
+    // }
+    //
+    // if (dbResponse.is_on_validation) {
+    //   errorMessage.message = "userOnValidate";
+    //   return res.status(status.bad).send(errorMessage);
+    // }
+    //
+    // const updateQuery = 'UPDATE users SET inn = $1, email = $2, main_passport = $3, second_passport = $4, video_passport = $5, is_on_validation = true WHERE id = $6';
+    // const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location , req.user.id]
+    // const result = await dbQuery.query(updateQuery, values);
+    //
+
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 export {
   uploadAgreement,
   getAgreements,
   getAgreementSubs,
+  addSubscrbier
 };
