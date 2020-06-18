@@ -22,7 +22,7 @@ import {
 
 const getAgreements = async (req, res) => {
 
-  const getQuery = 'SELECT * FROM agreements where creator_id = $1 ';
+  const getQuery = 'SELECT * FROM agreements where creator_id = $1 ORDER BY created_at';
 
   try {
 
