@@ -153,8 +153,9 @@ const addSubscrbier = async (req, res) => {
   const { uid } = req.body;
 
   const createQuery = 'INSERT INTO subscribtion(agr_uid, subs_id, created_at) VALUES ($1, $2, $3)';
-  const checkQuery = 'SELECT * FROM agreements WHERE uid = $1'
-  const selectQuery = 'SELECT * FROM subscribtion WHERE agr_uid = $1'
+  const checkQuery = 'SELECT * FROM agreements WHERE uid = $1';
+  const selectQuery = 'SELECT * FROM subscribtion WHERE agr_uid = $1';
+  const updateQuery = 'UPDATE agreements SET status_id = $2 WHERE uid = $1';
 
   try {
 
@@ -188,6 +189,15 @@ const addSubscrbier = async (req, res) => {
 
     var values = [uid, req.user.id, moment()]
     var { rows } = await dbQuery.query(createQuery, values);
+
+    var afterSelect = await dbQuery.query(selectQuery, [uid]);
+    if (select.rows.length == 2) {
+      var update = await dbQuery.query(updateQuery, [iud, '10']);
+    }
+    if (select.rows.length == 1) {
+      var update = await dbQuery.query(updateQuery, [iud, '7']);
+    }
+
     // const dbResponse = rows[0];
     //
     // if (!dbResponse) {
