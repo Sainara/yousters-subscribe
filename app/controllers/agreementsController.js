@@ -26,31 +26,7 @@ const getAgreements = async (req, res) => {
 
   try {
 
-    //var hash = await generateFileHash(req.file.location);
-    //console.log(hash);
-    //var values = [title, hash, req.file.location, moment(), req.user.id]
     var { rows } = await dbQuery.query(getQuery, [req.user.id]);
-    // const dbResponse = rows[0];
-    //
-    // if (!dbResponse) {
-    //   errorMessage.message = "userNotFound";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // if (dbResponse.isvalidated) {
-    //   errorMessage.message = "userValidated";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // if (dbResponse.is_on_validation) {
-    //   errorMessage.message = "userOnValidate";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // const updateQuery = 'UPDATE users SET inn = $1, email = $2, main_passport = $3, second_passport = $4, video_passport = $5, is_on_validation = true WHERE id = $6';
-    // const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location , req.user.id]
-    // const result = await dbQuery.query(updateQuery, values);
-    //
     successMessage.data = rows
     return res.status(status.success).send(successMessage);
   } catch (error) {
@@ -66,31 +42,7 @@ const getAgreementSubs = async (req, res) => {
 
   try {
 
-    //var hash = await generateFileHash(req.file.location);
-    //console.log(hash);
-    //var values = [title, hash, req.file.location, moment(), req.user.id]
     var { rows } = await dbQuery.query(getQuery, [uid]);
-    // const dbResponse = rows[0];
-    //
-    // if (!dbResponse) {
-    //   errorMessage.message = "userNotFound";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // if (dbResponse.isvalidated) {
-    //   errorMessage.message = "userValidated";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // if (dbResponse.is_on_validation) {
-    //   errorMessage.message = "userOnValidate";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // const updateQuery = 'UPDATE users SET inn = $1, email = $2, main_passport = $3, second_passport = $4, video_passport = $5, is_on_validation = true WHERE id = $6';
-    // const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location , req.user.id]
-    // const result = await dbQuery.query(updateQuery, values);
-    //
 
     rows.forEach(function(item, i, arr) {
       for (var g = 6; g < 10; g++) {
@@ -116,30 +68,9 @@ const uploadAgreement = async (req, res) => {
   try {
 
     var hash = await generateFileHash(req.file.location);
-    //console.log(hash);
+
     var values = [title, hash, req.file.location, moment(), req.user.id, uuidv4()]
     var { rows } = await dbQuery.query(createQuery, values);
-    // const dbResponse = rows[0];
-    //
-    // if (!dbResponse) {
-    //   errorMessage.message = "userNotFound";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // if (dbResponse.isvalidated) {
-    //   errorMessage.message = "userValidated";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // if (dbResponse.is_on_validation) {
-    //   errorMessage.message = "userOnValidate";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // const updateQuery = 'UPDATE users SET inn = $1, email = $2, main_passport = $3, second_passport = $4, video_passport = $5, is_on_validation = true WHERE id = $6';
-    // const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location , req.user.id]
-    // const result = await dbQuery.query(updateQuery, values);
-    //
 
     return res.status(status.success).send(successMessage);
   } catch (error) {
@@ -202,33 +133,6 @@ const initSubscription = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    // var values = [uid, req.user.id, moment()]
-    // var { rows } = await dbQuery.query(createQuery, values);
-    //
-    // var afterSelect = await dbQuery.query(selectQuery, [uid]);
-    // if (afterSelect.rows.length == 2) {
-    //   var update = await dbQuery.query(updateQuery, [uid, '10']);
-    // }
-    // if (afterSelect.rows.length == 1) {
-    //   var update = await dbQuery.query(updateQuery, [uid, '7']);
-    // }
-
-
-    //
-    // if (dbResponse.isvalidated) {
-    //   errorMessage.message = "userValidated";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // if (dbResponse.is_on_validation) {
-    //   errorMessage.message = "userOnValidate";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // const updateQuery = 'UPDATE users SET inn = $1, email = $2, main_passport = $3, second_passport = $4, video_passport = $5, is_on_validation = true WHERE id = $6';
-    // const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location , req.user.id]
-    // const result = await dbQuery.query(updateQuery, values);
-    //
     successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);
   } catch (error) {
@@ -285,14 +189,12 @@ const validateSubscription = async (req, res) => {
       const guery = 'UPDATE subscribesessions SET trycounter = $1 WHERE sessionid = $2'
 
       var count = ++dbResponse.trycounter
-      //console.log(count);
       const { rows } = await dbQuery.query(guery, [count, sessionid]);
 
       errorMessage.message = "wrong code";
       return res.status(status.bad).send(errorMessage);
     }
 
-    //successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
@@ -305,5 +207,5 @@ export {
   getAgreements,
   getAgreementSubs,
   initSubscription,
-  validateSubscription
+  validateSubscription,
 };

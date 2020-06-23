@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+  <nav class="uk-navbar-container" uk-navbar>
+    <div class="uk-navbar-left">
+      <ul class="uk-navbar-nav">
+            <h2 class="youstersh2">Yousters Subscribe</h2>
+        </ul>
+
+    </div>
+</nav>
+  <div class="uk-container uk-container-xsmall">
+    <div class="uk-grid-small" uk-grid>
+      <div>
+        <h1 class="certificate">Сертификат онлайн-подписи</h1>
+        <div class="block">
+          <p class="subtitle">Что было подписано</p>
+          <p class="title"><%= agreement.title %></p>
+        </div>
+        <div class="block">
+          <p class="subtitle">Дата создания</p>
+          <p class="title"><%= moment(agreement.created_at).format("DD.MM.YYYY в HH:mm:ss") %></p>
+        </div>
+        <div class="block">
+          <p class="subtitle">Ссылка на файл</p>
+          <p class="smalltitle"><a href="<%= agreement.link %>"><%= agreement.link %></a></p>
+        </div>
+        <div class="block">
+          <p class="subtitle">Хэш (SHA256) файла</p>
+          <p class="smalltitle"><%= agreement.hash %></p>
+        </div>
+        <div class="block">
+          <p class="subtitle">Подписали</p>
+          <% subs.forEach(function(s) { %>
+            <p class="smalltitle"><%= s.user_name %> (ИНН: <%= s.inn %>) <%= moment(s.created_at).format("DD.MM.YYYY в HH:mm:ss")  %> при помощи кода, отправленного на номер телефона <%= s.phone %></p></br>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

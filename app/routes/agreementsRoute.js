@@ -18,8 +18,6 @@ router.post('/validatesubscribe', verifyAuth, validateSubscription);
 
 
 router.post('/uploadagreement', verifyAuth, uploader.single('doc'), uploadAgreement);
-////
-//console.log(uploader);
-//router.post('/validate', validate);
+
 
 export default router;
