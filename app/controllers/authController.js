@@ -8,15 +8,13 @@ import {
   isValidEmail,
   validatePassword,
   isEmpty,
-  generateCode,
-  generateUserToken,
 } from '../helpers/validations';
 
-// import {
-//   generateCode,
-//   generateUserToken,
-//   generateFileHash,
-// } from '../helpers/generators';
+import {
+  generateCode,
+  generateUserToken,
+  generateFileHash,
+} from '../helpers/generators';
 
 import {
   errorMessage, successMessage, status,

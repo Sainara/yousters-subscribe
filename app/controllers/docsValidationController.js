@@ -7,9 +7,13 @@ import {
   isValidEmail,
   validatePassword,
   isEmpty,
-  generateCode,
 } from '../helpers/validations';
 
+import {
+  generateCode,
+  generateUserToken,
+  generateFileHash,
+} from '../helpers/generators';
 
 import {
   errorMessage, successMessage, status,
