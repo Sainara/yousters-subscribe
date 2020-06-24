@@ -47,6 +47,7 @@ const renderCase = async (req, res) => {
       }
 
     });
+    dbResponse.link = ""
     const results = {
       'agreement': dbResponse,
       'subs' : subs.rows
@@ -77,6 +78,7 @@ const renderDoc = async (req, res) => {
     var key = dbResponse.link.split('/').pop()
     var data = await s3get(key);
 
+    res.set('Content-type', 'application/pdf');
     res.send(data.Body);
   } catch (error) {
     console.error(error);
