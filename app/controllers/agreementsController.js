@@ -27,6 +27,15 @@ const getAgreements = async (req, res) => {
   try {
 
     var { rows } = await dbQuery.query(getQuery, [req.user.id]);
+
+    rows.forEach(function(item, i, arr) {
+      // for (var g = 6; g < 10; g++) {
+      //     var index = g;
+      //     item.phone = item.phone.substring(0, index) + '*' + item.phone.substring(index + 1);
+      // }
+      item.link = "http://you-scribe.ru/doc/" + item.uid
+    });
+
     successMessage.data = rows
     return res.status(status.success).send(successMessage);
   } catch (error) {
@@ -49,7 +58,6 @@ const getAgreementSubs = async (req, res) => {
           var index = g;
           item.phone = item.phone.substring(0, index) + '*' + item.phone.substring(index + 1);
       }
-
     });
     successMessage.data = rows
     return res.status(status.success).send(successMessage);
