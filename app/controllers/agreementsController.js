@@ -29,10 +29,6 @@ const getAgreements = async (req, res) => {
     var { rows } = await dbQuery.query(getQuery, [req.user.id]);
 
     rows.forEach(function(item, i, arr) {
-      // for (var g = 6; g < 10; g++) {
-      //     var index = g;
-      //     item.phone = item.phone.substring(0, index) + '*' + item.phone.substring(index + 1);
-      // }
       item.link = "http://you-scribe.ru/doc/" + item.uid
     });
 
@@ -199,7 +195,7 @@ const validateSubscription = async (req, res) => {
       var count = ++dbResponse.trycounter
       const { rows } = await dbQuery.query(guery, [count, sessionid]);
 
-      errorMessage.message = "wrong code";
+      errorMessage.message = "wrongCode";
       return res.status(status.bad).send(errorMessage);
     }
 

@@ -5,10 +5,12 @@ import moment from 'moment';
 
 
 import env from './env';
+
 import authRoute from './app/routes/authRoute';
 import docsValidationRoute from './app/routes/docsValidationRoute';
 import agreementsRoute from './app/routes/agreementsRoute'
 import publicAgreementRoute from './app/routes/publicAgreementRoute'
+import adminRoute from './app/routes/adminRoute'
 
 
 
@@ -34,11 +36,12 @@ app.use(API_PATH, agreementsRoute);
 //
 
 app.use('', publicAgreementRoute);
+app.use('/admin', adminRoute);
 
 
 
 app.get('/', async (req, res) => {
-     res.json({result:"COOLL"});
+     res.render('pages/index');
    });
 app.get('/support', (req, res) => res.render('pages/index'));
 

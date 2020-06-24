@@ -51,8 +51,27 @@ const s3get = (key) => {
      });
   });
 }
+
+const s3delete = (key) => {
+  return new Promise((resolve, reject) => {
+    var params = {
+      Bucket: BUCKET_NAME,
+      Key: key
+     };
+     s3.deleteObject(params, function(err, data) {
+       if (err) {
+         console.log(err, err.stack);
+         reject(err);
+       } else {
+         console.log(data);
+         resolve(data);
+       }
+     });
+  });
+}
 //
 export {
   uploader,
-  s3get
+  s3get,
+  s3delete
 };

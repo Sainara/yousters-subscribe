@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../../partials/header.ejs %>
+</head>
+<body>
+<div class="uk-container uk-container-small">
+  <div class="uk-child-width-expand@s" uk-grid>
+    <div uk-lightbox="animation: slide">
+      <a href="<%= user.main_passport %>" data-caption="Caption 1">
+            <img src="<%= user.main_passport %>" alt="">
+      </a>
+      </div>
+    <div uk-lightbox="animation: slide">
+      <a href="<%= user.second_passport %>" data-caption="Caption 2">
+            <img src="<%= user.second_passport %>" alt="">
+      </a>
+    </div>
+    <div>
+      <video width="450px" controls="controls">
+        <source src="<%= user.video_passport %>">
+      </video>
+    </div>
+  </div>
+
+
+</div>
+
+</body>
+</html>

@@ -20,6 +20,9 @@ import {
   errorMessage, successMessage, status,
 } from '../helpers/status';
 
+import {
+  snsPublish
+} from '../helpers/sns';
 
 const auth = async (req, res) => {
 
@@ -48,6 +51,9 @@ const auth = async (req, res) => {
     const exp = moment().add(5, 'm');
 
     const { rows } = await dbQuery.query(addquery, [sessionid, code, 0, exp, phoneNumber.number]);
+
+    const message =  code + " - Ваш код для Yousters Subscribe."
+    const sms = snsPublish(phoneNumber.number, message);
 
     successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);
