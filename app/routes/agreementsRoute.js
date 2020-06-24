@@ -2,7 +2,7 @@ import express from 'express';
 
 import { getAgreements, getAgreementSubs, uploadAgreement, initSubscription, validateSubscription } from '../controllers/agreementsController';
 import verifyAuth from '../middlewares/verifyAuth';
-import uploader from '../helpers/s3';
+import {uploader} from '../helpers/s3';
 
 const router = express.Router();
 

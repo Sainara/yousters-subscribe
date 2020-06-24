@@ -20,6 +20,8 @@ import {
   errorMessage, successMessage, status,
 } from '../helpers/status';
 
+import {s3get} from '../helpers/s3';
+
 const renderCase = async (req, res) => {
 
   const { uid } = req.params;
@@ -45,23 +47,44 @@ const renderCase = async (req, res) => {
       }
 
     });
-
     const results = {
       'agreement': dbResponse,
       'subs' : subs.rows
      };
-      //res.json(result.rows)
     res.render('pages/case', results);
-        //.render('pages/main')
-
-    //return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
     return res.status(status.bad).send(errorMessage);
   }
 };
 
+const renderDoc = async (req, res) => {
+
+  const { uid } = req.params;
+
+  const getQuery = 'SELECT link FROM agreements WHERE uid = $1';
+
+  try {
+
+    const { rows } = await dbQuery.query(getQuery, [uid]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "invalidSessionID";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var key = dbResponse.link.split('/').pop()
+    var data = await s3get(key);
+
+    res.send(data.Body);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
 
 export {
-  renderCase
+  renderCase,
+  renderDoc
 };

@@ -2,7 +2,7 @@ import express from 'express';
 
 import { uploadDocs } from '../controllers/docsValidationController';
 import verifyAuth from '../middlewares/verifyAuth';
-import uploader from '../helpers/s3';
+import {uploader} from '../helpers/s3';
 
 const router = express.Router();
 

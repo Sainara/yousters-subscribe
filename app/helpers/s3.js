@@ -32,5 +32,27 @@ const uploader = multer({
     }
   })
 })
+
+const s3get = (key) => {
+  return new Promise((resolve, reject) => {
+    var params = {
+      Bucket: BUCKET_NAME,
+      Key: key
+     };
+     s3.getObject(params, function(err, data) {
+       if (err) {
+         console.log(err, err.stack);
+         reject(err);
+       } else {
+         console.log(data);
+         resolve(data);
+       }
+
+     });
+  });
+}
 //
-export default uploader;
+export {
+  uploader,
+  s3get
+};
