@@ -1,13 +1,30 @@
 
+// const data = {
+//   "applinks": {
+//       "apps": [],
+//       "details": [
+//            {
+//              "appID": "A7FRCYXJJN.com.tommysirenko.yousterssubsapp",
+//              "paths": [ "/case/*"]
+//            }
+//        ]
+//    }
+// }
+
 const data = {
   "applinks": {
-      "apps": [],
       "details": [
            {
-             "appID": "A7FRCYXJJN.com.tommysirenko.yousterssubsapp",
-             "paths": [ "/case/*"]
+             "appIDs": [ "A7FRCYXJJN.com.tommysirenko.yousterssubsapp" ],
+             "components": [
+               {
+                  "/": "/case/*",
+                  "comment": "Matches any URL whose path starts with /buy/"
+               },
+             ]
            }
        ]
    }
 }
+
  export default data;
