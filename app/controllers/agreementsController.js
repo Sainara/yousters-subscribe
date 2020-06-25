@@ -29,7 +29,7 @@ const getAgreements = async (req, res) => {
     var { rows } = await dbQuery.query(getQuery, [req.user.id]);
 
     rows.forEach(function(item, i, arr) {
-      item.link = "http://you-scribe.ru/doc/" + item.uid
+      item.link = "https://you-scribe.ru/doc/" + item.uid
     });
 
     successMessage.data = rows
@@ -54,7 +54,7 @@ const getAgreement = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    dbResponse.link = "http://you-scribe.ru/doc/" + dbResponse.uid
+    dbResponse.link = "https://you-scribe.ru/doc/" + dbResponse.uid
     delete dbResponse.creator_id
     delete dbResponse.id
 

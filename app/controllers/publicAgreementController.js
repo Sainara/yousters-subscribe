@@ -47,7 +47,7 @@ const renderCase = async (req, res) => {
       }
 
     });
-    dbResponse.link = "http://you-scribe.ru/doc/" + uid
+    dbResponse.link = "https://you-scribe.ru/doc/" + uid
     const results = {
       'agreement': dbResponse,
       'subs' : subs.rows
