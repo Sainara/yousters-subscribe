@@ -40,6 +40,32 @@ const getAgreements = async (req, res) => {
   }
 };
 
+const getAgreement = async (req, res) => {
+
+  const getQuery = 'SELECT * FROM agreements where uid = $1';
+
+  try {
+
+    var { rows } = await dbQuery.query(getQuery, [req.params.uid]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "invalidSessionID";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    dbResponse.link = "http://you-scribe.ru/doc/" + dbResponse.uid
+    delete dbResponse.creator_id
+    delete dbResponse.id
+
+    successMessage.data = dbResponse
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 const getAgreementSubs = async (req, res) => {
 
   const getQuery = 'SELECT s.created_at, u.inn, u.phone, u.user_name FROM subscribtion as s inner join users as u on s.subs_id = u.id WHERE s.agr_uid = $1';
@@ -212,4 +238,5 @@ export {
   getAgreementSubs,
   initSubscription,
   validateSubscription,
+  getAgreement
 };

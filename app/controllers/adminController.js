@@ -88,13 +88,6 @@ const deleteUser = async (req, res) => {
 
     const result = await dbQuery.query(deleteQuery, [id]);
 
-    //return res.send(dbResponse)
-
-    // const results = {
-    //   'user': dbResponse,
-    //  };
-    // res.render('pages/person/user', results);
-
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
