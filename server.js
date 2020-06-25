@@ -12,6 +12,7 @@ import agreementsRoute from './app/routes/agreementsRoute'
 import publicAgreementRoute from './app/routes/publicAgreementRoute'
 import adminRoute from './app/routes/adminRoute'
 
+import aasa from './ios/apple-app-site-association';
 
 
 
@@ -44,6 +45,7 @@ app.get('/', async (req, res) => {
      res.render('pages/index');
    });
 app.get('/support', (req, res) => res.render('pages/index'));
+app.get('/apple-app-site-association', (req, res) => res.json(aasa));
 
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT } 🚀`))

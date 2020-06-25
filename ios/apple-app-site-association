@@ -1,0 +1,13 @@
+
+const data = {
+  "applinks": {
+      "apps": [],
+      "details": [
+           {
+             "appID": "A7FRCYXJJN.com.tommysirenko.yousterssubsapp",
+             "paths": [ "/case/*"]
+           }
+       ]
+   }
+}
+ export default data;
