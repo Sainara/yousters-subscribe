@@ -11,20 +11,48 @@
 //    }
 // }
 
+// const data = {
+//   "applinks": {
+//       "details": [
+//            {
+//              "appIDs": [ "A7FRCYXJJN.com.tommysirenko.yousterssubsapp" ],
+//              "components": [
+//                {
+//                   "/": "/case/*",
+//                   "comment": "Matches any URL whose path starts with /buy/"
+//                },
+//              ]
+//            }
+//        ]
+//    }
+// }
+
 const data = {
-  "applinks": {
-      "details": [
-           {
-             "appIDs": [ "A7FRCYXJJN.com.tommysirenko.yousterssubsapp" ],
-             "components": [
-               {
-                  "/": "/case/*",
-                  "comment": "Matches any URL whose path starts with /buy/"
-               },
-             ]
-           }
-       ]
-   }
+		"webcredentials": {
+				"apps": [
+						"TEAMID.com.kasey.TipMe"
+				]
+		},
+		"applinks": {
+				"apps": [],
+				"details": [
+						{
+								"appID": "A7FRCYXJJN.com.tommysirenko.yousterssubsapp",
+								"paths": [
+										"/case/*"
+								],
+								"appIDs": [
+										"A7FRCYXJJN.com.tommysirenko.yousterssubsapp"
+								],
+								"components": [
+										{
+												"/": "/case/*"
+										}
+								]
+						}
+				]
+		}
 }
+
 
  export default data;

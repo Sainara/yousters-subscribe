@@ -45,7 +45,7 @@ app.get('/', async (req, res) => {
      res.render('pages/index');
    });
 app.get('/support', (req, res) => res.render('pages/index'));
-app.get('/apple-app-site-association', (req, res) => res.json(aasa));
+app.get('/.well-known/apple-app-site-association', (req, res) => res.json(aasa));
 
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT } 🚀`))
