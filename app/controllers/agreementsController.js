@@ -20,6 +20,8 @@ import {
   errorMessage, successMessage, status,
 } from '../helpers/status';
 
+import {snsPublish} from '../helpers/sns';
+
 const getAgreements = async (req, res) => {
 
   const getQuery = 'SELECT * FROM agreements where creator_id = $1 ORDER BY created_at DESC';
@@ -162,6 +164,9 @@ const initSubscription = async (req, res) => {
       errorMessage.message = "Error";
       return res.status(status.bad).send(errorMessage);
     }
+
+    const message =  code + " - Ваш код для Yousters Subscribe."
+    const sms = snsPublish(req.user.phone, message);
 
     successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);
