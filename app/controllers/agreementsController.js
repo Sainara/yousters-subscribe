@@ -24,7 +24,7 @@ import {snsPublish} from '../helpers/sns';
 
 const getAgreements = async (req, res) => {
 
-  const getQuery = 'SELECT * FROM agreements where creator_id = $1 ORDER BY created_at DESC';
+  const getQuery = 'SELECT a.* from added_agreements as aa inner join agreements as a on aa.agr_uid = a.uid where aa.user_id = $1 union SELECT * FROM agreements where creator_id = $1 ORDER BY created_at DESC'
 
   try {
 
