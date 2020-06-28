@@ -88,7 +88,9 @@ const addAgreementToAdded = async (req, res) => {
     }
 
     var checkExist = await dbQuery.query(checkExistQueey, [req.user.id, uid]);
-    const checkExistdbResponse = checkAgr.rows[0];
+    const checkExistdbResponse = checkExist.rows[0];
+
+    console.log(checkExistdbResponse);
 
     if (checkExistdbResponse) {
       errorMessage.message = "alreadyAdded";
