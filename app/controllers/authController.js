@@ -53,7 +53,7 @@ const auth = async (req, res) => {
     const { rows } = await dbQuery.query(addquery, [sessionid, code, 0, exp, phoneNumber.number]);
 
     const message =  code + " - Ваш код для Yousters Subscribe."
-    const sms = snsPublish(phoneNumber.number, message);
+    //const sms = snsPublish(phoneNumber.number, message);
 
     successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);
