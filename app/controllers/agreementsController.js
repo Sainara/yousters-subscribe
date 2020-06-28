@@ -68,6 +68,53 @@ const getAgreement = async (req, res) => {
   }
 };
 
+
+const addAgreementToAdded = async (req, res) => {
+
+  const { uid } = req.body
+
+  const insertQuery = 'INSERT INTO added_agreements (user_id, agr_uid) VALUES ($1, $2)';
+  const checkAgrQuery = 'SELECT * FROM agreements WHERE uid = $1';
+  const checkExistQueey = 'SELECT * FROM added_agreements Where user_id = $1 AND agr_uid = $2';
+
+  try {
+
+    var checkAgr = await dbQuery.query(checkAgrQuery, [uid]);
+    const checkAgrdbResponse = checkAgr.rows[0];
+
+    if (!checkAgrdbResponse) {
+      errorMessage.message = "agreementNotFound";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var checkExist = await dbQuery.query(checkExistQueey, [req.user.id, uid]);
+    const checkExistdbResponse = checkAgr.rows[0];
+
+    if (checkExistdbResponse) {
+      errorMessage.message = "alreadyAdded";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var { rows } = await dbQuery.query(insertQuery, [req.user.id, uid]);
+    // const dbResponse = rows[0];
+    //
+    // if (!dbResponse) {
+    //   errorMessage.message = "invalidSessionID";
+    //   return res.status(status.bad).send(errorMessage);
+    // }
+    //
+    // dbResponse.link = "https://you-scribe.ru/doc/" + dbResponse.uid
+    // delete dbResponse.creator_id
+    // delete dbResponse.id
+    //
+    // successMessage.data = dbResponse
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 const getAgreementSubs = async (req, res) => {
 
   const getQuery = 'SELECT s.created_at, u.inn, u.phone, u.user_name FROM subscribtion as s inner join users as u on s.subs_id = u.id WHERE s.agr_uid = $1';
@@ -243,5 +290,6 @@ export {
   getAgreementSubs,
   initSubscription,
   validateSubscription,
-  getAgreement
+  getAgreement,
+  addAgreementToAdded
 };
