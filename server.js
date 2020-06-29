@@ -15,6 +15,7 @@ import adminRoute from './app/routes/adminRoute'
 import aasa from './ios/apple-app-site-association';
 import legalRoute from './app/routes/legalRoute'
 
+import notFoundRoute from './app/routes/404Route'
 
 
 const PORT = env.port
@@ -42,6 +43,7 @@ app.use('/admin', adminRoute);
 
 app.use('/legal', legalRoute);
 
+
 app.get('/', async (req, res) => {
      res.render('pages/index');
    });
@@ -50,5 +52,8 @@ app.get('/.well-known/apple-app-site-association', (req, res) => res.json(aasa))
 app.get('/apple-app-site-association', (req, res) => res.json(aasa));
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT } 🚀`))
+
+app.use(notFoundRoute);
+
 
 export default app;

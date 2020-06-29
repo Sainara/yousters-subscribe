@@ -62,9 +62,12 @@ p.smalltitle {
   padding: 15px 30px;
   border-radius: 7px;
   color: #fff;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 .main-button:hover {
   color: #fff;
+  opacity: 0.8;
   text-decoration: none;
 }
 .case-sub-button {
