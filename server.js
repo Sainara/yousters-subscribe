@@ -45,7 +45,7 @@ app.use('/legal', legalRoute);
 
 
 app.get('/', async (req, res) => {
-     res.render('pages/index');
+     res.render('pages/index', { page_title: "Main" });
    });
 
 app.get('/.well-known/apple-app-site-association', (req, res) => res.json(aasa));
