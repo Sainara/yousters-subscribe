@@ -49,7 +49,7 @@ app.get('/.well-known/apple-app-site-association', (req, res) => res.json(aasa))
 app.get('/apple-app-site-association', (req, res) => res.json(aasa));
 
 app.get('/legal/user-agreement', (req, res) => res.render('pages/static/legal/user-agreement/user-agreement'));
-app.get('/legal/termsofuse', (req, res) => res.render('pages/static/termsofuse/termsofuse'));
+app.get('/legal/termsofuse', (req, res) => res.render('pages/static/legal/termsofuse/termsofuse'));
 
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT } 🚀`))

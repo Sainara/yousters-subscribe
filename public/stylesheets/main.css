@@ -75,6 +75,9 @@ p.smalltitle {
   margin: 10px 0;
   font-style: italic;
 }
+.doc {
+  padding: 25px 0;
+}
 .docp {
   font-family: "GilroyMedium";
   color: #000;
@@ -85,4 +88,10 @@ p.smalltitle {
 }
 h2.doc {
   font-family: "GilroySemiBold" !important
+}
+.h2-span {
+  font-size: 20px;
+}
+.uk-breadcrumb {
+  font-family: "GilroyRegular";
 }
