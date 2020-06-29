@@ -13,6 +13,7 @@ import publicAgreementRoute from './app/routes/publicAgreementRoute'
 import adminRoute from './app/routes/adminRoute'
 
 import aasa from './ios/apple-app-site-association';
+import legalRoute from './app/routes/legalRoute'
 
 
 
@@ -39,18 +40,14 @@ app.use(API_PATH, agreementsRoute);
 app.use('', publicAgreementRoute);
 app.use('/admin', adminRoute);
 
-
+app.use('/legal', legalRoute);
 
 app.get('/', async (req, res) => {
      res.render('pages/index');
    });
-//app.get('/support', (req, res) => res.render('pages/index'));
+
 app.get('/.well-known/apple-app-site-association', (req, res) => res.json(aasa));
 app.get('/apple-app-site-association', (req, res) => res.json(aasa));
-
-app.get('/legal/user-agreement', (req, res) => res.render('pages/static/legal/user-agreement/user-agreement'));
-app.get('/legal/termsofuse', (req, res) => res.render('pages/static/legal/termsofuse/termsofuse'));
-
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT } 🚀`))
 
