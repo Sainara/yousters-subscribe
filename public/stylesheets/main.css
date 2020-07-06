@@ -12,7 +12,8 @@
 }
 
 h1 {
-  font-family: "GilroySemiBold" !important
+  font-family: "GilroySemiBold" !important;
+  color: #000 !important;
 }
 
 h2 {
@@ -97,4 +98,7 @@ h2.doc {
 }
 .uk-breadcrumb {
   font-family: "GilroyRegular";
+}
+.footer-socials {
+  margin-right: 30px;
 }

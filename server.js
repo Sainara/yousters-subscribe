@@ -3,7 +3,6 @@ const path = require('path')
 
 import moment from 'moment';
 
-
 import env from './env';
 
 import authRoute from './app/routes/authRoute';
@@ -36,7 +35,6 @@ app.use((req, res, next) => {
 app.use(API_PATH, authRoute);
 app.use(API_PATH, docsValidationRoute);
 app.use(API_PATH, agreementsRoute);
-//
 
 app.use('', publicAgreementRoute);
 app.use('/admin', adminRoute);
@@ -45,8 +43,11 @@ app.use('/legal', legalRoute);
 
 
 app.get('/', async (req, res) => {
-     res.render('pages/index', { page_title: "Main" });
-   });
+  res.render('pages/index', { page_title: "Main" });
+});
+app.get('/support', async (req, res) => {
+  res.render('pages/index', { page_title: "Support" });
+});
 
 app.get('/.well-known/apple-app-site-association', (req, res) => res.json(aasa));
 app.get('/apple-app-site-association', (req, res) => res.json(aasa));
@@ -54,6 +55,5 @@ app.get('/apple-app-site-association', (req, res) => res.json(aasa));
 app.listen(PORT, () => console.log(`Listening on ${ PORT } 🚀`))
 
 app.use(notFoundRoute);
-
 
 export default app;
