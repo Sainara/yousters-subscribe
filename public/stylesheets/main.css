@@ -80,7 +80,7 @@ p.smalltitle {
   font-style: italic;
 }
 .doc {
-  padding: 25px 0;
+  margin-top: 25px;
 }
 .docp {
   font-family: "GilroyMedium";
