@@ -71,6 +71,15 @@ p.smalltitle {
   opacity: 0.8;
   text-decoration: none;
 }
+
+.cryptolink {
+  color: #000;
+}
+.cryptolink:hover {
+  text-decoration: none;
+  color: #000;
+
+}
 .case-sub-button {
   display: inline-block;
   /* margin-top: 15px; */
@@ -81,6 +90,7 @@ p.smalltitle {
 }
 .doc {
   margin-top: 25px;
+  margin-bottom: 25px;
 }
 .docp {
   font-family: "GilroyMedium";
@@ -101,4 +111,10 @@ h2.doc {
 }
 .footer-socials {
   margin-right: 30px;
+}
+.main-footer-socials {
+  float: right;
+}
+.footer-text p {
+  float: left;
 }

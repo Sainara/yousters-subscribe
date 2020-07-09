@@ -624,10 +624,10 @@ td, th {
   margin-right: 0; }
 
 .section-gap {
-  padding: 150px 0; }
+  padding: 50px 0; }
   @media (max-width: 991px) {
     .section-gap {
-      padding: 70px 0; } }
+      padding: 35px 0; } }
 
 .section-gap-top {
   padding-top: 150px; }
@@ -1893,10 +1893,14 @@ body.mobile-nav-active #mobile-nav-toggle {
         display: none; } }
   @media (max-width: 991px) {
     .home-banner-area .fullscreen {
-      height: 700px !important; } }
+      height: 1000px !important; } }
 
 .banner-img-mobile {
   display: none;
+}
+
+.footer-area a {
+  color: #fff;
 }
 
 @media (max-width: 767px) {
