@@ -25,7 +25,7 @@ const API_PATH = "/api/v1";
 
 app.use(function(req,resp,next){
     if (req.headers['x-forwarded-proto'] == 'http') {
-        return resp.redirect(301, 'https://' + req.headers.host + '/');
+        return resp.redirect(301, 'https://' + req.headers.host+req.url);
     } else {
         return next();
     }
