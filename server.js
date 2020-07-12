@@ -23,6 +23,14 @@ const PORT = env.port
 var app = express()
 const API_PATH = "/api/v1";
 
+app.use(function(req,resp,next){
+    if (req.headers['x-forwarded-proto'] == 'http') {
+        return resp.redirect(301, 'https://' + req.headers.host + '/');
+    } else {
+        return next();
+    }
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({limit: '50mb'}));
 app.set('views', path.join(__dirname, 'views'));
