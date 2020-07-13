@@ -12,6 +12,7 @@ import publicAgreementRoute from './app/routes/publicAgreementRoute'
 import adminRoute from './app/routes/adminRoute'
 
 import aasa from './ios/apple-app-site-association';
+
 import legalRoute from './app/routes/legalRoute'
 
 import notFoundRoute from './app/routes/404Route'
@@ -23,9 +24,9 @@ const PORT = env.port
 var app = express()
 const API_PATH = "/api/v1";
 
-app.use(function(req,resp,next){
+app.use(function(req, res, next){
     if (req.headers['x-forwarded-proto'] == 'http') {
-        return resp.redirect(301, 'https://' + req.headers.host+req.url);
+        return res.redirect(301, 'https://' + req.headers.host + req.url);
     } else {
         return next();
     }
