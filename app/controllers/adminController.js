@@ -21,7 +21,6 @@ import {
 
 import {s3delete} from '../helpers/s3';
 
-
 const listOfUsers = async (req, res) => {
 
   //const { inn, email } = req.body;
@@ -64,6 +63,33 @@ const concretUser = async (req, res) => {
   }
 };
 
+const validateUser = async (req, res) => {
+
+  const { id } = req.params;
+  const { name } = req.body;
+
+  const getUserQuery = 'SELECT * from users WHERE id = $1'
+  const updateQuery = 'UPDATE users SET is_on_validation = false, isvalidated = true, user_name = $2 WHERE id = $1';
+
+  try {
+
+    const { rows } = await dbQuery.query(getUserQuery, [id]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "invalidID";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    const result = await dbQuery.query(updateQuery, [id, name]);
+
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 const deleteUser = async (req, res) => {
 
   const { id } = req.params;
@@ -95,8 +121,37 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const deleteAgreement = async (req, res) => {
+
+  const { id } = req.params;
+  const getUserQuery = 'SELECT * from agreements WHERE id = $1'
+  const deleteQuery = 'DELETE FROM agreements WHERE id = $1'
+
+  try {
+
+    const { rows } = await dbQuery.query(getUserQuery, [id]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "invalidID";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var deleteDoc = await s3delete(dbResponse.link.split('/').pop())
+
+    const result = await dbQuery.query(deleteQuery, [id]);
+
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 export {
   listOfUsers,
   concretUser,
-  deleteUser
+  validateUser,
+  deleteUser,
+  deleteAgreement
 };

@@ -2187,7 +2187,7 @@ body.mobile-nav-active #mobile-nav-toggle {
         text-align: center; } }
 
 .pricing-area {
-  padding: 150px 0;
+  padding: 100px 0;
   position: relative; }
   @media (max-width: 991px) {
     .pricing-area {
@@ -2222,7 +2222,7 @@ body.mobile-nav-active #mobile-nav-toggle {
       margin-bottom: 30px; } }
   .single-price .top-sec {
     border-bottom: 1px solid #eeeeee;
-    padding: 40px 40px 22px 40px;
+    padding: 20px 20px 11px 20px;
     text-align: left;
     -webkit-transition: all 0.3s ease 0s;
     -moz-transition: all 0.3s ease 0s;
@@ -2238,7 +2238,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     -moz-transition: all 0.3s ease 0s;
     -o-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
-    padding: 40px; }
+    padding: 13px; }
     .single-price .end-sec ul li {
       margin-bottom: 20px; }
   .single-price .price-btn {
@@ -2251,13 +2251,17 @@ body.mobile-nav-active #mobile-nav-toggle {
     -moz-transition: all 0.3s ease 0s;
     -o-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s; }
-  .single-price:hover {
-    cursor: pointer; }
     .single-price:hover .price-btn {
       color: #fff; }
   @media (max-width: 800px) {
     .single-price {
       margin-bottom: 30px; } }
+@media (min-width: 991.99px) {
+
+  .pricing-area.pricing-page {
+    padding-bottom: 40px;
+  }
+}
 
 .whole-wrap {
   background-color: #fff; }

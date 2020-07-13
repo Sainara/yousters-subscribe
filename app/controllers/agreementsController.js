@@ -168,6 +168,7 @@ const initSubscription = async (req, res) => {
   const checkQuery = 'SELECT * FROM agreements WHERE uid = $1';
   const selectQuery = 'SELECT * FROM subscribtion WHERE agr_uid = $1';
   const updateQuery = 'UPDATE agreements SET status_id = $2 WHERE uid = $1';
+  const checkIsUserValidatedQuery = 'SELECT isvalidated FROM users WHERE id = $1';
 
   const addquery = 'INSERT INTO subscribesessions (sessionid, code, trycounter, expiretime, agr_uid, to_num) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
 
@@ -183,6 +184,14 @@ const initSubscription = async (req, res) => {
 
     if (dbResponse.status_id < 5) {
       errorMessage.message = "agreementNotPaid";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var checkUser = await dbQuery.query(checkIsUserValidatedQuery, [req.user.id]);
+    const checkUserDBResponse = check.rows[0];
+
+    if (!checkUserDBResponse.isvalidated) {
+      errorMessage.message = "userNotVerified";
       return res.status(status.bad).send(errorMessage);
     }
 

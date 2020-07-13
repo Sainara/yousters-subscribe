@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+  <script src="https://kassa.yandex.ru/checkout-ui/v2.js"></script>
+  <div id="payment-form"></div>
+
+  <script>
+  //Инициализация виджета. Все параметры обязательные.
+  const checkout = new window.YandexCheckout({
+      confirmation_token: '<%= confirmation_token %>',
+      return_url: '<%= return_url %>',
+      embedded_3ds: true, //Ссылка на страницу завершения оплаты
+      error_callback(error) {
+          //Обработка ошибок инициализации
+      }
+  });
+  checkout.render('payment-form');
+  </script>
+
+</body>
+
+</html>

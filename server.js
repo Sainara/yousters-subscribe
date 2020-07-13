@@ -7,21 +7,24 @@ import env from './env';
 
 import authRoute from './app/routes/authRoute';
 import docsValidationRoute from './app/routes/docsValidationRoute';
-import agreementsRoute from './app/routes/agreementsRoute'
-import publicAgreementRoute from './app/routes/publicAgreementRoute'
-import adminRoute from './app/routes/adminRoute'
+import agreementsRoute from './app/routes/agreementsRoute';
+import publicAgreementRoute from './app/routes/publicAgreementRoute';
+
+import checkoutRoute from './app/routes/checkoutRoute';
+
+import adminRoute from './app/routes/adminRoute';
 
 import aasa from './ios/apple-app-site-association';
 
-import legalRoute from './app/routes/legalRoute'
+import legalRoute from './app/routes/legalRoute';
 
-import notFoundRoute from './app/routes/404Route'
-
-
-const PORT = env.port
+import notFoundRoute from './app/routes/404Route';
 
 
-var app = express()
+const PORT = env.port;
+
+
+var app = express();
 const API_PATH = "/api/v1";
 
 app.use(function(req, res, next){
@@ -46,6 +49,7 @@ app.use(API_PATH, docsValidationRoute);
 app.use(API_PATH, agreementsRoute);
 
 app.use('', publicAgreementRoute);
+app.use('', checkoutRoute);
 app.use('/admin', adminRoute);
 
 app.use('/legal', legalRoute);
