@@ -41,6 +41,10 @@ p.subtitle {
   font-size: 17px;
   margin: 0;
 }
+p.emoji-hash {
+  font-size: 30px;
+  margin: 0;
+}
 p.title {
   font-family: "GilroyMedium" !important;
   font-size: 23px;

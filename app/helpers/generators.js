@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 const https = require('https');
 const crypto = require('crypto');
+const fs = require("fs");
 
 import env from '../../env';
 //
@@ -56,8 +57,33 @@ const generateUserToken = (id, phone, isvalidated) => {
   return token;
 };
 
+const generateEmojiHash = (hash) => {
+  //console.log(process.cwd());
+  let fileContent = fs.readFileSync(process.cwd() + "/static/hashEmoji.txt", "utf8");
+  const emojis = fileContent.split("\n");
+
+  var result = ""
+
+  const length_ = hash.length / 4
+
+  const arr = hash.match(/.{1,16}/g)
+
+  for (var i = 0; i < arr.length; i++) {
+    var str = arr[i]
+    var sum = 0
+    for (var g = 0; g < str.length; g++) {
+
+      sum += str.charCodeAt(g);
+    }
+    result += emojis[sum % 256];
+  }
+
+  return result;
+};
+
 export {
   generateCode,
   generateUserToken,
   generateFileHash,
+  generateEmojiHash
 };

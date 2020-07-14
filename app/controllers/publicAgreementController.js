@@ -14,6 +14,7 @@ import {
   generateCode,
   generateUserToken,
   generateFileHash,
+  generateEmojiHash
 } from '../helpers/generators';
 
 import {
@@ -33,6 +34,8 @@ const renderCase = async (req, res) => {
 
     const { rows } = await dbQuery.query(getQuery, [uid]);
     const dbResponse = rows[0];
+
+    dbResponse.hash = generateEmojiHash(dbResponse.hash);
 
     if (!dbResponse) {
       errorMessage.message = "invalid sessionid";

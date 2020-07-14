@@ -17,6 +17,10 @@ import {
   errorMessage, successMessage, status,
 } from '../helpers/status';
 
+import env from '../../env';
+
+var YandexCheckout = require('yandex-checkout')(env.yandexCheckoutShopId, env.yandexCheckoutSecretKey);
+
 const createPayment = async (req, res) => {
 
   const { agr_uid } = req.body;
@@ -53,13 +57,38 @@ const createPayment = async (req, res) => {
 const renderCheckout = async (req, res) => {
 
   const { uid } = req.params;
-
-  const getQuery = 'SELECT * FROM agreements WHERE uid = $1';
-  const getSubsQuery = 'SELECT s.created_at, u.inn, u.phone, u.user_name FROM subscribtion as s inner join users as u on s.subs_id = u.id WHERE s.agr_uid = $1';
+  const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
 
   try {
 
-    var return_url = "confirmation_token"
+    const {rows} = await dbQuery.query(getPaymentQuery, [uid]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "invalidID";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var idempotenceKey = uid;
+    YandexCheckout.createPayment({
+      'amount': {
+        'value': dbResponse.amount,
+        'currency': 'RUB'
+      },
+      'confirmation': {
+        'type': 'embedded'
+      },
+      'capture': true,
+      'description': uid
+    }, idempotenceKey)
+      .then(function(result) {
+        console.log({payment: result});
+      })
+      .catch(function(err) {
+        console.error(err);
+      })
+
+    var return_url = "https://you-scribe.ru/"
     const result = {
       confirmation_token: return_url,
       return_url: return_url,
