@@ -47,9 +47,10 @@ app.use((req, res, next) => {
 app.use(API_PATH, authRoute);
 app.use(API_PATH, docsValidationRoute);
 app.use(API_PATH, agreementsRoute);
+app.use(API_PATH, checkoutRoute);
 
 app.use('', publicAgreementRoute);
-app.use('', checkoutRoute);
+
 app.use('/admin', adminRoute);
 
 app.use('/legal', legalRoute);
