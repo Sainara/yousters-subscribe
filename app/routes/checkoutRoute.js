@@ -7,7 +7,7 @@ import verifyAuth from '../middlewares/verifyAuth';
 const router = express.Router();
 
 router.post('/payment', verifyAuth, createPayment);
-router.get('/checkout', renderCheckout);
+router.get('/checkout/:uid', renderCheckout);
 //console.log(uploader);
 //router.post('/validate', validate);
 
