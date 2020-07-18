@@ -1,8 +1,9 @@
 import { Pool } from 'pg';
+import env from '../../env';
 
 const databaseConfig = {
-  connectionString: process.env.DATABASE_URL,
-  ssl: true 
+  connectionString: env.database_url,
+  ssl: true
 };
 const pool = new Pool(databaseConfig);
 
