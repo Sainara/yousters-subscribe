@@ -5,9 +5,9 @@
   "engines": {
     "node": "12.x"
   },
-  "main": "index.js",
+  "main": "start.js",
   "scripts": {
-    "start": "node start.js",
+    "start": "node start.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.1.0",
