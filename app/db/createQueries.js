@@ -24,7 +24,7 @@ const createTable = async (tableName, query) => {
 export default {
   initDBs() {
     var tableName = 'entersessions';
-    var query = '(idd serial PRIMARY KEY, sessionID VARCHAR, code VARCHAR, tryCounter int, expiretime timestamptz, number VARCHAR)';
+    var query = '("id" serial PRIMARY KEY, sessionID VARCHAR, code VARCHAR, tryCounter int, expiretime timestamptz, number VARCHAR)';
     createTable(tableName, query);
     console.log('creating');
   }
