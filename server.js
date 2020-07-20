@@ -20,6 +20,9 @@ import legalRoute from './app/routes/legalRoute';
 
 import notFoundRoute from './app/routes/404Route';
 
+// For Dev
+import createQueries from './app/db/createQueries';
+createQueries.initDBs();
 
 const PORT = env.port;
 
