@@ -67,7 +67,7 @@ app.get('/support', async (req, res) => {
 
 app.get('/.well-known/apple-app-site-association', (req, res) => res.json(aasa));
 
-app.listen(MAIN_PORT, () => console.log(`Listening on ${ MAIN_PORT } 🚀`))
+//app.listen(MAIN_PORT, () => console.log(`Listening on ${ MAIN_PORT } 🚀`))
 app.listen(HTTPS_PORT, () => console.log(`Listening on ${ HTTPS_PORT } 🚀`))
 
 app.use(notFoundRoute);
