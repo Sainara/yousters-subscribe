@@ -8,6 +8,7 @@ const createTable = async (tableName, query) => {
     const dbResponse = check[0];
 
     if (!dbResponse) {
+      const createQuery = 'CREATE TABLE ' + tableName + query;
       const create = await dbQuery.query(query, [tableName]);
       console.log(tableName + " created");
     } else {
@@ -21,7 +22,7 @@ const createTable = async (tableName, query) => {
 export default {
   initDBs() {
     var tableName = 'entersessions';
-    var query = 'CREATE TABLE $1(id serial PRIMARY KEY, sessionID VARCHAR, code VARCHAR, tryCounter int, expiretime timestamptz, number VARCHAR)';
+    var query = '(id serial PRIMARY KEY, sessionID VARCHAR, code VARCHAR, tryCounter int, expiretime timestamptz, number VARCHAR)';
     createTable(tableName, query);
     console.log('creating');
   }
