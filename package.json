@@ -1,14 +1,13 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "name": "yousters-subscribe-nodeJS",
+  "version": "1.0.0",
+  "description": "Node.js app for Yousters Subscribe",
   "engines": {
     "node": "12.x"
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "node test.js"
+    "start": "node start.js",
   },
   "dependencies": {
     "@sendgrid/mail": "^7.1.0",
@@ -39,12 +38,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/Sainara/yousters-subscribe"
   },
   "keywords": [
     "node",
-    "heroku",
-    "express"
+    "express",
+    "yousters"
   ],
-  "license": "MIT"
+  "license": "UNLICENSED"
 }
