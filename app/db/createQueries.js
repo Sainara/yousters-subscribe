@@ -8,10 +8,10 @@ const createTable = async (tableName, query) => {
     const dbResponse = check[0];
 
     if (!dbResponse) {
-      const createQuery = 'CREATE TABLE entersessions(id serial PRIMARY KEY, sessionID VARCHAR, code VARCHAR, tryCounter int, expiretime timestamptz, number VARCHAR)';
+      const createQuery = 'CREATE TABLE ' + tableName + query;
 
       console.log(createQuery);
-      const create = await dbQuery.query(query, [tableName]);
+      const create = await dbQuery.query(query, []);
       console.log(tableName + " created");
     } else {
       console.log(tableName + " exist");
