@@ -21,9 +21,7 @@ import legalRoute from './app/routes/legalRoute';
 import notFoundRoute from './app/routes/404Route';
 
 
-const MAIN_PORT = env.http_port;
-const HTTPS_PORT = env.https_port;
-
+const PORT = env.port;
 
 
 var app = express();
@@ -67,8 +65,7 @@ app.get('/support', async (req, res) => {
 
 app.get('/.well-known/apple-app-site-association', (req, res) => res.json(aasa));
 
-//app.listen(MAIN_PORT, () => console.log(`Listening on ${ MAIN_PORT } 🚀`))
-app.listen(HTTPS_PORT, () => console.log(`Listening on ${ HTTPS_PORT } 🚀`))
+app.listen(PORT, () => console.log(`Listening on ${ PORT } 🚀`))
 
 app.use(notFoundRoute);
 
