@@ -1,7 +1,6 @@
 import dbQuery from '../db/dbQuery';
 
-const createTable(tableName, query) {
-
+const createTable = async (tableName, query) => {
   const checkExistQuery = 'SELECT to_regclass($1);';
 
   try {
