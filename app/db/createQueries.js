@@ -5,7 +5,7 @@ const createTable = async (tableName, query) => {
 
   try {
     const check = await dbQuery.query(checkExistQuery, [tableName]);
-    const dbResponse = check[0];
+    const dbResponse = check.rows[0];
 
     if (!dbResponse) {
       const createQuery = 'CREATE TABLE ' + tableName + query;
