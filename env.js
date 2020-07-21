@@ -5,6 +5,6 @@ export default {
   port: process.env.PORT || 8000,
   yandexCheckoutShopId: '',
   yandexCheckoutSecretKey: '',
-  //environment: process.env.NODE_ENV,
+  sms_ru_api_id: 'BE2FD0CD-F301-8524-B59F-A401C359E329'
 
 }

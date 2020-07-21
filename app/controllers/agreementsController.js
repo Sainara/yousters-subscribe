@@ -224,7 +224,7 @@ const initSubscription = async (req, res) => {
     }
 
     const message =  code + " - Ваш код для Yousters Subscribe."
-    //const sms = snsPublish(req.user.phone, message);
+    const sms = snsPublish(req.user.phone, message);
 
     successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);
