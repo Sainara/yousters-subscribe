@@ -42,7 +42,7 @@ const renderCase = async (req, res) => {
 
     if (!dbResponse) {
       errorMessage.message = "invalid sessionid";
-      return res.status(status.bad).send(errorMessage);
+      notFoundRoute(req, res)
     }
 
     const subs = await dbQuery.query(getSubsQuery, [uid]);
@@ -61,7 +61,7 @@ const renderCase = async (req, res) => {
     res.render('pages/case', results);
   } catch (error) {
     console.error(error);
-    return res.status(status.bad).send(errorMessage);
+    notFoundRoute(req, res)
   }
 };
 
