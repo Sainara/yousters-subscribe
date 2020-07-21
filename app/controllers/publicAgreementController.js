@@ -23,6 +23,9 @@ import {
 
 import {s3get} from '../helpers/s3';
 
+import notFoundRoute from '../routes/404Route';
+
+
 const renderCase = async (req, res) => {
 
   const { uid } = req.params;
@@ -85,7 +88,7 @@ const renderDoc = async (req, res) => {
     res.send(data.Body);
   } catch (error) {
     console.error(error);
-    return res.status(status.bad).send(errorMessage);
+    notFoundRoute(req, res)
   }
 };
 

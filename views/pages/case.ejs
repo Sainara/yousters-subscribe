@@ -31,7 +31,7 @@
         </div>
         <div class="block">
           <p class="subtitle">Дата создания</p>
-          <p class="title"><%= moment(agreement.created_at).format("DD.MM.YYYY в HH:mm:ss") %></p>
+          <p class="title"><%= moment.parseZone(agreement.created_at).format("DD.MM.YYYY в HH:mm:ss") %></p>
         </div>
         <div class="block">
           <p class="subtitle">Ссылка на файл</p>
@@ -46,7 +46,7 @@
             <p class="subtitle">Подписали</p>
           <% }; %>
           <% subs.forEach(function(s) { %>
-            <p class="smalltitle"><%= s.user_name %> (ИНН: <%= s.inn %>) <%= moment(s.created_at).format("DD.MM.YYYY в HH:mm:ss")  %> при помощи кода, отправленного на номер телефона <%= s.phone %></p></br>
+            <p class="smalltitle"><%= s.user_name %> (ИНН: <%= s.inn %>) <%= moment.parseZone(s.created_at).format("DD.MM.YYYY в HH:mm:ss")  %> при помощи кода, отправленного на номер телефона <%= s.phone %></p></br>
           <% }); %>
           <% if (subs.length < 2) { %>
             <a href="#" class="main-button case-sub-button">Подписать в приложении</a>
