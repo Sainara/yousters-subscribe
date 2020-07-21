@@ -1,3 +1,4 @@
+var SMSru = require('sms_ru');
 import env from '../../env';
 
 const SMSRU = new SMSru(env.sms_ru_api_id);
