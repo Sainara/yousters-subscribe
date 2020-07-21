@@ -188,9 +188,8 @@ const initSubscription = async (req, res) => {
     }
 
     var checkUser = await dbQuery.query(checkIsUserValidatedQuery, [req.user.id]);
-    const checkUserDBResponse = check.rows[0];
+    const checkUserDBResponse = checkUser.rows[0];
 
-    console.log(checkUserDBResponse.isvalidated);
     if (!checkUserDBResponse.isvalidated) {
       errorMessage.message = "userNotVerified";
       return res.status(status.bad).send(errorMessage);
