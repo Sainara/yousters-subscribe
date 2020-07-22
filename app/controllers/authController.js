@@ -198,11 +198,20 @@ const addToken = async (req, res) => {
 
 const initSberAuth = async (req, res) => {
 
-  const addQuery = 'INSERT INTO sberauthsessions (nonce, state, scope) VALUES ($1, $2, $3) RETURNING nonce, state, scope';
+  const addQuery = 'INSERT INTO sberauthsessions (nonce, state, scope, phone) VALUES ($1, $2, $3, $4) RETURNING nonce, state, scope';
+  const checkQuery = 'SELECT nonce, state, scope FROM sberauthsessions WHERE phone = $1';
 
   try {
 
-    const values = [uuidv4(), uuidv4(), 'openid name'];
+    const {rows} = await dbQuery.query(checkQuery, []);
+    const checkdbResponse = rows[0];
+
+    if (checkdbResponse) {
+      successMessage.data = checkdbResponse;
+      return res.status(status.success).send(successMessage);
+    }
+
+    const values = [uuidv4(), uuidv4(), 'openid name', req.user.phone];
     const add = await dbQuery.query(addQuery, values);
     const dbResponse = add.rows[0];
 
