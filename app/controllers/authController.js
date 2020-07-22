@@ -207,7 +207,7 @@ const initSberAuth = async (req, res) => {
     const dbResponse = add.rows[0];
 
     if (dbResponse) {
-      status.data = dbResponse;
+      successMessage.data = dbResponse;
       return res.status(status.success).send(successMessage);
     }
   } catch (error) {
