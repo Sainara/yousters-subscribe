@@ -203,7 +203,7 @@ const initSberAuth = async (req, res) => {
 
   try {
 
-    const {rows} = await dbQuery.query(checkQuery, []);
+    const {rows} = await dbQuery.query(checkQuery, [req.user.phone]);
     const checkdbResponse = rows[0];
 
     if (checkdbResponse) {
