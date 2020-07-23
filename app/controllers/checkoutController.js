@@ -28,7 +28,7 @@ const createPayment = async (req, res) => {
 
   const { agr_uid } = req.body;
 
-  const checkExistQuery = 'SELECT uid FROM payments WHERE agr_uid = $1';
+  const checkExistQuery = 'SELECT uid, status FROM payments WHERE agr_uid = $1';
   const createQuery = 'INSERT INTO payments (uid, user_id, agr_uid, amount, created_at) VALUES ($1, $2, $3, $4, $5) returning uid';
 
   try {
@@ -38,11 +38,13 @@ const createPayment = async (req, res) => {
     }
 
     var check = await dbQuery.query(checkExistQuery, [agr_uid]);
-    const dbResponse = check.rows[0];
+    const dbResponse = check.rows[check.rows.length - 1];
 
     if (dbResponse) {
-      successMessage.uid = dbResponse.uid;
-      return res.status(status.success).send(successMessage);
+      if (dbResponse.status != "failure") {
+        successMessage.uid = dbResponse.uid;
+        return res.status(status.success).send(successMessage);
+      }
     }
 
     const values = [uuidv4(), req.user.id, agr_uid, '39.00', moment()];
@@ -69,12 +71,14 @@ const renderCheckout = async (req, res) => {
   }
 
   if (uid == "failure") {
-    return res.status(status.success).send('Оплата не прошла');
+    return res.status(status.success).send('<h1>Оплата не прошла</h1>');
   }
 
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
   const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
   const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1 WHERE uid = $2';
+  const updatePaymentStatusQuery = 'UPDATE payments SET status = $1 WHERE uid = $2';
+
 
   try {
 
@@ -128,8 +132,10 @@ const renderCheckout = async (req, res) => {
 
         if (payment.status != "pending") {
           if (payment.paid) {
+            dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
             return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
           } else {
+            dbQuery.query(updatePaymentStatusQuery, ['failure', dbResponse.uid]);
             return res.redirect('https://you-scribe.ru/api/v1/checkout/failure');
           }
           return res.status(status.success).send(successMessage);
