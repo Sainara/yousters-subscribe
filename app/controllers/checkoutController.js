@@ -23,8 +23,8 @@ var YandexCheckout = require('yandex-checkout')(env.yandexCheckoutShopId, env.ya
 
 const createPayment = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { agr_uid } = req.body;
 
@@ -59,8 +59,8 @@ const createPayment = async (req, res) => {
 
 const renderCheckout = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { uid } = req.params;
 

@@ -28,8 +28,8 @@ import notFoundRoute from '../routes/404Route';
 
 const renderCase = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { uid } = req.params;
 
@@ -70,8 +70,8 @@ const renderCase = async (req, res) => {
 
 const renderDoc = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { uid } = req.params;
 

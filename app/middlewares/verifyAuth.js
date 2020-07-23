@@ -15,7 +15,7 @@ import env from '../../env';
 
 const verifyToken = async (req, res, next) => {
 
-  const errorMessage = eMessage;
+  const errorMessage = Object.assign({}, eMessage);
   
   //console.log(req.headers);
   const { token } = req.headers;

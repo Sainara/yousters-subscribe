@@ -28,8 +28,8 @@ import env from '../../env';
 
 const auth = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { number } = req.body;
 
@@ -70,8 +70,8 @@ const auth = async (req, res) => {
 
 const validate = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { sessionid, code } = req.body;
 
@@ -153,8 +153,8 @@ const validate = async (req, res) => {
 
 const me = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const getQuery = 'SELECT phone, isvalidated, is_on_validation, user_name, inn, email FROM users WHERE id = $1';
 
@@ -178,8 +178,8 @@ const me = async (req, res) => {
 
 const addToken = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const addQuery = 'INSERT INTO device_tokens (user_id, device_type, token) VALUES ($1, $2, $3)';
   const checkquery = 'SELECT * FROM device_tokens WHERE token = $1';
@@ -215,8 +215,8 @@ const SberClientSecret = env.sberAuthClientSecret;
 
 const initSberAuth = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const addQuery = 'INSERT INTO sberauthsessions (nonce, state, scope, phone) VALUES ($1, $2, $3, $4) RETURNING nonce, state, scope';
   const checkQuery = 'SELECT nonce, state, scope FROM sberauthsessions WHERE phone = $1';
@@ -248,8 +248,8 @@ const initSberAuth = async (req, res) => {
 
 const validateSberAuth = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const curl = new (require( 'curl-request' ))();
 

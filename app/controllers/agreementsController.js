@@ -24,8 +24,8 @@ import {snsPublish} from '../helpers/sns';
 
 const getAgreements = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const getQuery = 'SELECT a.* from added_agreements as aa inner join agreements as a on aa.agr_uid = a.uid where aa.user_id = $1 union SELECT * FROM agreements where creator_id = $1 ORDER BY created_at DESC'
 
@@ -47,8 +47,8 @@ const getAgreements = async (req, res) => {
 
 const getAgreement = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const getQuery = 'SELECT * FROM agreements where uid = $1';
 
@@ -77,8 +77,8 @@ const getAgreement = async (req, res) => {
 
 const addAgreementToAdded = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { uid } = req.body
 
@@ -128,8 +128,8 @@ const addAgreementToAdded = async (req, res) => {
 
 const getAgreementSubs = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const getQuery = 'SELECT s.created_at, u.inn, u.phone, u.user_name FROM subscribtion as s inner join users as u on s.subs_id = u.id WHERE s.agr_uid = $1';
   const { uid } = req.body
@@ -154,8 +154,8 @@ const getAgreementSubs = async (req, res) => {
 
 const uploadAgreement = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { title } = req.body;
 
@@ -177,8 +177,8 @@ const uploadAgreement = async (req, res) => {
 
 const initSubscription = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { uid } = req.body;
 
@@ -254,8 +254,8 @@ const initSubscription = async (req, res) => {
 
 const validateSubscription = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { sessionid, code } = req.body;
 

@@ -21,8 +21,8 @@ import {
 
 const uploadDocs = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { inn, email } = req.body;
   const findUserQuery = 'SELECT isvalidated, is_on_validation FROM users WHERE id = $1';
@@ -59,8 +59,8 @@ const uploadDocs = async (req, res) => {
 
 const uploadNonPhizData = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { inn, email } = req.body;
   const findUserQuery = 'SELECT isvalidated, is_on_validation FROM users WHERE id = $1';

@@ -23,8 +23,8 @@ import {s3delete} from '../helpers/s3';
 
 const listOfUsers = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   //const { inn, email } = req.body;
   //const findUserQuery = 'SELECT isvalidated, is_on_validation FROM users WHERE id = $1';
@@ -40,8 +40,8 @@ const listOfUsers = async (req, res) => {
 
 const concretUser = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { id } = req.params;
   const getUserQuery = 'SELECT * from users WHERE id = $1'
@@ -71,8 +71,8 @@ const concretUser = async (req, res) => {
 
 const validateUser = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { id } = req.params;
   const { name } = req.body;
@@ -101,8 +101,8 @@ const validateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { id } = req.params;
   const getUserQuery = 'SELECT * from users WHERE id = $1'
@@ -135,8 +135,8 @@ const deleteUser = async (req, res) => {
 
 const deleteAgreement = async (req, res) => {
 
-  const errorMessage = eMessage;
-  const successMessage = sMessage;
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
 
   const { id } = req.params;
   const getUserQuery = 'SELECT * from agreements WHERE id = $1'
