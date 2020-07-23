@@ -12,7 +12,7 @@ const status = {
 };
 
 export {
-  successMessage,
-  errorMessage,
+  sMessage,
+  eMessage,
   status
 };
