@@ -60,7 +60,7 @@ const renderCheckout = async (req, res) => {
 
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
   const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
-  const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1';
+  const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1 WHERE uid = $2';
 
   try {
 
@@ -70,6 +70,19 @@ const renderCheckout = async (req, res) => {
     if (!dbResponse) {
       errorMessage.message = "invalidID";
       return res.status(status.bad).send(errorMessage);
+    }
+
+    if (dbResponse.yndx_id) {
+      YandexCheckout.getPayment(dbResponse.yndx_id)
+        .then(function(payment) {
+          console.log({payment: payment});
+          if payment.status != "pending" {
+            return res.status(status.success).send(successMessage);
+          }
+        })
+        .catch(function(err) {
+          console.error(err);
+        })
     }
 
     const rawUserData = await dbQuery.query(getUserData, [dbResponse.user_id]);
@@ -111,13 +124,13 @@ const renderCheckout = async (req, res) => {
     }, idempotenceKey)
       .then(function(payment) {
         console.log({payment: payment});
-        var return_url = "https://you-scribe.ru/"
+        var return_url = "https://you-scribe.ru/checkout/" + uid;
         const result = {
           confirmation_token: payment.confirmation.confirmation_token,
           return_url: return_url,
          };
         res.render('pages/yandexCheckout', result);
-        dbQuery.query(updatePaymentQuery, [payment.id]);
+        dbQuery.query(updatePaymentQuery, [payment.id, dbResponse.uid]);
       })
       .catch(function(err) {
         console.error(err);
