@@ -76,7 +76,7 @@ const renderCheckout = async (req, res) => {
       YandexCheckout.getPayment(dbResponse.yndx_id)
         .then(function(payment) {
           console.log({payment: payment});
-          if payment.status != "pending" {
+          if (payment.status != "pending") {
             return res.status(status.success).send(successMessage);
           }
         })
