@@ -124,7 +124,7 @@ const renderCheckout = async (req, res) => {
     }, idempotenceKey)
       .then(function(payment) {
         console.log({payment: payment});
-        var return_url = "https://you-scribe.ru/checkout/" + uid;
+        var return_url = "https://you-scribe.ru/api/v1/checkout/" + uid;
         const result = {
           confirmation_token: payment.confirmation.confirmation_token,
           return_url: return_url,
