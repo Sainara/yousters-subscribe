@@ -81,11 +81,11 @@ const renderCheckout = async (req, res) => {
       'capture': true,
       'description': uid
     }, idempotenceKey)
-      .then(function(result) {
-        console.log({payment: result});
+      .then(function(payment) {
+        console.log({payment: payment});
         var return_url = "https://you-scribe.ru/"
         const result = {
-          confirmation_token: result.confirmation.confirmation_token,
+          confirmation_token: payment.confirmation.confirmation_token,
           return_url: return_url,
          };
         res.render('pages/yandexCheckout', result);
