@@ -90,7 +90,7 @@ const renderCheckout = async (req, res) => {
           "type": "payment",
           "send": "true",
           "customer": {
-            "phone": req.user.phone.
+            "phone": req.user.phone,
             'inn': userData.inn,
             'email' : userData.email
           },
