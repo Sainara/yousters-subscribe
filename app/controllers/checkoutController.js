@@ -83,17 +83,19 @@ const renderCheckout = async (req, res) => {
     }, idempotenceKey)
       .then(function(result) {
         console.log({payment: result});
+        var return_url = "https://you-scribe.ru/"
+        const result = {
+          confirmation_token: result.confirmation.confirmation_token,
+          return_url: return_url,
+         };
+        res.render('pages/yandexCheckout', result);
       })
       .catch(function(err) {
         console.error(err);
+        res.status(status.bad).send(errorMessage);
       })
 
-    var return_url = "https://you-scribe.ru/"
-    const result = {
-      confirmation_token: return_url,
-      return_url: return_url,
-     };
-    res.render('pages/yandexCheckout', result);
+
   } catch (error) {
     console.error(error);
     return res.status(status.bad).send(errorMessage);

@@ -1,0 +1,37 @@
+CREATE TABLE entersessions(id serial PRIMARY KEY, sessionID VARCHAR, code VARCHAR, tryCounter int, expiretime timestamptz, number VARCHAR);
+CREATE TABLE users(id serial PRIMARY KEY, phone VARCHAR, user_name VARCHAR);
+
+
+ALTER TABLE users add COLUMN created_on timestamptz;
+ALTER TABLE users add COLUMN isvalidated bool default false;
+ALTER TABLE users ADD COLUMN main_passport VARCHAR;
+ALTER TABLE users ADD COLUMN second_passport VARCHAR;
+ALTER TABLE users ADD COLUMN is_on_validation bool default false;
+ALTER TABLE users add COLUMN email VARCHAR;
+ALTER TABLE users add COLUMN inn VARCHAR;
+alter TABLE users add COLUMN validation_type VARCHAR;
+
+create TABLE blacklist(id serial PRIMARY KEY, phone VARCHAR not null, reason VARCHAR, added_at timestamptz);
+
+create TABLE agreements(id serial PRIMARY KEY, title VARCHAR, hash VARCHAR, link VARCHAR, created_at timestamptz, creator_id int);
+ALTER TABLE agreements ADD COLUMN status_id int default 1;
+ALTER TABLE agreements add COLUMN uid VARCHAR;
+
+CREATE TABLE subscribtion(id serial PRIMARY KEY, agr_uid VARCHAR, subs_id int, created_at timestamptz);
+
+CREATE TABLE device_tokens(id serial PRIMARY KEY, user_id int, device_type VARCHAR, token VARCHAR);
+
+CREATE TABLE subscribesessions(id serial PRIMARY KEY, sessionID VARCHAR, code VARCHAR, tryCounter int, agr_uid VARCHAR, expiretime timestamptz,);
+ALTER TABLE subscribesessions add COLUMN to_num VARCHAR;
+
+CREATE TABLE added_agreements(id serial PRIMARY KEY, user_id int, agr_uid VARCHAR);
+
+CREATE TABLE payments(id serial PRIMARY KEY, uid VARCHAR, user_id int, agr_uid VARCHAR, amount VARCHAR, created_at timestamptz);
+
+alter TABLE payments add COLUMN status VARCHAR default 'created';
+alter TABLE payments add COLUMN yndx_id VARCHAR;
+
+CREATE TABLE sberAuthSessions(id serial PRIMARY KEY, nonce VARCHAR, state VARCHAR, scope VARCHAR);
+
+alter table sberauthsessions add column created_at timestamptz default CURRENT_TIMESTAMP;
+alter table sberauthsessions add column phone varchar;
