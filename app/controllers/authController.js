@@ -24,6 +24,8 @@ import {
   snsPublish
 } from '../helpers/sns';
 
+import env from '../../env';
+
 const auth = async (req, res) => {
 
   const { number } = req.body;
@@ -196,6 +198,9 @@ const addToken = async (req, res) => {
   }
 };
 
+const SberClientID = env.sberAuthClientID;
+const SberClientSecret = env.sberAuthClientSecret;
+
 const initSberAuth = async (req, res) => {
 
   const addQuery = 'INSERT INTO sberauthsessions (nonce, state, scope, phone) VALUES ($1, $2, $3, $4) RETURNING nonce, state, scope';
@@ -217,6 +222,7 @@ const initSberAuth = async (req, res) => {
 
     if (dbResponse) {
       successMessage.data = dbResponse;
+      successMessage.data.clietID = SberClientID;
       return res.status(status.success).send(successMessage);
     }
   } catch (error) {
@@ -229,8 +235,8 @@ const validateSberAuth = async (req, res) => {
 
   const curl = new (require( 'curl-request' ))();
 
-  const clietID = 'f9945844-1acb-4225-94ce-4f7e7ba08b2e';
-  const clientSecret = 'S8fA0vO4cQ5sE3oC8yN0tY0cE6dJ6dB7fH3xH2mY7xE7oX7jH4';
+  const clietID = SberClientID;
+  const clientSecret = SberClientSecret;
 
   const {authCode} = req.body;
 
