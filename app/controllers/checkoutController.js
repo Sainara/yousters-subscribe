@@ -72,18 +72,16 @@ const renderCheckout = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    if (dbResponse.yndx_id) {
-      YandexCheckout.getPayment(dbResponse.yndx_id)
-        .then(function(payment) {
-          console.log({payment: payment});
-          if (payment.status != "pending") {
-            return res.status(status.success).send(successMessage);
-          }
-        })
-        .catch(function(err) {
-          console.error(err);
-        })
-    }
+    // if (dbResponse.yndx_id) {
+    //   YandexCheckout.getPayment(dbResponse.yndx_id)
+    //     .then(function(payment) {
+    //       console.log({payment: payment});
+    //
+    //     })
+    //     .catch(function(err) {
+    //       console.error(err);
+    //     })
+    // }
 
     const rawUserData = await dbQuery.query(getUserData, [dbResponse.user_id]);
     const userData = rawUserData.rows[0];
@@ -124,6 +122,11 @@ const renderCheckout = async (req, res) => {
     }, idempotenceKey)
       .then(function(payment) {
         console.log({payment: payment});
+
+        if (payment.status != "pending") {
+          return res.status(status.success).send(successMessage);
+        }
+
         var return_url = "https://you-scribe.ru/api/v1/checkout/" + uid;
         const result = {
           confirmation_token: payment.confirmation.confirmation_token,
