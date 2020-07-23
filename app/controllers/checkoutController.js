@@ -59,7 +59,7 @@ const renderCheckout = async (req, res) => {
   const { uid } = req.params;
 
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
-  const getUserData = 'SELECT inn, email FROM users WHERE id = $1';
+  const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
   const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1';
 
   try {
@@ -72,7 +72,7 @@ const renderCheckout = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    const rawUserData = await dbQuery.query(getUserData, [req.user.id]);
+    const rawUserData = await dbQuery.query(getUserData, [dbResponse.user_id]);
     const userData = rawUserData.rows[0];
 
     var idempotenceKey = uid;
@@ -90,7 +90,7 @@ const renderCheckout = async (req, res) => {
           "type": "payment",
           "send": "true",
           "customer": {
-            "phone": req.user.phone,
+            "phone": userData.phone.substring(1),
             'inn': userData.inn,
             'email' : userData.email
           },
