@@ -64,6 +64,14 @@ const renderCheckout = async (req, res) => {
 
   const { uid } = req.params;
 
+  if (uid == "success") {
+    return res.status(status.success);
+  }
+
+  if (uid == "failure") {
+    return res.status(status.success).send('Оплата не прошла');
+  }
+
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
   const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
   const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1 WHERE uid = $2';
@@ -119,6 +127,11 @@ const renderCheckout = async (req, res) => {
         console.log({payment: payment});
 
         if (payment.status != "pending") {
+          if (payment.paid) {
+            return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+          } else {
+            return res.redirect('https://you-scribe.ru/api/v1/checkout/failure');
+          }
           return res.status(status.success).send(successMessage);
         }
 
