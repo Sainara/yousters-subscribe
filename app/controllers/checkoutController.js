@@ -78,7 +78,7 @@ const renderCheckout = async (req, res) => {
   const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
   const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1 WHERE uid = $2';
   const updatePaymentStatusQuery = 'UPDATE payments SET status = $1 WHERE uid = $2';
-  const updateAgreementQuery = 'UPDATE agreements set status_id = 7 WHERE uid = $1';
+  const updateAgreementQuery = 'UPDATE agreements set status_id = 5 WHERE uid = $1';
 
   try {
 
