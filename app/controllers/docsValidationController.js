@@ -16,11 +16,13 @@ import {
 } from '../helpers/generators';
 
 import {
-  errorMessage, successMessage, status,
+  eMessage, sMessage, status,
 } from '../helpers/status';
 
-
 const uploadDocs = async (req, res) => {
+
+  const errorMessage = eMessage;
+  const successMessage = sMessage;
 
   const { inn, email } = req.body;
   const findUserQuery = 'SELECT isvalidated, is_on_validation FROM users WHERE id = $1';
@@ -56,6 +58,9 @@ const uploadDocs = async (req, res) => {
 };
 
 const uploadNonPhizData = async (req, res) => {
+
+  const errorMessage = eMessage;
+  const successMessage = sMessage;
 
   const { inn, email } = req.body;
   const findUserQuery = 'SELECT isvalidated, is_on_validation FROM users WHERE id = $1';

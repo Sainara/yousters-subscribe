@@ -18,7 +18,7 @@ import {
 } from '../helpers/generators';
 
 import {
-  errorMessage, successMessage, status,
+  eMessage, sMessage, status,
 } from '../helpers/status';
 
 import {s3get} from '../helpers/s3';
@@ -27,6 +27,9 @@ import notFoundRoute from '../routes/404Route';
 
 
 const renderCase = async (req, res) => {
+
+  const errorMessage = eMessage;
+  const successMessage = sMessage;
 
   const { uid } = req.params;
 
@@ -66,6 +69,9 @@ const renderCase = async (req, res) => {
 };
 
 const renderDoc = async (req, res) => {
+
+  const errorMessage = eMessage;
+  const successMessage = sMessage;
 
   const { uid } = req.params;
 

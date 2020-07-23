@@ -14,7 +14,7 @@ import {
 } from '../helpers/checkers';
 
 import {
-  errorMessage, successMessage, status,
+  eMessage, sMessage, status,
 } from '../helpers/status';
 
 import env from '../../env';
@@ -23,8 +23,8 @@ var YandexCheckout = require('yandex-checkout')(env.yandexCheckoutShopId, env.ya
 
 const createPayment = async (req, res) => {
 
-  const errorMessage = errorMessage;
-  const successMessage = successMessage;
+  const errorMessage = eMessage;
+  const successMessage = sMessage;
 
   const { agr_uid } = req.body;
 
@@ -59,8 +59,8 @@ const createPayment = async (req, res) => {
 
 const renderCheckout = async (req, res) => {
 
-  const errorMessage = errorMessage;
-  const successMessage = successMessage;
+  const errorMessage = eMessage;
+  const successMessage = sMessage;
 
   const { uid } = req.params;
 
