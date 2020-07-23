@@ -133,7 +133,7 @@ const renderCheckout = async (req, res) => {
         if (payment.status != "pending") {
           if (payment.paid) {
             dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
-            await dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
+            dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
             return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
           } else {
             dbQuery.query(updatePaymentStatusQuery, ['failure', dbResponse.uid]);
