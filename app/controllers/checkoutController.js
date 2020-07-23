@@ -78,7 +78,7 @@ const renderCheckout = async (req, res) => {
   const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
   const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1 WHERE uid = $2';
   const updatePaymentStatusQuery = 'UPDATE payments SET status = $1 WHERE uid = $2';
-
+  const updateAgreementQuery = 'UPDATE agreements set status = 7 WHERE uid = $1';
 
   try {
 
@@ -133,6 +133,7 @@ const renderCheckout = async (req, res) => {
         if (payment.status != "pending") {
           if (payment.paid) {
             dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
+            await dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
             return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
           } else {
             dbQuery.query(updatePaymentStatusQuery, ['failure', dbResponse.uid]);
