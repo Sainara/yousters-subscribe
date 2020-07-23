@@ -23,6 +23,9 @@ var YandexCheckout = require('yandex-checkout')(env.yandexCheckoutShopId, env.ya
 
 const createPayment = async (req, res) => {
 
+  const errorMessage = errorMessage;
+  const successMessage = successMessage;
+
   const { agr_uid } = req.body;
 
   const checkExistQuery = 'SELECT uid FROM payments WHERE agr_uid = $1';
@@ -56,6 +59,9 @@ const createPayment = async (req, res) => {
 
 const renderCheckout = async (req, res) => {
 
+  const errorMessage = errorMessage;
+  const successMessage = successMessage;
+
   const { uid } = req.params;
 
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
@@ -71,17 +77,6 @@ const renderCheckout = async (req, res) => {
       errorMessage.message = "invalidID";
       return res.status(status.bad).send(errorMessage);
     }
-
-    // if (dbResponse.yndx_id) {
-    //   YandexCheckout.getPayment(dbResponse.yndx_id)
-    //     .then(function(payment) {
-    //       console.log({payment: payment});
-    //
-    //     })
-    //     .catch(function(err) {
-    //       console.error(err);
-    //     })
-    // }
 
     const rawUserData = await dbQuery.query(getUserData, [dbResponse.user_id]);
     const userData = rawUserData.rows[0];
