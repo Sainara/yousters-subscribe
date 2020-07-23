@@ -57,7 +57,10 @@ const createPayment = async (req, res) => {
 const renderCheckout = async (req, res) => {
 
   const { uid } = req.params;
+
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
+  const getUserData = 'SELECT inn, email FROM users WHERE id = $1';
+  const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1';
 
   try {
 
@@ -69,6 +72,9 @@ const renderCheckout = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
+    const rawUserData = await dbQuery.query(getUserData, [req.user.id]);
+    const userData = rawUserData.rows[0];
+
     var idempotenceKey = uid;
     YandexCheckout.createPayment({
       'amount': {
@@ -79,7 +85,29 @@ const renderCheckout = async (req, res) => {
         'type': 'embedded'
       },
       'capture': true,
-      'description': uid
+      'description': uid,
+      "receipt": {
+          "type": "payment",
+          "send": "true",
+          "customer": {
+            "phone": req.user.phone.
+            'inn': userData.inn,
+            'email' : userData.email
+          },
+          "items": [
+            {
+              "description": "Разовое подписание",
+              "quantity": "1.00",
+              "amount": {
+                "value": dbResponse.amount,
+                "currency": "RUB"
+              },
+              "vat_code": "1",
+            }
+          ],
+          "settlements": [
+          ]
+        }
     }, idempotenceKey)
       .then(function(payment) {
         console.log({payment: payment});
@@ -89,6 +117,7 @@ const renderCheckout = async (req, res) => {
           return_url: return_url,
          };
         res.render('pages/yandexCheckout', result);
+        dbQuery.query(updatePaymentQuery, [payment.id]);
       })
       .catch(function(err) {
         console.error(err);
