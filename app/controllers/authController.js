@@ -222,7 +222,7 @@ const initSberAuth = async (req, res) => {
 
     if (dbResponse) {
       successMessage.data = dbResponse;
-      successMessage.data.clietID = SberClientID;
+      successMessage.data.clientID = SberClientID;
       return res.status(status.success).send(successMessage);
     }
   } catch (error) {
