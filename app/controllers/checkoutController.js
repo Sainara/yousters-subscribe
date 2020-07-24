@@ -190,49 +190,57 @@ const renderCheckout = async (req, res) => {
 
     var idempotenceKey = uid;
 
-    const curl = new (require( 'curl-request' ))();
+    var request = require('request');
 
-    curl
-    .setHeaders([
-      'accept: application/json',
-      'content-type: application/json'
-    ])
-    .setBody(
-      {
-        "TerminalKey": env.tnkf_terminal_id,
-        "Amount": 3900,
-        "OrderId": uid,
-        "Description": "Разовое подписание документа",
-        "DATA": {
-            "Phone": userData.phone,
-            "Email": userData.email
-        },
-        "Receipt": {
-            "Email": userData.email,
-            "Phone": userData.phone,
-            "EmailCompany": "info@you-scribe.ru",
-            "Taxation": "usn_income",
-            "Items": [
-                {
-                    "Name": "Разовое подписание",
-                    "Price": 3900,
-                    "Quantity": 1.00,
-                    "Amount": 3900,
-                    "PaymentMethod": "full_prepayment",
-                    "PaymentObject": "service",
-                    "Tax": "none"
-                }
-            ]
-        }
-    }
-      )
-    .post('https://securepay.tinkoff.ru/v2/Init')
-    .then(({statusCode, body, headers}) => {
-        console.log(statusCode, body, headers)
-    })
-    .catch((e) => {
-        console.log('console.error();');
+    var myJSONObject = {
+      "TerminalKey": env.tnkf_terminal_id,
+      "Amount": 3900,
+      "OrderId": uid,
+      "Description": "Разовое подписание документа",
+      "DATA": {
+          "Phone": userData.phone,
+          "Email": userData.email
+      },
+      "Receipt": {
+          "Email": userData.email,
+          "Phone": userData.phone,
+          "EmailCompany": "info@you-scribe.ru",
+          "Taxation": "usn_income",
+          "Items": [
+              {
+                  "Name": "Разовое подписание",
+                  "Price": 3900,
+                  "Quantity": 1.00,
+                  "Amount": 3900,
+                  "PaymentMethod": "full_prepayment",
+                  "PaymentObject": "service",
+                  "Tax": "none"
+              }
+          ]
+      }
+  };
+    request({
+        url: "https://securepay.tinkoff.ru/v2/Init",
+        method: "POST",
+        json: true,   // <--Very important!!!
+        body: myJSONObject
+    }, function (error, response, body){
+        console.log(response);
     });
+
+    // const { data } = await curly.post('', {
+    //   postFields: JSON.stringify(
+    //
+    //   ),
+    //   httpHeader: [
+    //     'Content-Type: application/json',
+    //     'Accept: application/json'
+    //   ],
+    // })
+    //
+    // console.log(JSON.parse(data))
+
+
 
 
   } catch (error) {
