@@ -226,7 +226,9 @@ const renderCheckout = async (req, res) => {
         body: myJSONObject
     }, function (error, response, body){
         console.log(body.PaymentId);
-          console.log(body.PaymentURL);
+        console.log(body.PaymentURL);
+        dbQuery.query(updatePaymentQuery, [body.PaymentId, dbResponse.uid]);
+        return res.redirect(body.PaymentURL);
     });
 
     // const { data } = await curly.post('', {
