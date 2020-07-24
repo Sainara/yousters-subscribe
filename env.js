@@ -7,5 +7,6 @@ export default {
   yandexCheckoutSecretKey: 'test_IOIH5soFDNF9gRmbEDXnQN8Uy910oH3SouIBxirQmsE',
   sms_ru_api_id: 'BE2FD0CD-F301-8524-B59F-A401C359E329',
   sberAuthClientID: '',
-  sberAuthClientSecret: ''
+  sberAuthClientSecret: '',
+  tnkf_terminal_id: '1595602181033DEMO'
 }

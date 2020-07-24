@@ -30,6 +30,8 @@ CREATE TABLE payments(id serial PRIMARY KEY, uid VARCHAR, user_id int, agr_uid V
 
 alter TABLE payments add COLUMN status VARCHAR default 'created';
 alter TABLE payments add COLUMN yndx_id VARCHAR;
+alter table payments add column tnkf_id varchar;
+
 
 CREATE TABLE sberAuthSessions(id serial PRIMARY KEY, nonce VARCHAR, state VARCHAR, scope VARCHAR);
 
