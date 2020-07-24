@@ -172,24 +172,19 @@ const renderCheckout = async (req, res) => {
 
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
   const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
-  const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1 WHERE uid = $2';
+  const updatePaymentQuery = 'UPDATE payments SET tnkf_id = $1 WHERE uid = $2';
   const updatePaymentStatusQuery = 'UPDATE payments SET status = $1 WHERE uid = $2';
   const updateAgreementQuery = 'UPDATE agreements set status_id = 5 WHERE uid = $1';
 
   try {
 
     if (uid == "success") {
-      return res.status(status.success);
+      return res.status(status.success).send('Paid');
     }
 
 
     if (uid == "failure") {
         return res.status(status.success).send('<h1>Оплата не прошла</h1>');
-    }
-
-    if (check) {
-      console.log("checking");
-      return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
     }
 
     const {rows} = await dbQuery.query(getPaymentQuery, [uid]);
@@ -212,7 +207,7 @@ const renderCheckout = async (req, res) => {
       "Amount": 3900,
       "OrderId": uid,
       "Description": "Разовое подписание документа",
-      "SuccessURL": "https://you-scribe.ru/api/v1/checkout/" + uid + "?check=true",
+      "SuccessURL": "https://you-scribe.ru/api/v1/checkout/" + uid,
       "DATA": {
           "Phone": userData.phone,
           "Email": userData.email
@@ -248,6 +243,12 @@ const renderCheckout = async (req, res) => {
         console.log(body.PaymentURL);
         dbQuery.query(updatePaymentQuery, [body.PaymentId, dbResponse.uid]);
         return res.redirect(body.PaymentURL);
+      } else {
+        if (body.ErrorCode == '8') {
+          dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
+          dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
+          return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+        }
       }
     });
 
