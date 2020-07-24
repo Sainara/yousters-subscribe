@@ -212,7 +212,7 @@ const renderCheckout = async (req, res) => {
       "Amount": 3900,
       "OrderId": uid,
       "Description": "Разовое подписание документа",
-      "SuccessURL": "https://you-scribe.ru/api/v1/checkout/${uid}?check=true",
+      "SuccessURL": "https://you-scribe.ru/api/v1/checkout/" + uid + "?check=true",
       "DATA": {
           "Phone": userData.phone,
           "Email": userData.email
@@ -235,6 +235,7 @@ const renderCheckout = async (req, res) => {
           ]
       }
   };
+  console.log(myJSONObject);
     request({
         url: "https://securepay.tinkoff.ru/v2/Init",
         method: "POST",
