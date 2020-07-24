@@ -184,7 +184,10 @@ const renderCheckout = async (req, res) => {
 
 
     if (uid == "failure") {
-        return res.status(status.success).send('<h1>Оплата не прошла</h1>');
+        var data = req.query;
+        data.PaymentURL = "https://you-scribe.ru/api/v1/checkout/" + uid;
+        console.log(data);
+        return res.status(status.success).render('pages/static/paymentFailure', data);
     }
 
     const {rows} = await dbQuery.query(getPaymentQuery, [uid]);

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <% include ../../partials/header.ejs %>
+    <link rel="stylesheet" href="/stylesheets/404.css">
+  </head>
+  <body>
+    <main>
+      <h1>Yousters Subscribe</h1>
+
+
+      <p id="errorText">Оплата не прошла! <%= Message %></p>
+      <a id="errorLink" href="<%= PaymentURL %>">Повторить</a>
+    </main>
+
+  </body>
+</html>
