@@ -177,6 +177,10 @@ const renderCheckout = async (req, res) => {
 
   try {
 
+    if (uid == "success") {
+      return res.status(status.success);
+    }
+
     const {rows} = await dbQuery.query(getPaymentQuery, [uid]);
     const dbResponse = rows[0];
 
@@ -225,26 +229,14 @@ const renderCheckout = async (req, res) => {
         json: true,   // <--Very important!!!
         body: myJSONObject
     }, function (error, response, body){
+      console.log(body);
+      if (body.Success) {
         console.log(body.PaymentId);
         console.log(body.PaymentURL);
         dbQuery.query(updatePaymentQuery, [body.PaymentId, dbResponse.uid]);
         return res.redirect(body.PaymentURL);
+      }
     });
-
-    // const { data } = await curly.post('', {
-    //   postFields: JSON.stringify(
-    //
-    //   ),
-    //   httpHeader: [
-    //     'Content-Type: application/json',
-    //     'Accept: application/json'
-    //   ],
-    // })
-    //
-    // console.log(JSON.parse(data))
-
-
-
 
   } catch (error) {
     console.error(error);
