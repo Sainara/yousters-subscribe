@@ -185,7 +185,7 @@ const renderCheckout = async (req, res) => {
 
     if (uid == "failure") {
         var data = req.query;
-        data.PaymentURL = "https://you-scribe.ru/api/v1/checkout/" + uid;
+        data.PaymentURL = "https://you-scribe.ru/api/v1/checkout/" + data.OrderId;
         console.log(data);
         return res.status(status.success).render('pages/static/paymentFailure', data);
     }

@@ -20,6 +20,7 @@ main {
 main #errorText {
   font-size: 26px;
   margin: 14px 0;
+  text-align: center;
   color: #000;
 }
 main #errorLink {
