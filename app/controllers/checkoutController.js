@@ -168,6 +168,7 @@ const renderCheckout = async (req, res) => {
   const successMessage = Object.assign({}, sMessage);
 
   const { uid } = req.params;
+  const { check } = req.query;
 
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
   const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
@@ -182,9 +183,14 @@ const renderCheckout = async (req, res) => {
     }
 
 
-      if (uid == "failure") {
+    if (uid == "failure") {
         return res.status(status.success).send('<h1>Оплата не прошла</h1>');
-      }
+    }
+
+    if (check) {
+      console.log("checking");
+      return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+    }
 
     const {rows} = await dbQuery.query(getPaymentQuery, [uid]);
     const dbResponse = rows[0];
@@ -197,7 +203,7 @@ const renderCheckout = async (req, res) => {
     const rawUserData = await dbQuery.query(getUserData, [dbResponse.user_id]);
     const userData = rawUserData.rows[0];
 
-    var idempotenceKey = uid;
+    //var idempotenceKey = uid;
 
     var request = require('request');
 
@@ -206,6 +212,7 @@ const renderCheckout = async (req, res) => {
       "Amount": 3900,
       "OrderId": uid,
       "Description": "Разовое подписание документа",
+      "SuccessURL": "https://you-scribe.ru/api/v1/checkout/${uid}?check=true",
       "DATA": {
           "Phone": userData.phone,
           "Email": userData.email
