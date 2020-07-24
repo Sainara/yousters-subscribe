@@ -181,6 +181,11 @@ const renderCheckout = async (req, res) => {
       return res.status(status.success);
     }
 
+
+      if (uid == "failure") {
+        return res.status(status.success).send('<h1>Оплата не прошла</h1>');
+      }
+
     const {rows} = await dbQuery.query(getPaymentQuery, [uid]);
     const dbResponse = rows[0];
 
