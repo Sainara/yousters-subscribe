@@ -225,7 +225,8 @@ const renderCheckout = async (req, res) => {
         json: true,   // <--Very important!!!
         body: myJSONObject
     }, function (error, response, body){
-        console.log(response);
+        console.log(body.PaymentId);
+          console.log(body.PaymentURL);
     });
 
     // const { data } = await curly.post('', {
