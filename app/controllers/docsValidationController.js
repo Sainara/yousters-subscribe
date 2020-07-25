@@ -122,7 +122,7 @@ const renderBill = async (req, res) => {
         const dadata = new Dadata(env.dadata_apiKey);
         dadata.party({ query: inn, count: 1 })
         .then((data) => {
-            console.log(data.suggestions[0].value);
+            console.log(data);
             if (data.suggestions[0].value) {
 
               // const values = [inn, , req.user.id]
