@@ -30,7 +30,7 @@ const comparePassword = (hashedPassword, password) => {
    * @returns {Boolean} True or False
    */
 const isValidEmail = (email) => {
-  const regEx = /\S+@\S+\.\S+/;
+  const regEx = new RegExp("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}");
   return regEx.test(email);
 };
 
