@@ -5,6 +5,7 @@ import dbQuery from '../db/dbQuery';
 import {
   hashPassword,
   isValidEmail,
+  isValidINN,
   validatePassword,
   isEmpty,
 } from '../helpers/validations';
@@ -105,9 +106,8 @@ const renderBill = async (req, res) => {
   const inn = req.query.inn;
   const email = req.query.email;
 
-  var re = new RegExp("^([0-9]{10}|[0-9]{12})$");
 
-  if (re.test(inn)) {
+  if (isValidINN(inn) && isValidEmail(email)) {
 
     const checkHowMuch = 'SELECT * FROM bills WHERE creator_id = $1';
     const checkExist = 'SELECT * FROM bills WHERE inn = $1';
@@ -123,7 +123,7 @@ const renderBill = async (req, res) => {
       }
 
       var checkHowMuchQuery = await dbQuery.query(checkHowMuch, [req.user.id]);
-      if (checkHowMuchQuery.rows.length > 3) {
+      if (checkHowMuchQuery.rows.length > 2) {
         return res.status(status.success).render('pages/static/errorPage', {Message: 'Слишком много запросов'});
       }
 
@@ -205,9 +205,8 @@ const renderBill = async (req, res) => {
     }
 
   } else {
-    console.error("invalid inn");
-    errorMessage.message = "invalidINN";
-    return res.status(status.bad).send(errorMessage);
+    console.error("invalid inn or email");
+    return res.status(status.success).render('pages/static/errorPage', {Message: 'Некоректный ИНН и Email'});
   }
 
 };

@@ -159,6 +159,11 @@ const uploadAgreement = async (req, res) => {
 
   const { title } = req.body;
 
+  if (!isValidNameLength(title)) {
+    errorMessage.message = "tooLongName";
+    return res.status(status.bad).send(errorMessage);
+  }
+
   const createQuery = 'INSERT INTO agreements (title, hash, link, created_at, creator_id, uid) VALUES ($1, $2, $3, $4, $5, $6)';
 
   try {

@@ -34,6 +34,15 @@ const isValidEmail = (email) => {
   return regEx.test(email);
 };
 
+const isValidINN = (inn) => {
+  const regEx = new RegExp("^([0-9]{10}|[0-9]{12})$");
+  return regEx.test(inn);
+};
+
+const isValidNameLength = (name) => {
+  return name.length < 200;
+};
+
 /**
    * validatePassword helper method
    * @param {string} password
@@ -73,6 +82,8 @@ export {
   hashPassword,
   comparePassword,
   isValidEmail,
+  isValidINN,
+  isValidNameLength,
   validatePassword,
   isEmpty,
   empty,
