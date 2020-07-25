@@ -11,6 +11,7 @@ import agreementsRoute from './app/routes/agreementsRoute';
 import publicAgreementRoute from './app/routes/publicAgreementRoute';
 
 import checkoutRoute from './app/routes/checkoutRoute';
+import paketRoute from './app/routes/paketRoute';
 
 import adminRoute from './app/routes/adminRoute';
 
@@ -19,10 +20,6 @@ import aasa from './ios/apple-app-site-association';
 import legalRoute from './app/routes/legalRoute';
 
 import notFoundRoute from './app/routes/404Route';
-
-// For Dev
-
-
 
 
 var app = express();
@@ -50,6 +47,8 @@ app.use(API_PATH, authRoute);
 app.use(API_PATH, docsValidationRoute);
 app.use(API_PATH, agreementsRoute);
 app.use(API_PATH, checkoutRoute);
+app.use(API_PATH, paketRoute);
+
 
 app.use('', publicAgreementRoute);
 

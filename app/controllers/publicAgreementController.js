@@ -25,7 +25,6 @@ import {s3get} from '../helpers/s3';
 
 import notFoundRoute from '../routes/404Route';
 
-
 const renderCase = async (req, res) => {
 
   const errorMessage = Object.assign({}, eMessage);
