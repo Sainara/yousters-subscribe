@@ -6,6 +6,7 @@ var sha256File = require('sha256-file');
 import {
   hashPassword,
   isValidEmail,
+  isValidNameLength,
   validatePassword,
   isEmpty,
 } from '../helpers/validations';
