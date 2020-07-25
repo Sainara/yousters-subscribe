@@ -114,10 +114,16 @@ const renderBill = async (req, res) => {
     const createBill = 'insert into bills(inn, link, expire, creator_id, invoiceNumber) VALUES ($1, $2, $3, $4, $5)'
 
     try {
+
+      var checkHowMuchQuery = await dbQuery.query(checkHowMuch, [req.user.id]);
+      if (checkHowMuchQuery.rows.length > 3) {
+        return res.status(status.success).render('pages/static/errorPage', {Message: 'Слишком много запросов'});
+      }
+
       var { rows } = await dbQuery.query(checkExist, [inn]);
       const dbResponse = rows[0];
 
-      if (!dbResponse) {
+      if (!dbResponse || moment(dbResponse.expire).isAfter(moment())) {
 
         const getInvoice = "Select nextval(pg_get_serial_sequence('bills', 'id'))";
         const invoiceNumberQuery = await dbQuery.query(getInvoice, []);
