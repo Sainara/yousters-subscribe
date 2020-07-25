@@ -160,7 +160,7 @@ const renderBill = async (req, res) => {
                   headers: {
                     'Authorization': "Bearer " + env.tnkf_openAPI_id,
                     'Content-Type': 'application/json'
-                  }
+                  },
                   json: true,   // <--Very important!!!
                   body: myJSONObject
               }, function (error, response, body){
