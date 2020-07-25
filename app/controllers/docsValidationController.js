@@ -119,7 +119,7 @@ const renderBill = async (req, res) => {
       const dbResponse = rows[0];
 
       if (dbResponse) {
-        res.redirect(dbResponse.link);
+        return res.status(status.success).redirect(dbResponse.link);
       }
 
       var checkHowMuchQuery = await dbQuery.query(checkHowMuch, [req.user.id]);
