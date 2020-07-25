@@ -156,7 +156,7 @@ const me = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const getQuery = 'SELECT phone, isvalidated, is_on_validation, user_name, inn, email FROM users WHERE id = $1';
+  const getQuery = 'SELECT phone, isvalidated, is_on_validation, user_name, inn, email, validation_type FROM users WHERE id = $1';
 
   try {
 
@@ -168,6 +168,8 @@ const me = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
+    dbResponse.isPhiz = dbResponse.validation_type != "nonPhiz";
+    delete dbResponse.validation_type;
     successMessage.data = dbResponse;
     return res.status(status.success).send(successMessage);
   } catch (error) {
