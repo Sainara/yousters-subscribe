@@ -119,8 +119,12 @@ const renderBill = async (req, res) => {
 
       if (!dbResponse) {
 
+        const getInvoice = "Select nextval(pg_get_serial_sequence('bills', 'id'))";
+        const invoiceNumber = await dbQuery.query(getInvoice, []).rows[0].nextval;
+
         const Dadata = require('dadata-suggestions');
         const dadata = new Dadata(env.dadata_apiKey);
+
         dadata.party({ query: inn, count: 1 })
         .then((data) => {
             console.log(data);
@@ -128,8 +132,6 @@ const renderBill = async (req, res) => {
 
               var request = require('request');
 
-              const getInvoice = "Select nextval(pg_get_serial_sequence('bills', 'id'))";
-              const invoiceNumber = await dbQuery.query(getInvoice, []).rows[0].nextval;
               const expire = moment().add(5, 'd');
 
               var myJSONObject = {
