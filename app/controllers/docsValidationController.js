@@ -102,9 +102,9 @@ const renderBill = async (req, res) => {
 
   const inn = req.query.inn;
 
-  var re = new RegExp("^(\d{12})$");
+  var re = new RegExp("^([0-9]{10}|[0-9]{12})$");
 
-  if (re.test(term)) {
+  if (re.test(inn)) {
 
     const checkHowMuch = 'SELECT * FROM bills WHERE creator_id = $1';
     const checkExist = 'SELECT * FROM bills WHERE inn = $1';
@@ -128,7 +128,7 @@ const renderBill = async (req, res) => {
         .catch((error) => {
           console.error(error);
           return res.status(status.bad).send(errorMessage);
-        }) 
+        })
       }
 
 
