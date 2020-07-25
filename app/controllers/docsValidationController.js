@@ -115,13 +115,17 @@ const renderBill = async (req, res) => {
 
     try {
 
+      var { rows } = await dbQuery.query(checkExist, [inn]);
+      const dbResponse = rows[0];
+
+      if (dbResponse) {
+        res.redirect(dbResponse.link);
+      }
+
       var checkHowMuchQuery = await dbQuery.query(checkHowMuch, [req.user.id]);
       if (checkHowMuchQuery.rows.length > 3) {
         return res.status(status.success).render('pages/static/errorPage', {Message: 'Слишком много запросов'});
       }
-
-      var { rows } = await dbQuery.query(checkExist, [inn]);
-      const dbResponse = rows[0];
 
       if (!dbResponse || moment(dbResponse.expire).isAfter(moment())) {
 
@@ -193,14 +197,7 @@ const renderBill = async (req, res) => {
           console.error(error);
           return res.status(status.bad).send(errorMessage);
         })
-      } else {
-        res.redirect(dbResponse.link);
-      }
-
-
-
-
-
+      };
       //return res.status(status.success).send(successMessage);
     } catch (error) {
       console.error(error);
