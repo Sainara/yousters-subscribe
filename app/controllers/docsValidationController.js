@@ -19,6 +19,8 @@ import {
   eMessage, sMessage, status,
 } from '../helpers/status';
 
+import env from '../../env';
+
 const uploadDocs = async (req, res) => {
 
   const errorMessage = Object.assign({}, eMessage);
