@@ -140,7 +140,7 @@ const renderBill = async (req, res) => {
               },
               "items": [
                 {
-                  "name": "Регистрация " + + " на сервисе Yousters Subscribe",
+                  "name": "Регистрация " + data.suggestions[0].value + " на сервисе Yousters Subscribe",
                   "price": 1,
                   "unit": "Шт",
                   "vat": "None",
@@ -183,7 +183,12 @@ const renderBill = async (req, res) => {
           console.error(error);
           return res.status(status.bad).send(errorMessage);
         })
+      } else {
+        res.redirect(dbResponse.link);
       }
+
+
+
 
 
       //return res.status(status.success).send(successMessage);
