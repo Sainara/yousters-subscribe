@@ -123,9 +123,13 @@ const renderBill = async (req, res) => {
         dadata.party({ query: inn, count: 1 })
         .then((data) => {
             console.log(data.suggestions[0].value);
+            if (data.suggestions[0].value) {
 
-            // const values = [inn, , req.user.id]
-            // const create = await dbQuery.query(createBill, values)
+              // const values = [inn, , req.user.id]
+              // const create = await dbQuery.query(createBill, values)
+            } else {
+              return res.status(status.success).render('pages/static/errorPage', {Message: 'Поиск по ИНН не дал результатов'});
+            }
         })
         .catch((error) => {
           console.error(error);
@@ -134,7 +138,7 @@ const renderBill = async (req, res) => {
       }
 
 
-      return res.status(status.success).send(successMessage);
+      //return res.status(status.success).send(successMessage);
     } catch (error) {
       console.error(error);
       return res.status(status.bad).send(errorMessage);
