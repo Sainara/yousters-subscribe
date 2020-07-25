@@ -120,7 +120,8 @@ const renderBill = async (req, res) => {
       if (!dbResponse) {
 
         const getInvoice = "Select nextval(pg_get_serial_sequence('bills', 'id'))";
-        const invoiceNumber = await dbQuery.query(getInvoice, []).rows[0].nextval;
+        const invoiceNumberQuery = await dbQuery.query(getInvoice, []);
+        const invoiceNumber = invoiceNumberQuery.rows[0].nextval;
 
         const Dadata = require('dadata-suggestions');
         const dadata = new Dadata(env.dadata_apiKey);
