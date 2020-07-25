@@ -97,9 +97,59 @@ const uploadNonPhizData = async (req, res) => {
 
 const renderBill = async (req, res) => {
 
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const inn = req.query.inn;
+
+  var re = new RegExp("^(\d{12})$");
+
+  if (re.test(term)) {
+
+    const checkHowMuch = 'SELECT * FROM bills WHERE creator_id = $1';
+    const checkExist = 'SELECT * FROM bills WHERE inn = $1';
+    const createBill = 'insert into bills(inn, link, expire, creator_id) VALUES ($1, $2, $3)'
+
+    try {
+      var { rows } = await dbQuery.query(checkExist, [inn]);
+      const dbResponse = rows[0];
+
+      if (!dbResponse) {
+
+        const Dadata = require('dadata-suggestions');
+        const dadata = new Dadata(env.dadata_apiKey);
+        dadata.party({ query: inn, count: 1 })
+        .then((data) => {
+            console.log(data.suggestions[0].value);
+
+            // const values = [inn, , req.user.id]
+            // const create = await dbQuery.query(createBill, values)
+        })
+        .catch(error) {
+          console.error(error);
+          return res.status(status.bad).send(errorMessage);
+        };
+      }
+
+
+      return res.status(status.success).send(successMessage);
+    } catch (error) {
+      console.error(error);
+      return res.status(status.bad).send(errorMessage);
+    }
+
+
+
+  } else {
+    console.error("invalid inn");
+    errorMessage.message = "invalidINN";
+    return res.status(status.bad).send(errorMessage);
+  }
+
 };
 
 export {
   uploadDocs,
-  uploadNonPhizData
+  uploadNonPhizData,
+  renderBill
 };

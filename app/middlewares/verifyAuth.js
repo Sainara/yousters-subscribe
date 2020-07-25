@@ -16,15 +16,15 @@ import env from '../../env';
 const verifyToken = async (req, res, next) => {
 
   const errorMessage = Object.assign({}, eMessage);
-  
+
   //console.log(req.headers);
-  const { token } = req.headers;
+  const token = req.headers.token || req.query.token;
   if (!token) {
     errorMessage.error = 'Token not provided';
     return res.status(status.bad).send(errorMessage);
   }
   try {
-    const decoded =  jwt.verify(token, env.secret);
+    const decoded = jwt.verify(token, env.secret);
 
     req.user = {
       id: decoded.id,

@@ -8,5 +8,6 @@ export default {
   sms_ru_api_id: 'BE2FD0CD-F301-8524-B59F-A401C359E329',
   sberAuthClientID: '',
   sberAuthClientSecret: '',
-  tnkf_terminal_id: '1595602181033DEMO'
+  tnkf_terminal_id: '1595602181033DEMO',
+  tnkf_openAPI_id: 't.2w7dOUSTDG8ce4KxiaWWdinlmrD35fgs99T-CSwev_UYADzn79dnYYqoPIP-JSnX-Un3zf8ybKEv7kc7m3Dw_Q'
 }
