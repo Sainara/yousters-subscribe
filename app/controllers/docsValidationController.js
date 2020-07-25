@@ -125,10 +125,10 @@ const renderBill = async (req, res) => {
             // const values = [inn, , req.user.id]
             // const create = await dbQuery.query(createBill, values)
         })
-        .catch(error) {
+        .catch((error) => {
           console.error(error);
           return res.status(status.bad).send(errorMessage);
-        };
+        }) 
       }
 
 
