@@ -128,7 +128,8 @@ const renderBill = async (req, res) => {
 
               var request = require('request');
 
-              const invoiceNumber = generateCode(6);
+              const getInvoice = "Select nextval(pg_get_serial_sequence('bills', 'id'))";
+              const invoiceNumber = await dbQuery.query(getInvoice, []).rows[0].nextval;
               const expire = moment().add(5, 'd');
 
               var myJSONObject = {
