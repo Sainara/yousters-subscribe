@@ -31,7 +31,7 @@ const getAviablePakets = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const selectPaketsQuery = 'SELECT id, title, price, description, howmuch FROM paketplans WHERE isactive = true ORDER BY price';
+  const selectPaketsQuery = 'SELECT id, title, price, description, howmuch FROM paketplans WHERE isactive = true ORDER BY howmuch';
 
   try {
     var { rows } = await dbQuery.query(selectPaketsQuery, []);
