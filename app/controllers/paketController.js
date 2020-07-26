@@ -17,6 +17,10 @@ import {
 } from '../helpers/generators';
 
 import {
+  isAgreementExist
+} from '../helpers/checkers';
+
+import {
   eMessage, sMessage, status,
 } from '../helpers/status';
 
@@ -31,26 +35,6 @@ const getAviablePakets = async (req, res) => {
 
   try {
     var { rows } = await dbQuery.query(selectPaketsQuery, []);
-    //const dbResponse = rows[0];
-
-    // if (!dbResponse) {
-    //   errorMessage.message = "";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // if (dbResponse.isvalidated) {
-    //   errorMessage.message = "userValidated";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // if (dbResponse.is_on_validation) {
-    //   errorMessage.message = "userOnValidate";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
-    //
-    // const updateQuery = 'UPDATE users SET inn = $1, email = $2, main_passport = $3, second_passport = $4, video_passport = $5, is_on_validation = true, validation_type = $6 WHERE id = $7';
-    // const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location, 'phiz', req.user.id]
-    // const result = await dbQuery.query(updateQuery, values);
 
     successMessage.data = rows
     return res.status(status.success).send(successMessage);
@@ -84,6 +68,57 @@ const getMyPaketsAndUsage = async (req, res) => {
     successMessage.data.usage = usage.rows[0].count;
     successMessage.data.packets = rows;
     return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
+const usePaket = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const {agr_uid} = req.body;
+  const user_id = req.user.id;
+
+  const countPaket = 'SELECT SUM (pp.howmuch) AS total FROM userpakets as up inner join paketplans as pp on up.paket_id = pp.id WHERE up.user_id = $1';
+  const countUsage = 'SELECT COUNT(*) FROM pakets_usage WHERE user_id = $1';
+  const updateAgreementQuery = 'UPDATE agreements set status_id = 5 WHERE uid = $1';
+  const checkIsPaid = 'SELECT status_id FROM agreement WHERE uid = $1';
+  const insertUsage = 'INSERT INTO pakets_usage(agr_uid, user_id) VALUES ($1, $2)';
+
+  try {
+    var { rows } = await dbQuery.query(countPaket, [user_id]);
+
+    if (!rows[0].total) {
+      errorMessage.message  = "noPakets";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    if (!await isAgreementExist(agr_uid)) {
+      errorMessage.message = "agreementNotFound";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var cis = await dbQuery.query(checkIsPaid, [user_id]);
+
+    if (cis.rows[0].status_id >= 5) {
+      errorMessage.message = "alreadyPaid";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var usage = await dbQuery.query(countUsage, [user_id]);
+
+    if (rows[0].total <= usage.rows[0].count) {
+      dbQuery.query(updateAgreementQuery, [agr_uid]);
+      dbQuery.query(insertUsage, [agr_uid, user_id]);
+      return res.status(status.success).send(successMessage);
+    } else {
+      errorMessage.message  = "noPakets";
+      return res.status(status.bad).send(errorMessage);
+    }
+
   } catch (error) {
     console.error(error);
     return res.status(status.bad).send(errorMessage);
@@ -130,6 +165,7 @@ const getMyPaketsAndUsage = async (req, res) => {
 
 export {
   getAviablePakets,
-  getMyPaketsAndUsage
+  getMyPaketsAndUsage,
+  usePaket
   //uploadNonPhizData
 };
