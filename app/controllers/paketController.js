@@ -65,7 +65,7 @@ const getMyPaketsAndUsage = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const selectPaketsQuery = 'SELECT up.paket_id, pp.howmuch, pp.title FROM userpakets as ap inner join paketplans as pp on up.paket_id = pp.id WHERE up.user_id = $1';
+  const selectPaketsQuery = 'SELECT up.paket_id, pp.howmuch, pp.title FROM userpakets as up inner join paketplans as pp on up.paket_id = pp.id WHERE up.user_id = $1';
   const countUsage = 'SELECT COUNT(*) FROM pakets_usage WHERE user_id = $1;'
 
   const user_id = req.user.id;
