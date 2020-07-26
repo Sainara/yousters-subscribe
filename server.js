@@ -43,6 +43,8 @@ app.use((req, res, next) => {
     next();
 });
 
+app.set('trust proxy', 1);
+
 app.use(API_PATH, authRoute);
 app.use(API_PATH, docsValidationRoute);
 app.use(API_PATH, agreementsRoute);

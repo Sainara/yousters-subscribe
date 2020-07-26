@@ -10,6 +10,8 @@ import { getAgreements,
 } from '../controllers/agreementsController';
 import verifyAuth from '../middlewares/verifyAuth';
 import {uploader} from '../helpers/s3';
+import { primaryLimit } from '../helpers/rateLimits';
+
 
 const router = express.Router();
 
@@ -19,15 +21,15 @@ const router = express.Router();
 //router.post('/uploaddocs', verifyAuth, cpUpload, uploadDocs);
 router.get('/getagreement/:uid', getAgreement);
 
-router.post('/getagreements', verifyAuth, getAgreements);
-router.post('/getagreementssubs', verifyAuth, getAgreementSubs);
+router.post('/getagreements', primaryLimit, verifyAuth, getAgreements);
+router.post('/getagreementssubs', primaryLimit, verifyAuth, getAgreementSubs);
 
-router.post('/initsubscribe', verifyAuth, initSubscription);
-router.post('/validatesubscribe', verifyAuth, validateSubscription);
+router.post('/initsubscribe', primaryLimit, verifyAuth, initSubscription);
+router.post('/validatesubscribe', primaryLimit, verifyAuth, validateSubscription);
 
-router.post('/addagreement', verifyAuth, addAgreementToAdded);
+router.post('/addagreement', primaryLimit, verifyAuth, addAgreementToAdded);
 
-router.post('/uploadagreement', verifyAuth, uploader.single('doc'), uploadAgreement);
+router.post('/uploadagreement', primaryLimit, verifyAuth, uploader.single('doc'), uploadAgreement);
 
 
 export default router;

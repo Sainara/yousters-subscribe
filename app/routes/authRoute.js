@@ -1,17 +1,18 @@
 import express from 'express';
 
 import { auth, validate, me, addToken, initSberAuth } from '../controllers/authController';
+import { primaryLimit, createAccountLimiter } from '../helpers/rateLimits';
 import verifyAuth from '../middlewares/verifyAuth';
 
 const router = express.Router();
 
 // auth Routes
 
-router.post('/auth', auth);
-router.post('/validate', validate);
-router.post('/me', verifyAuth, me);
+router.post('/auth', createAccountLimiter, auth);
+router.post('/validate', primaryLimit, validate);
+router.post('/me', primaryLimit, verifyAuth, me);
 router.post('/token', verifyAuth, addToken);
 
-router.post('/sber/init', verifyAuth, initSberAuth);
+router.post('/sber/init', primaryLimit, verifyAuth, initSberAuth);
 ////
 export default router;
