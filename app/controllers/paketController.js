@@ -101,7 +101,7 @@ const usePaket = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    var cis = await dbQuery.query(checkIsPaid, [user_id]);
+    var cis = await dbQuery.query(checkIsPaid, [agr_uid]);
 
     if (cis.rows[0].status_id >= 5) {
       errorMessage.message = "alreadyPaid";
