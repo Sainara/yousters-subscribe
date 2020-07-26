@@ -79,7 +79,7 @@ const createPayment = async (req, res) => {
     try {
 
       var checkPaket = await dbQuery.query(checkPaketQuery, [paket_id]);
-      const checkPaketdbResponse = check.rows[0];
+      const checkPaketdbResponse = checkPaket.rows[0];
 
       if (!checkPaketdbResponse) {
         errorMessage.message = "paketNotFound";
