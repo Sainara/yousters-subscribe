@@ -220,7 +220,7 @@ const renderCheckout = async (req, res) => {
     const rawUserData = await dbQuery.query(getUserData, [dbResponse.user_id]);
     const userData = rawUserData.rows[0];
 
-    const amount = dbResponse.amout.replace('.','');
+    const amount = dbResponse.amount.replace('.','');
 
     //var idempotenceKey = uid;
 
