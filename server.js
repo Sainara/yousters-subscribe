@@ -44,8 +44,8 @@ app.use((req, res, next) => {
 });
 
 app.use(function (req, res, next) {
-  console.log('Time:', Date.now());
-  console.log(req);
+  console.log('Time:', moment().format("DD.MM.YYYY, HH:mm:ss"));
+  console.log(req.url);
   next();
 });
 
