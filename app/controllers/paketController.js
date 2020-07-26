@@ -80,8 +80,9 @@ const getMyPaketsAndUsage = async (req, res) => {
 
     var usage = await dbQuery.query(countUsage, [user_id]);
 
-    successMessage.data.usage = usage.rows[0].count
-    successMessage.data.packets = rows
+    successMessage.data = {usage: '', packets: ''};
+    successMessage.data.usage = usage.rows[0].count;
+    successMessage.data.packets = rows;
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
