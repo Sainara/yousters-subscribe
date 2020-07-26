@@ -5,15 +5,20 @@ var multerS3 = require('multer-s3')
 import { v4 as uuidv4 } from 'uuid';
 
 // Enter copied or downloaded access ID and secret key here
-const ID = 'AKIAIC7YAIR2JRJPVQBQ';
-const SECRET = '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';
+// const ID = 'AKIAIC7YAIR2JRJPVQBQ';
+// const SECRET = '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';
+
+const ID = 'vh2Q2YYym0jqMQFefY8-';
+const SECRET = 'c-IkYLU8-Gfn-8WLgAnpn8gJaWjORcZOIhqfEWo1';
 
 // The name of the bucket that you have created
-const BUCKET_NAME = 'yousterssubs';
+const BUCKET_NAME = 'you-scribe-main-bucket';
 
 const s3 = new AWS.S3({
     accessKeyId: ID,
-    secretAccessKey: SECRET
+    secretAccessKey: SECRET,
+    region: 'ru-central1',
+    endpoint: 'storage.yandexcloud.net'
 });
 
 const uploader = multer({
