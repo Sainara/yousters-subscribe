@@ -110,7 +110,7 @@ const usePaket = async (req, res) => {
 
     var usage = await dbQuery.query(countUsage, [user_id]);
 
-    if (rows[0].total <= usage.rows[0].count) {
+    if (rows[0].total > usage.rows[0].count) {
       dbQuery.query(updateAgreementQuery, [agr_uid]);
       dbQuery.query(insertUsage, [agr_uid, user_id]);
       return res.status(status.success).send(successMessage);

@@ -43,6 +43,12 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(function (req, res, next) {
+  console.log('Time:', Date.now());
+  console.log(req);
+  next();
+});
+
 app.set('trust proxy', 1);
 
 app.use(API_PATH, authRoute);
