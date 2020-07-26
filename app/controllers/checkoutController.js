@@ -73,7 +73,7 @@ const createPayment = async (req, res) => {
     const { paket_id } = req.body;
 
     const checkPaketQuery = 'SELECT * FROM paketplans WHERE id = $1';
-    const checkExistQuery = 'SELECT uid, status FROM payments WHERE paket_id = $1';
+    const checkExistQuery = 'SELECT uid, status FROM payments WHERE paket_id = $1 AND user_id = $2';
     const createQuery = 'INSERT INTO payments (uid, user_id, paket_id, amount, created_at) VALUES ($1, $2, $3, $4, $5) returning uid';
 
     try {
@@ -86,7 +86,7 @@ const createPayment = async (req, res) => {
         return res.status(status.bad).send(errorMessage);
       }
 
-      var check = await dbQuery.query(checkExistQuery, [agr_uid]);
+      var check = await dbQuery.query(checkExistQuery, [paket_id, req.user.id]);
       const dbResponse = check.rows[check.rows.length - 1];
 
       if (dbResponse) {
