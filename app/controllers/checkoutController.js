@@ -89,13 +89,6 @@ const createPayment = async (req, res) => {
       var check = await dbQuery.query(checkExistQuery, [paket_id, req.user.id]);
       const dbResponse = check.rows[check.rows.length - 1];
 
-      if (dbResponse) {
-        if (dbResponse.status != "failure") {
-          successMessage.uid = dbResponse.uid;
-          return res.status(status.success).send(successMessage);
-        }
-      }
-
       const values = [uuidv4(), req.user.id, paket_id, checkPaketdbResponse.price, moment(), checkPaketdbResponse.title];
       const {rows} = await dbQuery.query(createQuery, values);
 
@@ -276,7 +269,7 @@ const renderCheckout = async (req, res) => {
           "Taxation": "usn_income",
           "Items": [
               {
-                  "Name": "Разовое подписание",
+                  "Name": dbResponse.title,
                   "Price": amount,
                   "Quantity": 1.00,
                   "Amount": amount,
