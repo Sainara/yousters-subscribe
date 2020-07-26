@@ -27,7 +27,7 @@ const getAviablePakets = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const selectPaketsQuery = 'SELECT id, title, price, description FROM paketplans WHERE isactive = true ORDER BY price';
+  const selectPaketsQuery = 'SELECT id, title, price, description, howmuch FROM paketplans WHERE isactive = true ORDER BY price';
 
   try {
     var { rows } = await dbQuery.query(selectPaketsQuery, []);
@@ -65,7 +65,7 @@ const getMyPaketsAndUsage = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const selectPaketsQuery = 'SELECT up.paket_id, pp.howmuch, pp.title FROM userpakets as up inner join paketplans as pp on up.paket_id = pp.id WHERE up.user_id = $1';
+  const selectPaketsQuery = 'SELECT pp.howmuch, pp.id, pp.title, pp.price, pp.description FROM userpakets as up inner join paketplans as pp on up.paket_id = pp.id WHERE up.user_id = $1';
   const countUsage = 'SELECT COUNT(*) FROM pakets_usage WHERE user_id = $1;'
 
   const user_id = req.user.id;
