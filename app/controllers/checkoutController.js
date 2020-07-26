@@ -56,7 +56,7 @@ const createPayment = async (req, res) => {
         }
       }
 
-      const values = [uuidv4(), req.user.id, agr_uid, '39.00', moment()];
+      const values = [uuidv4(), req.user.id, agr_uid, '49.00', moment()];
       const {rows} = await dbQuery.query(createQuery, values);
 
       successMessage.uid = rows[0].uid;
@@ -220,13 +220,15 @@ const renderCheckout = async (req, res) => {
     const rawUserData = await dbQuery.query(getUserData, [dbResponse.user_id]);
     const userData = rawUserData.rows[0];
 
+    const amount = dbResponse.amout.replace('.','');
+
     //var idempotenceKey = uid;
 
     var request = require('request');
 
     var myJSONObject = {
       "TerminalKey": env.tnkf_terminal_id,
-      "Amount": 3900,
+      "Amount": amount,
       "OrderId": uid,
       "Description": "Разовое подписание документа",
       "SuccessURL": "https://you-scribe.ru/api/v1/checkout/" + uid,
@@ -242,9 +244,9 @@ const renderCheckout = async (req, res) => {
           "Items": [
               {
                   "Name": "Разовое подписание",
-                  "Price": 3900,
+                  "Price": amount,
                   "Quantity": 1.00,
-                  "Amount": 3900,
+                  "Amount": amount,
                   "PaymentMethod": "full_prepayment",
                   "PaymentObject": "service",
                   "Tax": "none"
