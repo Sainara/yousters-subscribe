@@ -2,7 +2,7 @@ const rateLimit = require("express-rate-limit");
 
 import {
   eMessage, sMessage, status,
-} from 'status';
+} from './status';
 
 eMessage.message = "tooManyRequests";
 
