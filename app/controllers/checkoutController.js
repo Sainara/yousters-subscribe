@@ -69,8 +69,43 @@ const createPayment = async (req, res) => {
   }
 
   if (type == 'paket') {
-    errorMessage.message = "notImplement";
-    return res.status(status.bad).send(errorMessage);
+
+    const { paket_id } = req.body;
+
+    const checkPaketQuery = 'SELECT * FROM paketplans WHERE id = $1';
+    const checkExistQuery = 'SELECT uid, status FROM payments WHERE paket_id = $1';
+    const createQuery = 'INSERT INTO payments (uid, user_id, paket_id, amount, created_at) VALUES ($1, $2, $3, $4, $5) returning uid';
+
+    try {
+
+      var checkPaket = await dbQuery.query(checkPaketQuery, [paket_id]);
+      const checkPaketdbResponse = check.rows[0];
+
+      if (!checkPaketdbResponse) {
+        errorMessage.message = "paketNotFound";
+        return res.status(status.bad).send(errorMessage);
+      }
+
+      var check = await dbQuery.query(checkExistQuery, [agr_uid]);
+      const dbResponse = check.rows[check.rows.length - 1];
+
+      if (dbResponse) {
+        if (dbResponse.status != "failure") {
+          successMessage.uid = dbResponse.uid;
+          return res.status(status.success).send(successMessage);
+        }
+      }
+
+      const values = [uuidv4(), req.user.id, paket_id, checkPaketdbResponse.price, moment()];
+      const {rows} = await dbQuery.query(createQuery, values);
+
+      successMessage.uid = rows[0].uid;
+      return res.status(status.success).send(successMessage);
+
+    } catch (error) {
+      console.error(error);
+      return res.status(status.bad).send(errorMessage);
+    }
   }
 
   errorMessage.message = "incorrectType";
