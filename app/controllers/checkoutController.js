@@ -38,7 +38,7 @@ const createPayment = async (req, res) => {
     const { agr_uid } = req.body;
 
     const checkExistQuery = 'SELECT uid, status FROM payments WHERE agr_uid = $1';
-    const createQuery = 'INSERT INTO payments (uid, user_id, agr_uid, amount, created_at) VALUES ($1, $2, $3, $4, $5) returning uid';
+    const createQuery = 'INSERT INTO payments (uid, user_id, agr_uid, amount, created_at, title) VALUES ($1, $2, $3, $4, $5, $6) returning uid';
 
     try {
       if (!await isAgreementExist(agr_uid)) {
@@ -56,7 +56,7 @@ const createPayment = async (req, res) => {
         }
       }
 
-      const values = [uuidv4(), req.user.id, agr_uid, '49.00', moment()];
+      const values = [uuidv4(), req.user.id, agr_uid, '49.00', moment(), 'Разовое подписание'];
       const {rows} = await dbQuery.query(createQuery, values);
 
       successMessage.uid = rows[0].uid;
@@ -74,7 +74,7 @@ const createPayment = async (req, res) => {
 
     const checkPaketQuery = 'SELECT * FROM paketplans WHERE id = $1';
     const checkExistQuery = 'SELECT uid, status FROM payments WHERE paket_id = $1 AND user_id = $2';
-    const createQuery = 'INSERT INTO payments (uid, user_id, paket_id, amount, created_at) VALUES ($1, $2, $3, $4, $5) returning uid';
+    const createQuery = 'INSERT INTO payments (uid, user_id, paket_id, amount, created_at, title) VALUES ($1, $2, $3, $4, $5, $6) returning uid';
 
     try {
 
@@ -96,7 +96,7 @@ const createPayment = async (req, res) => {
         }
       }
 
-      const values = [uuidv4(), req.user.id, paket_id, checkPaketdbResponse.price, moment()];
+      const values = [uuidv4(), req.user.id, paket_id, checkPaketdbResponse.price, moment(), checkPaketdbResponse.title];
       const {rows} = await dbQuery.query(createQuery, values);
 
       successMessage.uid = rows[0].uid;
@@ -222,7 +222,6 @@ const renderCheckout = async (req, res) => {
   const successMessage = Object.assign({}, sMessage);
 
   const { uid } = req.params;
-  const { check } = req.query;
 
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
   const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
@@ -265,7 +264,7 @@ const renderCheckout = async (req, res) => {
       "TerminalKey": env.tnkf_terminal_id,
       "Amount": amount,
       "OrderId": uid,
-      "Description": "Разовое подписание документа",
+      "Description": dbResponse.title,
       "SuccessURL": "https://you-scribe.ru/api/v1/checkout/" + uid,
       "DATA": {
           "Phone": userData.phone,
