@@ -228,6 +228,7 @@ const renderCheckout = async (req, res) => {
   const updatePaymentQuery = 'UPDATE payments SET tnkf_id = $1 WHERE uid = $2';
   const updatePaymentStatusQuery = 'UPDATE payments SET status = $1 WHERE uid = $2';
   const updateAgreementQuery = 'UPDATE agreements set status_id = 5 WHERE uid = $1';
+  const addPaketInfo = 'INSERT INTO userpakets(paket_id, user_id, payment_uid) VALUES ($1, $2, $3)';
 
   try {
 
@@ -255,8 +256,6 @@ const renderCheckout = async (req, res) => {
     const userData = rawUserData.rows[0];
 
     const amount = dbResponse.amount.replace('.','');
-
-    //var idempotenceKey = uid;
 
     var request = require('request');
 
@@ -288,6 +287,7 @@ const renderCheckout = async (req, res) => {
           ]
       }
   };
+
   console.log(myJSONObject);
     request({
         url: "https://securepay.tinkoff.ru/v2/Init",
@@ -304,8 +304,15 @@ const renderCheckout = async (req, res) => {
       } else {
         if (body.ErrorCode == '8') {
           dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
-          dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
-          return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+          if (dbResponse.agr_uid) {
+            dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
+            return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+          }
+          if (dbResponse.paket_id) {
+            dbQuery.query(addPaketInfo, [dbResponse.paket_id, dbResponse.user_id, uid]);
+            return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+          }
+          return res.status(status.success).render('pages/static/errorPage', {Message: 'Что-то пошло не так'});
         }
       }
     });
