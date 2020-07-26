@@ -26,37 +26,56 @@ const createPayment = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const { agr_uid } = req.body;
+  const { type } = req.body;
 
-  const checkExistQuery = 'SELECT uid, status FROM payments WHERE agr_uid = $1';
-  const createQuery = 'INSERT INTO payments (uid, user_id, agr_uid, amount, created_at) VALUES ($1, $2, $3, $4, $5) returning uid';
-
-  try {
-    if (!await isAgreementExist(agr_uid)) {
-      errorMessage.message = "agreementNotFound";
-      return res.status(status.bad).send(errorMessage);
-    }
-
-    var check = await dbQuery.query(checkExistQuery, [agr_uid]);
-    const dbResponse = check.rows[check.rows.length - 1];
-
-    if (dbResponse) {
-      if (dbResponse.status != "failure") {
-        successMessage.uid = dbResponse.uid;
-        return res.status(status.success).send(successMessage);
-      }
-    }
-
-    const values = [uuidv4(), req.user.id, agr_uid, '39.00', moment()];
-    const {rows} = await dbQuery.query(createQuery, values);
-
-    successMessage.uid = rows[0].uid;
-    return res.status(status.success).send(successMessage);
-
-  } catch (error) {
-    console.error(error);
+  if (!type) {
+    errorMessage.message = "missingType";
     return res.status(status.bad).send(errorMessage);
   }
+
+  if (type == 'agreement') {
+
+    const { agr_uid } = req.body;
+
+    const checkExistQuery = 'SELECT uid, status FROM payments WHERE agr_uid = $1';
+    const createQuery = 'INSERT INTO payments (uid, user_id, agr_uid, amount, created_at) VALUES ($1, $2, $3, $4, $5) returning uid';
+
+    try {
+      if (!await isAgreementExist(agr_uid)) {
+        errorMessage.message = "agreementNotFound";
+        return res.status(status.bad).send(errorMessage);
+      }
+
+      var check = await dbQuery.query(checkExistQuery, [agr_uid]);
+      const dbResponse = check.rows[check.rows.length - 1];
+
+      if (dbResponse) {
+        if (dbResponse.status != "failure") {
+          successMessage.uid = dbResponse.uid;
+          return res.status(status.success).send(successMessage);
+        }
+      }
+
+      const values = [uuidv4(), req.user.id, agr_uid, '39.00', moment()];
+      const {rows} = await dbQuery.query(createQuery, values);
+
+      successMessage.uid = rows[0].uid;
+      return res.status(status.success).send(successMessage);
+
+    } catch (error) {
+      console.error(error);
+      return res.status(status.bad).send(errorMessage);
+    }
+  }
+
+  if (type == 'paket') {
+    errorMessage.message = "notImplement";
+    return res.status(status.bad).send(errorMessage);
+  }
+
+  errorMessage.message = "incorrectType";
+  return res.status(status.bad).send(errorMessage);
+
 };
 
 // const renderCheckout = async (req, res) => {
