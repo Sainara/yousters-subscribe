@@ -60,6 +60,35 @@ const getAviablePakets = async (req, res) => {
   }
 };
 
+const getMyPaketsAndUsage = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const selectPaketsQuery = 'SELECT up.paket_id, pp.howmuch, pp.title FROM userpakets as ap inner join paketplans as pp on up.paket_id = pp.id WHERE up.user_id = $1';
+  const countUsage = 'SELECT COUNT(*) FROM pakets_usage WHERE user_id = $1;'
+
+  const user_id = req.user.id;
+
+  try {
+    var { rows } = await dbQuery.query(selectPaketsQuery, [user_id]);
+
+    if (!rows[0]) {
+      successMessage.data.packets = rows
+      return res.status(status.success).send(successMessage);
+    }
+
+    var usage = await dbQuery.query(countUsage, [user_id]);
+
+    successMessage.data.usage = usage.rows[0].count
+    successMessage.data.packets = rows
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 // const uploadNonPhizData = async (req, res) => {
 //
 //   const errorMessage = Object.assign({}, eMessage);
@@ -100,5 +129,6 @@ const getAviablePakets = async (req, res) => {
 
 export {
   getAviablePakets,
+  getMyPaketsAndUsage
   //uploadNonPhizData
 };

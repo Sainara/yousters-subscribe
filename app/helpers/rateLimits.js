@@ -14,7 +14,7 @@ const primaryLimit = rateLimit({
 
 const createAccountLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour window
-  max: 3, // start blocking after 5 requests
+  max: 3, // start blocking after 3 requests
   message: eMessage
 });
 

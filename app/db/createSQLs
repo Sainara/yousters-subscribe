@@ -46,3 +46,5 @@ alter table bills add column creator_id int;
 Create table paketplans(id serial PRIMARY KEY, title VARCHAR, price VARCHAR, description VARCHAR, isActive Boolean, howMuch int, forWho varchar);
 
 Create table userpakets(id serial PRIMARY KEY, paket_id int, user_id int, created_at timestamptz default CURRENT_TIMESTAMP, payment_uid VARCHAR, howMuch int);
+
+Create table pakets_usage(id serial PRIMARY KEY, agr_uid varchar, user_id int, created_at timestamptz default CURRENT_TIMESTAMP);
