@@ -37,3 +37,8 @@ CREATE TABLE sberAuthSessions(id serial PRIMARY KEY, nonce VARCHAR, state VARCHA
 
 alter table sberauthsessions add column created_at timestamptz default CURRENT_TIMESTAMP;
 alter table sberauthsessions add column phone varchar;
+
+Create table bills(id serial PRIMARY KEY, inn VARCHAR, link VARCHAR, expire VARCHAR);
+alter table bills add column creator_id int;
+
+Create table paketplans(id serial PRIMARY KEY, title VARCHAR, price VARCHAR, description VARCHAR, isActive Boolean, howMuch int, forWho varchar);
