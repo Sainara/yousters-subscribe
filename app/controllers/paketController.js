@@ -85,7 +85,7 @@ const usePaket = async (req, res) => {
   const countPaket = 'SELECT SUM (pp.howmuch) AS total FROM userpakets as up inner join paketplans as pp on up.paket_id = pp.id WHERE up.user_id = $1';
   const countUsage = 'SELECT COUNT(*) FROM pakets_usage WHERE user_id = $1';
   const updateAgreementQuery = 'UPDATE agreements set status_id = 5 WHERE uid = $1';
-  const checkIsPaid = 'SELECT status_id FROM agreement WHERE uid = $1';
+  const checkIsPaid = 'SELECT status_id FROM agreements WHERE uid = $1';
   const insertUsage = 'INSERT INTO pakets_usage(agr_uid, user_id) VALUES ($1, $2)';
 
   try {
