@@ -111,10 +111,14 @@ const usePaket = async (req, res) => {
 
     var usage = await dbQuery.query(countUsage, [user_id]);
 
-    console.log(rows[0].total);
-    console.log(usage.rows[0].count);
-    console.log(rows[0].total > usage.rows[0].count);
-    if (rows[0].total > usage.rows[0].count) {
+
+    var total = rows[0].total;
+    var alreadyUsed = usage.rows[0].count;
+
+    console.log(total);
+    console.log(alreadyUsed);
+
+    if (total > alreadyUsed) {
       dbQuery.query(updateAgreementQuery, [agr_uid]);
       dbQuery.query(insertUsage, [agr_uid, user_id]);
       return res.status(status.success).send(successMessage);
