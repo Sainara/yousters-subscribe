@@ -91,6 +91,7 @@ const usePaket = async (req, res) => {
   try {
     var { rows } = await dbQuery.query(countPaket, [user_id]);
 
+    console.log(rows[0].total);
     if (!rows[0].total) {
       errorMessage.message  = "noPakets";
       return res.status(status.bad).send(errorMessage);
@@ -110,6 +111,8 @@ const usePaket = async (req, res) => {
 
     var usage = await dbQuery.query(countUsage, [user_id]);
 
+    console.log(rows[0].total);
+    console.log(usage.rows[0].count);
     if (rows[0].total > usage.rows[0].count) {
       dbQuery.query(updateAgreementQuery, [agr_uid]);
       dbQuery.query(insertUsage, [agr_uid, user_id]);
