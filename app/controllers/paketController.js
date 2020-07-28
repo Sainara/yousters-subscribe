@@ -115,8 +115,8 @@ const usePaket = async (req, res) => {
     var total = rows[0].total;
     var alreadyUsed = usage.rows[0].count;
 
-    console.log(total);
-    console.log(alreadyUsed);
+    console.log(typeof total);
+    console.log(typeof alreadyUsed);
 
     if (total > alreadyUsed) {
       dbQuery.query(updateAgreementQuery, [agr_uid]);
