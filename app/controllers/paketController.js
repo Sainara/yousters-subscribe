@@ -112,8 +112,8 @@ const usePaket = async (req, res) => {
     var usage = await dbQuery.query(countUsage, [user_id]);
 
 
-    var total = rows[0].total;
-    var alreadyUsed = usage.rows[0].count;
+    var total = Number(rows[0].total);
+    var alreadyUsed = Number(usage.rows[0].count);
 
     console.log(typeof total);
     console.log(typeof alreadyUsed);
