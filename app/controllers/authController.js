@@ -36,7 +36,7 @@ const auth = async (req, res) => {
   const phoneNumber = parsePhoneNumberFromString(number, 'RU')
 
   if (!phoneNumber.isValid()) {
-    errorMessage.message = "invalid phone number";
+    errorMessage.message = "invalidPhoneNumber";
     return res.status(status.bad).send(errorMessage);
   }
 
@@ -47,7 +47,7 @@ const auth = async (req, res) => {
 
     const check = await dbQuery.query(checkquery, [phoneNumber.number]);
     if (check.rows[0]) {
-      errorMessage.message = "number blocked";
+      errorMessage.message = "numberBlocked";
       return res.status(status.conflict).send(errorMessage);
     }
 
@@ -58,7 +58,7 @@ const auth = async (req, res) => {
     const { rows } = await dbQuery.query(addquery, [sessionid, code, 0, exp, phoneNumber.number]);
 
     const message =  code + " - Ваш код для Yousters Subscribe."
-    //const sms = snsPublish(phoneNumber.number, message);
+    const sms = snsPublish(phoneNumber.number, message);
 
     successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);
@@ -139,7 +139,7 @@ const validate = async (req, res) => {
       //console.log(count);
       const { rows } = await dbQuery.query(guery, [count, sessionid]);
 
-      errorMessage.message = "wrong code";
+      errorMessage.message = "wrongCode";
       return res.status(status.bad).send(errorMessage);
     }
 

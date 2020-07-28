@@ -69,7 +69,7 @@ app.get('/', async (req, res) => {
   res.render('pages/index', { page_title: "Main" });
 });
 app.get('/support', async (req, res) => {
-  res.render('pages/index', { page_title: "Support" });
+  res.render('pages/support', { page_title: "Support" });
 });
 
 app.get('/.well-known/apple-app-site-association', (req, res) => res.json(aasa));
