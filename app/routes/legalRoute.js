@@ -11,5 +11,8 @@ router.get('/termsofuse', (req, res) =>
 router.get('/confidential', (req, res) =>
   res.render('pages/static/legal/confidential/confidential', {page_title: "Политика конфиденциальности"})
 );
+router.get('/faq', async (req, res) => {
+  res.render('pages/static/legal/faq/faq', { page_title: "F.A.Q." });
+});
 
 export default router;

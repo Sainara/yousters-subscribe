@@ -17,5 +17,13 @@
 <script src="/js/uikit.min.js"></script>
 <script src="/js/uikit-icons.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+  let searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.get('inapp')) {
+    $('body')[0].children[0].outerHTML = '';
+    $('body')[0].children[1].outerHTML = '';
+    $('body')[0].children[0].children[0].outerHTML = '';
+  }
+</script>
 </body>
 </html>

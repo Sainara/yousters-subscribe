@@ -58,6 +58,7 @@ const getMyPaketsAndUsage = async (req, res) => {
     var { rows } = await dbQuery.query(selectPaketsQuery, [user_id]);
 
     if (!rows[0]) {
+      successMessage.data = {packets: ''};
       successMessage.data.packets = rows
       return res.status(status.success).send(successMessage);
     }
