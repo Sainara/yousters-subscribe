@@ -23,6 +23,10 @@
     $('body')[0].children[0].outerHTML = '';
     $('body')[0].children[1].outerHTML = '';
     $('body')[0].children[0].children[0].outerHTML = '';
+
+    for (var i = 0; i < $('a').length; i++) {
+      $('a')[0].attributes[0].value += "?inapp=true"
+    }
   }
 </script>
 </body>
