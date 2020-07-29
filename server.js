@@ -2,6 +2,8 @@ const express = require('express')
 const path = require('path')
 
 import moment from 'moment';
+import repeat from "repeat";
+
 
 import env from './env';
 
@@ -20,6 +22,8 @@ import aasa from './ios/apple-app-site-association';
 import legalRoute from './app/routes/legalRoute';
 
 import notFoundRoute from './app/routes/404Route';
+
+import nonPhizValidationWatcher from './app/watchers/authWatch';
 
 
 var app = express();
@@ -50,6 +54,12 @@ app.use(function (req, res, next) {
 });
 
 app.set('trust proxy', 1);
+
+repeat()
+  .do(nonPhizValidationWatcher())
+  .do(() => console.log("check users to validate by nonPhiz"))
+  .every(1000 * 60);
+
 
 app.use(API_PATH, authRoute);
 app.use(API_PATH, docsValidationRoute);

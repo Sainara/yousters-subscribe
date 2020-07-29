@@ -9,6 +9,6 @@ export default {
   sberAuthClientID: '',
   sberAuthClientSecret: '',
   tnkf_terminal_id: '1595602181033DEMO',
-  tnkf_openAPI_id: 't.2w7dOUSTDG8ce4KxiaWWdinlmrD35fgs99T-CSwev_UYADzn79dnYYqoPIP-JSnX-Un3zf8ybKEv7kc7m3Dw_Q',
+  tnkf_openAPI_id: 't.qGvcF0JuHfYjIAnGG_GeDSUqNge_b67FRsSw-JliXkBKGh2fP61pIl6sLIdk82-vhuwwN2hSjy66bu8rnFHU1A', //'t.2w7dOUSTDG8ce4KxiaWWdinlmrD35fgs99T-CSwev_UYADzn79dnYYqoPIP-JSnX-Un3zf8ybKEv7kc7m3Dw_Q',
   dadata_apiKey: '7f51e1b0f4e6aaf6695e7625b2d13405eb5954cf'
 }
