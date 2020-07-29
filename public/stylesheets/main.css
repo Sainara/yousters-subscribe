@@ -122,3 +122,9 @@ h2.doc {
 .footer-text p {
   float: left;
 }
+.uk-accordion-title {
+  font-family: "GilroySemiBold"
+}
+.uk-accordion-content p {
+  font-family: "GilroyRegular";
+}
