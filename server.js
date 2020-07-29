@@ -56,7 +56,7 @@ app.use(function (req, res, next) {
 app.set('trust proxy', 1);
 
 repeat()
-  .do(nonPhizValidationWatcher())
+  .do(nonPhizValidationWatcher)
   .do(() => console.log("check users to validate by nonPhiz"))
   .every(1000 * 60);
 
