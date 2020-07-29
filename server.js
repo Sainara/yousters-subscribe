@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 app.use(function (req, res, next) {
   console.log('Time:', moment().format("DD.MM.YYYY, HH:mm:ss"));
   console.log(req.url);
-  console.log(req.headers);
+  console.log(req.headers['x-forwarded-for']);
   console.log(req.ip);
   next();
 });
