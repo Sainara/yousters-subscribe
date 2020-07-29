@@ -16,6 +16,7 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.4.1",
     "cloudinary": "^1.20.0",
+    "cors": "^2.8.5",
     "curl-request": "^1.1.1",
     "dadata-suggestions": "^1.1.1",
     "ejs": "^2.5.6",

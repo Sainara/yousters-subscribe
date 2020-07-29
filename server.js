@@ -1,5 +1,6 @@
-const express = require('express')
-const path = require('path')
+const express = require('express');
+const path = require('path');
+const cors = require('cors');
 
 import moment from 'moment';
 import repeat from "repeat";
@@ -11,7 +12,6 @@ import authRoute from './app/routes/authRoute';
 import docsValidationRoute from './app/routes/docsValidationRoute';
 import agreementsRoute from './app/routes/agreementsRoute';
 import publicAgreementRoute from './app/routes/publicAgreementRoute';
-
 import checkoutRoute from './app/routes/checkoutRoute';
 import paketRoute from './app/routes/paketRoute';
 
@@ -19,9 +19,11 @@ import adminRoute from './app/routes/adminRoute';
 
 import aasa from './ios/apple-app-site-association';
 
-import legalRoute from './app/routes/legalRoute';
+import legalRoute from './publicApp/routes/legalRoute';
+import notFoundRoute from './publicApp/routes/404Route';
 
-import notFoundRoute from './app/routes/404Route';
+import signRoute from './publicApp/routes/signRoute';
+
 
 import nonPhizValidationWatcher from './app/watchers/authWatch';
 
@@ -39,6 +41,7 @@ app.use(function(req, res, next){
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors())
 app.use(express.json({limit: '50mb'}));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -69,6 +72,7 @@ app.use(API_PATH, paketRoute);
 
 
 app.use('', publicAgreementRoute);
+app.use('', signRoute);
 
 app.use('/admin', adminRoute);
 

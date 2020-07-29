@@ -23,7 +23,7 @@ import {
 
 import {s3get} from '../helpers/s3';
 
-import notFoundRoute from '../routes/404Route';
+import notFoundRoute from '../../publicApp/routes/404Route';
 
 const renderCase = async (req, res) => {
 

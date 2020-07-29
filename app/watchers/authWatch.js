@@ -49,8 +49,6 @@ const nonPhizValidationWatcher = async () => {
     console.log(e);
   }
 
-
-
 };
 
 export default nonPhizValidationWatcher;

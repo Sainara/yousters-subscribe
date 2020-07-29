@@ -128,3 +128,38 @@ h2.doc {
 .uk-accordion-content p {
   font-family: "GilroyRegular";
 }
+.secondary-color-but {
+  background: #F5F7FC;
+  color: #000;
+}
+.secondary-color-but:hover {
+  color: #000;
+  background: #e7e9ec;
+  opacity: 1;
+}
+.login-but {
+  margin: 20px 25px;
+}
+#signView {
+  text-align: center;
+  margin: 0 auto;
+}
+#signView .subtitle {
+  margin-top: -10px;
+  opacity: 0.6;
+}
+
+#signView .main-button {
+  font-size: 18px;
+
+}
+#signView .uk-input {
+  font-family: "GilroyMedium";
+  color: #000;
+  border: none;
+  text-align: center;
+  font-size: 28px;
+  width: 300px;
+  margin-top: 100px;
+  margin-bottom: 10px;
+}
