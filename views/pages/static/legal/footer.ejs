@@ -25,7 +25,7 @@
     $('body')[0].children[0].children[0].outerHTML = '';
 
     for (var i = 0; i < $('a').length; i++) {
-      $('a')[0].attributes[0].value += "?inapp=true"
+      $('a')[i].attributes['href'].value += "?inapp=true"
     }
   }
 </script>
