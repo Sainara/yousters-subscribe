@@ -30,6 +30,7 @@
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
     "multer-storage-cloudinary": "^2.2.1",
+    "node-apple-receipt-verify": "^1.7.4",
     "node-libcurl": "^2.2.0",
     "nodemon": "^2.0.4",
     "pg": "^7.17.1",

@@ -21,6 +21,33 @@ import env from '../../env';
 
 var YandexCheckout = require('yandex-checkout')(env.yandexCheckoutShopId, env.yandexCheckoutSecretKey);
 
+const AppleReceiptVerify = require('node-apple-receipt-verify');
+
+// Common initialization, later you can pass options for every request in options
+AppleReceiptVerify.config({
+    secret: env.iap_secret,
+    environment: ['sandbox']
+});
+
+
+const checkIAP  = async (req, res) => {
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const { receiptID } = req.body;
+
+  AppleReceiptVerify.validate({
+    receipt: receiptID
+    }, (err, products) => {
+      if (err) {
+          return console.error(err);
+      }
+      console.log(products);
+      // ok!
+  });
+};
+
+
 const createPayment = async (req, res) => {
 
   const errorMessage = Object.assign({}, eMessage);
@@ -56,7 +83,7 @@ const createPayment = async (req, res) => {
         }
       }
 
-      const values = [uuidv4(), req.user.id, agr_uid, '49.00', moment(), 'Разовое подписание'];
+      const values = [uuidv4(), req.user.id, agr_uid, '75.00', moment(), 'Разовое подписание'];
       const {rows} = await dbQuery.query(createQuery, values);
 
       successMessage.uid = rows[0].uid;
@@ -72,7 +99,7 @@ const createPayment = async (req, res) => {
 
     const { paket_id } = req.body;
 
-    const checkPaketQuery = 'SELECT * FROM paketplans WHERE id = $1';
+    const checkPaketQuery = 'SELECT * FROM paketplans WHERE iap_id = $1';
     const checkExistQuery = 'SELECT uid, status FROM payments WHERE paket_id = $1 AND user_id = $2';
     const createQuery = 'INSERT INTO payments (uid, user_id, paket_id, amount, created_at, title) VALUES ($1, $2, $3, $4, $5, $6) returning uid';
 
@@ -86,10 +113,10 @@ const createPayment = async (req, res) => {
         return res.status(status.bad).send(errorMessage);
       }
 
-      var check = await dbQuery.query(checkExistQuery, [paket_id, req.user.id]);
+      var check = await dbQuery.query(checkExistQuery, [checkPaketdbResponse.id, req.user.id]);
       const dbResponse = check.rows[check.rows.length - 1];
 
-      const values = [uuidv4(), req.user.id, paket_id, checkPaketdbResponse.price, moment(), checkPaketdbResponse.title];
+      const values = [uuidv4(), req.user.id, checkPaketdbResponse.id, checkPaketdbResponse.price, moment(), checkPaketdbResponse.title];
       const {rows} = await dbQuery.query(createQuery, values);
 
       successMessage.uid = rows[0].uid;
@@ -318,5 +345,6 @@ const renderCheckout = async (req, res) => {
 
 export {
   createPayment,
-  renderCheckout
+  renderCheckout,
+  checkIAP
 };

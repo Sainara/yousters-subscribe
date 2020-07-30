@@ -10,5 +10,6 @@ export default {
   sberAuthClientSecret: '',
   tnkf_terminal_id: '1595602181033DEMO',
   tnkf_openAPI_id: 't.2w7dOUSTDG8ce4KxiaWWdinlmrD35fgs99T-CSwev_UYADzn79dnYYqoPIP-JSnX-Un3zf8ybKEv7kc7m3Dw_Q',
-  dadata_apiKey: '7f51e1b0f4e6aaf6695e7625b2d13405eb5954cf'
+  dadata_apiKey: '7f51e1b0f4e6aaf6695e7625b2d13405eb5954cf',
+  iap_secret: '94036ff7631f455e8288e782ad5d91a1'
 }
