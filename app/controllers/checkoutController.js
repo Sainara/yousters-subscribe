@@ -54,6 +54,11 @@ const checkIAP  = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
+    if (dbResponse.status == 'success') {
+      errorMessage.message = "alreadyPaid";
+      return res.status(status.bad).send(errorMessage);
+    }
+
     var getPaketIAPIDdbResponse = "";
 
     if (dbResponse.paket_id) {
