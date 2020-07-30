@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/payment', primaryLimit, verifyAuth, createPayment);
 router.get('/checkout/:uid', primaryLimit, renderCheckout);
 
-router.post('/checkIAP', checkIAP);
+router.post('/payment/iap', primaryLimit, verifyAuth, checkIAP);
 //console.log(uploader);
 //router.post('/validate', validate);
 

@@ -34,17 +34,60 @@ const checkIAP  = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const { receiptID } = req.body;
+  const { receiptID, orderID } = req.body;
 
-  AppleReceiptVerify.validate({
-    receipt: receiptID
-    }, (err, products) => {
-      if (err) {
-          return console.error(err);
-      }
-      console.log(products);
-      // ok!
-  });
+  const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
+  const getPaketIAPID = 'SELECT iap_id FROM paketplans WHERE id = $1';
+
+  const updatePaymentQuery = 'UPDATE payments SET apple_iap_id = $1 WHERE uid = $2';
+  const updatePaymentStatusQuery = 'UPDATE payments SET status = $1 WHERE uid = $2';
+  const updateAgreementQuery = 'UPDATE agreements set status_id = 5 WHERE uid = $1';
+  const addPaketInfo = 'INSERT INTO userpakets(paket_id, user_id, payment_uid) VALUES ($1, $2, $3)';
+
+  try {
+
+    const {rows} = await dbQuery.query(getPaymentQuery, [orderID]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "invalidPaymentID";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    const getPaketIAPIDResp = await dbQuery.query(getPaketIAPID, [dbResponse.paket_id]);
+    const getPaketIAPIDdbResponse = getPaketIAPIDResp.rows[0].iap_id;
+
+    console.log(getPaketIAPIDdbResponse);
+
+    AppleReceiptVerify.validate({
+      receipt: receiptID
+      }, (err, products) => {
+        if (err) {
+          console.error(err);
+          return res.status(status.bad).send(errorMessage);
+        }
+        const product = products[0];
+        console.log(product);
+        if (product.productId != getPaketIAPIDdbResponse) {
+          errorMessage.message = "missmatchIAP";
+          return res.status(status.bad).send(errorMessage);
+        }
+        dbQuery.query(updatePaymentQuery, [product.transactionId, orderID]);
+        dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
+        if (dbResponse.agr_uid) {
+          dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
+          return res.status(status.success).send(successMessage);
+        }
+        if (dbResponse.paket_id) {
+          dbQuery.query(addPaketInfo, [dbResponse.paket_id, dbResponse.user_id, uid]);
+          return res.status(status.success).send(successMessage);
+        }
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
 };
 
 
