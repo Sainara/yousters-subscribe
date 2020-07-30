@@ -54,8 +54,12 @@ const checkIAP  = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    const getPaketIAPIDResp = await dbQuery.query(getPaketIAPID, [dbResponse.paket_id]);
-    const getPaketIAPIDdbResponse = getPaketIAPIDResp.rows[0].iap_id;
+    var getPaketIAPIDdbResponse = "";
+
+    if (dbResponse.paket_id) {
+      const getPaketIAPIDResp = await dbQuery.query(getPaketIAPID, [dbResponse.paket_id]);
+      getPaketIAPIDdbResponse = getPaketIAPIDResp.rows[0].iap_id;
+    }
 
     console.log(getPaketIAPIDdbResponse);
 
@@ -68,10 +72,10 @@ const checkIAP  = async (req, res) => {
         }
         const product = products[0];
         console.log(product);
-        if (product.productId != getPaketIAPIDdbResponse) {
-          errorMessage.message = "missmatchIAP";
-          return res.status(status.bad).send(errorMessage);
-        }
+        // if (product.productId != getPaketIAPIDdbResponse) {
+        //   errorMessage.message = "missmatchIAP";
+        //   return res.status(status.bad).send(errorMessage);
+        // }
         dbQuery.query(updatePaymentQuery, [product.transactionId, orderID]);
         dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
         if (dbResponse.agr_uid) {
