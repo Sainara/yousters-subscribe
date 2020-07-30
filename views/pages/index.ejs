@@ -8,7 +8,6 @@
   <meta name="google-site-verification" content="Wk7eo3wgWLoxqgP6Jic72QAzzrJHnqVZgaP6YsBKP1A" />
   <meta name="Keywords" content="Yousters Subscribe, онлайн-подпись, юстерс, подписать документ, сабскрайб">
   <meta name="Description" content="Yousters Subscribe представляет собой сервис электронной цифровой подписи для физических и юридических лиц"/>
-  <script src="//code-ya.jivosite.com/widget/YQWBrEmdCq" async></script>
 </head>
 
 <body>
@@ -167,7 +166,28 @@
 </ul></div>
 			</div>
 	</footer>
-
+  <script type='text/javascript'>
+  (function () {
+      window['yandexChatWidgetCallback'] = function() {
+          try {
+              window.yandexChatWidget = new Ya.ChatWidget({
+                  guid: '1d220203-6627-93f9-6c1a-5d19ff064f40',
+                  buttonText: 'Ответим на ваши вопросы',
+                  title: 'Yousters Subscribe',
+                  theme: 'dark',
+                  collapsedDesktop: 'hover',
+                  collapsedTouch: 'always'
+              });
+          } catch(e) { }
+      };
+      var n = document.getElementsByTagName('script')[0],
+          s = document.createElement('script');
+      s.async = true;
+      s.charset = 'UTF-8';
+      s.src = 'https://yastatic.net/s3/chat/widget.js';
+      n.parentNode.insertBefore(s, n);
+  })();
+  </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
     	<script src="js/main.js"></script>
