@@ -80,7 +80,7 @@ const checkIAP  = async (req, res) => {
       return res.status(status.success).send(successMessage);
     };
     if (dbResponse.paket_id) {
-      dbQuery.query(addPaketInfo, [dbResponse.paket_id, dbResponse.user_id, uid]);
+      dbQuery.query(addPaketInfo, [dbResponse.paket_id, dbResponse.user_id, dbResponse.uid]);
       return res.status(status.success).send(successMessage);
     };
 
