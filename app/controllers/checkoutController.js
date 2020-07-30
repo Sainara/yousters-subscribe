@@ -63,30 +63,26 @@ const checkIAP  = async (req, res) => {
 
     console.log(getPaketIAPIDdbResponse);
 
-    AppleReceiptVerify.validate({
-      receipt: receiptID
-      }, (err, products) => {
-        if (err) {
-          console.error(err);
-          return res.status(status.bad).send(errorMessage);
-        }
-        const product = products[0];
-        console.log(product);
-        // if (product.productId != getPaketIAPIDdbResponse) {
-        //   errorMessage.message = "missmatchIAP";
-        //   return res.status(status.bad).send(errorMessage);
-        // }
-        dbQuery.query(updatePaymentQuery, [product.transactionId, orderID]);
-        dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
-        if (dbResponse.agr_uid) {
-          dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
-          return res.status(status.success).send(successMessage);
-        }
-        if (dbResponse.paket_id) {
-          dbQuery.query(addPaketInfo, [dbResponse.paket_id, dbResponse.user_id, uid]);
-          return res.status(status.success).send(successMessage);
-        }
+    const products = await AppleReceiptVerify.validate({
+      receipt: appleReceipt,
     });
+
+    const product = products[0];
+    console.log(product);
+    // if (product.productId != getPaketIAPIDdbResponse) {
+    //   errorMessage.message = "missmatchIAP";
+    //   return res.status(status.bad).send(errorMessage);
+    // }
+    dbQuery.query(updatePaymentQuery, [product.transactionId, orderID]);
+    dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
+    if (dbResponse.agr_uid) {
+      dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
+      return res.status(status.success).send(successMessage);
+    };
+    if (dbResponse.paket_id) {
+      dbQuery.query(addPaketInfo, [dbResponse.paket_id, dbResponse.user_id, uid]);
+      return res.status(status.success).send(successMessage);
+    };
 
   } catch (error) {
     console.error(error);
