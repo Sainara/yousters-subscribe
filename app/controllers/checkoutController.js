@@ -64,7 +64,7 @@ const checkIAP  = async (req, res) => {
     console.log(getPaketIAPIDdbResponse);
 
     const products = await AppleReceiptVerify.validate({
-      receipt: appleReceipt,
+      receipt: receiptID,
     });
 
     const product = products[0];
