@@ -21,7 +21,7 @@ const sendAPNPush = (title, body, deviceToken, payload) => {
   notification.topic = "com.tommysirenko.yousterssubsapp";
   notification.payload = payload
 
-  apnProvider.send(notification, deviceToken).then( (result) => {
+  APNProvider.send(notification, deviceToken).then( (result) => {
     console.log(result.sent);
     console.log(result.failed);
   });
