@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { addDeviceToken } from '../controllers/pushController';
+import { addDeviceToken, removeDeviceToken } from '../controllers/pushController';
 import { primaryLimit } from '../helpers/rateLimits';
 import verifyAuth from '../middlewares/verifyAuth';
 
@@ -8,7 +8,8 @@ const router = express.Router();
 
 // auth Routes
 
-router.post('/token', primaryLimit, addDeviceToken);
+router.post('/token', primaryLimit, verifyAuth, addDeviceToken);
+router.delete('/token', primaryLimit, verifyAuth, removeDeviceToken);
 // router.post('/validate', primaryLimit, validate);
 // router.post('/me', primaryLimit, verifyAuth, me);
 //
