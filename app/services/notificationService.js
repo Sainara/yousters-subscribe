@@ -2,7 +2,7 @@ import sendPush from './pushService';
 
 import dbQuery from '../db/dbQuery';
 
-const sendNotification = (title, body, user_id, payload) => {
+const sendNotification = async (title, body, user_id, payload) => {
 
   const tryFindDeviceToken = 'SELECT * FROM device_tokens WHERE user_id = $1';
 
