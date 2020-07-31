@@ -16,7 +16,7 @@ router.delete('/token', primaryLimit, verifyAuth, removeDeviceToken);
 router.post('token/test', async (req, res) => {
   sendNotification('title', 'body', 1, {});
   res.send({result : true});
-});)
+});
 
 // router.post('/validate', primaryLimit, validate);
 // router.post('/me', primaryLimit, verifyAuth, me);
