@@ -304,7 +304,7 @@ const validateSubscription = async (req, res) => {
         var update = await dbQuery.query(updateQuery, [dbResponse.agr_uid, '10']);
         for (var i = 0; i < afterSelect.rows.length; i++) {
           if (afterSelect.rows[i].subs_id != req.user.id) {
-            const getName = dbQuery.query(getQuery, [dbResponse.agr_uid]);
+            const getName = await dbQuery.query(getQuery, [dbResponse.agr_uid]);
             const agrName = getName.rows[0].title;
             sendNotification('Успех', agrName + ' был подписан контрагентом и теперь активен', afterSelect.rows[i].subs_id, {agr_uid: dbResponse.agr_uid});
           }
