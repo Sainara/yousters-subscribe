@@ -13,7 +13,7 @@ const router = express.Router();
 router.post('/token', primaryLimit, verifyAuth, addDeviceToken);
 router.delete('/token', primaryLimit, verifyAuth, removeDeviceToken);
 
-router.post('token/test', async (req, res) => {
+router.post('/token/test', async (req, res) => {
   sendNotification('title', 'body', 1, {});
   res.send({result : true});
 });
