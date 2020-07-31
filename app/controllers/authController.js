@@ -393,5 +393,5 @@ export {
   auth,
   validate,
   me,
-  initSberAuth,
+  initSberAuth
 };
