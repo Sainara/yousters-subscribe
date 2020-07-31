@@ -2,7 +2,7 @@ var apn = require('apn');
 
 var options = {
   token: {
-    key: "./AuthKey_6RRTAM22X5.p8",
+    key: process.cwd() + "/static/AuthKey_6RRTAM22X5.p8",
     keyId: "6RRTAM22X5",
     teamId: "A7FRCYXJJN"
   },
