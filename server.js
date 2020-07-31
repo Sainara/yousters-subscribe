@@ -14,6 +14,8 @@ import agreementsRoute from './app/routes/agreementsRoute';
 import publicAgreementRoute from './app/routes/publicAgreementRoute';
 import checkoutRoute from './app/routes/checkoutRoute';
 import paketRoute from './app/routes/paketRoute';
+import pushRoute from './app/routes/pushRoute';
+
 
 import adminRoute from './app/routes/adminRoute';
 
@@ -70,6 +72,7 @@ app.use(API_PATH, docsValidationRoute);
 app.use(API_PATH, agreementsRoute);
 app.use(API_PATH, checkoutRoute);
 app.use(API_PATH, paketRoute);
+app.use(API_PATH, pushRoute);
 
 
 app.use('', publicAgreementRoute);
