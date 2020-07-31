@@ -26,6 +26,8 @@ const addDeviceToken = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
+    console.log("correctType");
+
     const check = await dbQuery.query(checkquery, [deviceToken]);
     const dbResponse = check.rows[0];
 
