@@ -26,7 +26,6 @@ const AppleReceiptVerify = require('node-apple-receipt-verify');
 // Common initialization, later you can pass options for every request in options
 AppleReceiptVerify.config({
     secret: env.iap_secret,
-    environment: ['sandbox']
 });
 
 
