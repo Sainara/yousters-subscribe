@@ -7,7 +7,7 @@ const sendNotification = async (title, body, user_id, payload) => {
   const tryFindDeviceToken = 'SELECT * FROM device_tokens WHERE user_id = $1';
 
   try {
-    deviceTokens = await dbQuery.query(tryFindDeviceToken, [user_id]);
+    const deviceTokens = await dbQuery.query(tryFindDeviceToken, [user_id]);
     const deviceTokensResult = deviceTokens.rows;
 
     if (deviceTokensResult.length > 0) {
