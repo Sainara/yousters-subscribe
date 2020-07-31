@@ -250,7 +250,7 @@ const initSubscription = async (req, res) => {
     }
 
     const message =  code + " - Ваш код для Yousters Subscribe."
-    const sms = snsPublish(req.user.phone, message);
+    //const sms = snsPublish(req.user.phone, message);
 
     successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);
@@ -301,7 +301,8 @@ const validateSubscription = async (req, res) => {
 
       var afterSelect = await dbQuery.query(selectQuery, [dbResponse.agr_uid]);
       if (afterSelect.rows.length == 2) {
-        var update = await dbQuery.query(updateQuery, [dbResponse.agr_uid, '10']);
+        dbQuery.query(updateQuery, [dbResponse.agr_uid, '10']);
+        console.log(afterSelect.rows);
         for (var i = 0; i < afterSelect.rows.length; i++) {
           if (afterSelect.rows[i].subs_id != req.user.id) {
             const getName = await dbQuery.query(getQuery, [dbResponse.agr_uid]);
@@ -312,7 +313,7 @@ const validateSubscription = async (req, res) => {
 
       }
       if (afterSelect.rows.length == 1) {
-        var update = await dbQuery.query(updateQuery, [dbResponse.agr_uid, '7']);
+        dbQuery.query(updateQuery, [dbResponse.agr_uid, '7']);
       }
     } else {
 
