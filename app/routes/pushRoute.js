@@ -4,7 +4,7 @@ import { addDeviceToken, removeDeviceToken } from '../controllers/pushController
 import { primaryLimit } from '../helpers/rateLimits';
 import verifyAuth from '../middlewares/verifyAuth';
 
-import sendNotification from '../service/notificationService';
+import sendNotification from '../services/notificationService';
 
 const router = express.Router();
 
