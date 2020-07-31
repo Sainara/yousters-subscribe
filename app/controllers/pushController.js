@@ -21,12 +21,15 @@ const addDeviceToken = async (req, res) => {
 
   try {
 
+    console.log(type);
+    console.log(!(type == "ios" || type == "android"));
+
     if (!(type == "ios" || type == "android")) {
       errorMessage.message = "invalidType";
       return res.status(status.bad).send(errorMessage);
     }
 
-    console.log("correctType");
+
 
     const check = await dbQuery.query(checkquery, [deviceToken]);
     const dbResponse = check.rows[0];
