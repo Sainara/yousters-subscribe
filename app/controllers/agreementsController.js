@@ -302,7 +302,7 @@ const validateSubscription = async (req, res) => {
       var afterSelect = await dbQuery.query(selectQuery, [dbResponse.agr_uid]);
       if (afterSelect.rows.length == 2) {
         dbQuery.query(updateQuery, [dbResponse.agr_uid, '10']);
-        console.log(afterSelect.rows);
+        //console.log(afterSelect.rows);
         for (var i = 0; i < afterSelect.rows.length; i++) {
           if (afterSelect.rows[i].subs_id != req.user.id) {
             const getName = await dbQuery.query(getQuery, [dbResponse.agr_uid]);
