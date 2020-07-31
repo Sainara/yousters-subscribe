@@ -8,11 +8,13 @@ import {
 
 import env from '../../env';
 
+import sendNotification from '../services/notificationService';
+
 const request = require('request');
 
 const nonPhizValidationWatcher = async () => {
 
-  const select = "SELECT inn FROM users WHERE is_on_validation = true AND validation_type = 'nonPhiz'";
+  const select = "SELECT id, inn FROM users WHERE is_on_validation = true AND validation_type = 'nonPhiz'";
   const activateQuery = "UPDATE users SET user_name = $2, is_on_validation = false, isvalidated = true WHERE inn = $1";
 
   try {
@@ -37,6 +39,7 @@ const nonPhizValidationWatcher = async () => {
             for (var g = 0; g < waitors.length; g++) {
               if (waitors[g].inn == operations[i].payerInn) {
                  dbQuery.query(activateQuery, [waitors[g].inn, operations[i].payerName]);
+                 sendNotification(operations[i].payerName, 'Поздравляем! Ваш профиль верифицирован', waitors[g].id, {});
                  console.log(waitors[g].inn + ' is activated with name - ' + operations[i].payerName);
               }
             }

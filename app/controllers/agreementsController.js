@@ -23,6 +23,8 @@ import {
 
 import {snsPublish} from '../helpers/sns';
 
+import sendNotification from '../services/notificationService';
+
 const getAgreements = async (req, res) => {
 
   const errorMessage = Object.assign({}, eMessage);
@@ -266,7 +268,7 @@ const validateSubscription = async (req, res) => {
   const { sessionid, code } = req.body;
 
   const createQuery = 'INSERT INTO subscribtion(agr_uid, subs_id, created_at) VALUES ($1, $2, $3)';
-  const checkQuery = 'SELECT * FROM agreements WHERE uid = $1';
+  const getQuery = 'SELECT title FROM agreements WHERE uid = $1';
   const selectQuery = 'SELECT * FROM subscribtion WHERE agr_uid = $1';
   const updateQuery = 'UPDATE agreements SET status_id = $2 WHERE uid = $1';
 
@@ -300,6 +302,14 @@ const validateSubscription = async (req, res) => {
       var afterSelect = await dbQuery.query(selectQuery, [dbResponse.agr_uid]);
       if (afterSelect.rows.length == 2) {
         var update = await dbQuery.query(updateQuery, [dbResponse.agr_uid, '10']);
+        for (var i = 0; i < afterSelect.rows.length; i++) {
+          if (afterSelect.rows[i].subs_id != req.user.id) {
+            const getName = dbQuery.query(getQuery, [dbResponse.agr_uid]);
+            const agrName = getName.rows[0].title;
+            sendNotification('Успех', agrName + ' был подписан контрагентом и теперь активен', afterSelect.rows[i].subs_id, {agr_uid: dbResponse.agr_uid});
+          }
+        }
+
       }
       if (afterSelect.rows.length == 1) {
         var update = await dbQuery.query(updateQuery, [dbResponse.agr_uid, '7']);
