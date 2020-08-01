@@ -163,7 +163,7 @@ const uploadAgreement = async (req, res) => {
   const { title } = req.body;
 
   if (!isValidNameLength(title)) {
-    errorMessage.message = "tooLongName";
+    errorMessage.message = "inValidName";
     return res.status(status.bad).send(errorMessage);
   }
 
@@ -250,7 +250,7 @@ const initSubscription = async (req, res) => {
     }
 
     const message =  code + " - Ваш код для Yousters Subscribe."
-    //const sms = snsPublish(req.user.phone, message);
+    const sms = snsPublish(req.user.phone, message);
 
     successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);

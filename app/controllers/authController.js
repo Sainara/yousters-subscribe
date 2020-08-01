@@ -83,17 +83,17 @@ const validate = async (req, res) => {
     const dbResponse = rows[0];
 
     if (!dbResponse) {
-      errorMessage.message = "invalid sessionid";
+      errorMessage.message = "invalidSessionID";
       return res.status(status.bad).send(errorMessage);
     }
 
     if (dbResponse.trycounter > 3) {
-      errorMessage.message = "too many tries";
+      errorMessage.message = "tooManyTries";
       return res.status(status.bad).send(errorMessage);
     }
 
     if (moment().isAfter(dbResponse.expiretime, moment.ISO_8601)) {
-      errorMessage.message = "session expire";
+      errorMessage.message = "sessionExpired";
       return res.status(status.bad).send(errorMessage);
     }
     if (dbResponse.code == code || code == "111115") {
