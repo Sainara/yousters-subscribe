@@ -9,7 +9,7 @@ const router = express.Router();
 // auth Routes
 
 router.get('/general', async (req, res) => {
-  res.render('pages/web_app/sign');
+  res.render('pages/web_app/general');
 });
 //router.post('/validate', primaryLimit, validate);
 // router.post('/me', primaryLimit, verifyAuth, me);

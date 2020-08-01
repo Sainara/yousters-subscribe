@@ -25,6 +25,7 @@ import legalRoute from './publicApp/routes/legalRoute';
 import notFoundRoute from './publicApp/routes/404Route';
 
 import signRoute from './publicApp/routes/signRoute';
+import userPageRoute from './publicApp/routes/userPageRoute';
 
 
 import nonPhizValidationWatcher from './app/watchers/authWatch';
@@ -77,8 +78,10 @@ app.use(API_PATH, pushRoute);
 
 app.use('', publicAgreementRoute);
 app.use('', signRoute);
+app.use('', userPageRoute);
 
-app.use('/admin', adminRoute);
+
+//app.use('/admin', adminRoute);
 
 app.use('/legal', legalRoute);
 

@@ -5,7 +5,7 @@
   "engines": {
     "node": "12.x"
   },
-  "main": "start.js",
+  "private": true,
   "scripts": {
     "start": "node start.js"
   },
@@ -13,6 +13,7 @@
     "@sendgrid/mail": "^7.1.0",
     "apn": "^2.2.0",
     "aws-sdk": "^2.678.0",
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.4.1",
     "cloudinary": "^1.20.0",
@@ -38,11 +39,15 @@
     "sha256-file": "^1.0.0",
     "sms_ru": "0.0.1",
     "uuid": "^8.1.0",
+    "vue": "^2.6.6",
+    "webpack": "^4.44.1",
     "yandex-checkout": "^1.0.13"
   },
   "devDependencies": {
+    "nodemon-webpack-plugin": "^4.3.2",
     "request": "^2.88.2",
-    "tape": "^4.7.0"
+    "tape": "^4.7.0",
+    "webpack-cli": "^3.3.12"
   },
   "repository": {
     "type": "git",
