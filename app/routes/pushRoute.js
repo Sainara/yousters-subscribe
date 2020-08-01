@@ -14,7 +14,7 @@ router.post('/token', primaryLimit, verifyAuth, addDeviceToken);
 router.delete('/token', primaryLimit, verifyAuth, removeDeviceToken);
 
 router.post('/token/test', async (req, res) => {
-  sendNotification('title', 'body', 1, {deepLink:"https://you-scribe.ru/case/79c2419b-06e3-4990-b1c0-8e77c5be9934"});
+  sendNotification('title', 'Activation', 1, {deepLink:"https://you-scribe.ru/profileactivation"});
   res.send({result : true});
 });
 
