@@ -2,6 +2,7 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+  <meta name="apple-itunes-app" content="app-id=1517313227">
 </head>
 
 <body>
@@ -13,12 +14,13 @@
 
     </div>
     <div class="uk-navbar-right">
+    <a href="https://apps.apple.com/us/app/id1517313227"><img
+src="/images/dwnldAppStoreWhite.svg"
+alt="triangle with all three sides equal"
+height="100px"
+width="100px" style="margin-right: 20px" />
+</a>
 
-      <img
-  src="/images/dwnldAppStoreWhite.svg"
-  alt="triangle with all three sides equal"
-  height="100px"
-  width="100px" style="margin-right: 20px" />
     </div>
 </nav>
   <div class="uk-container uk-container-xsmall">
@@ -49,7 +51,7 @@
             <p class="smalltitle"><%= s.user_name %> (ИНН: <%= s.inn %>) <%= moment.utc(s.created_at).local().format("DD.MM.YYYY в HH:mm:ss")  %> при помощи кода, отправленного на номер телефона <%= s.phone %></p></br>
           <% }); %>
           <% if (subs.length < 2) { %>
-            <a href="#" class="main-button case-sub-button">Подписать в приложении</a>
+            <a href="https://apps.apple.com/us/app/id1517313227" class="main-button case-sub-button">Подписать в приложении</a>
           <% }; %>
         </div>
 
