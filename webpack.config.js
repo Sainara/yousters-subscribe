@@ -1,4 +1,6 @@
 const NodemonPlugin = require('nodemon-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
 const path = require('path'); // Ding
 
 module.exports = {
@@ -7,12 +9,23 @@ module.exports = {
         path: path.resolve('./public/js'),
         filename: 'bundle.js',
     },
+    mode: 'development',
     resolve: {
       alias: {
-        vue: 'vue/dist/vue.min.js'
+        vue: 'vue/dist/vue.js'
       }
     },
+    module: {
+      rules: [
+        // ... другие правила
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader'
+          }
+        ]
+    },
     plugins: [
+      new VueLoaderPlugin(),
       new NodemonPlugin({
         // If using more than one entry, you can specify
         // which output file will be restarted.
@@ -31,7 +44,7 @@ module.exports = {
         ignore: ['*.js.map'],
 
         // Extensions to watch.
-        ext: 'js,njk,json',
+        ext: 'js,njk,json,vue',
 
         // Unlike the cli option, delay here is in milliseconds (also note that it's a string).
         // Here's 1 second delay:

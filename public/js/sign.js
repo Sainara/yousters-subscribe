@@ -26,8 +26,9 @@ $(document).ready(function () {
   	        200: function (res) { // выполнить функцию если код ответа HTTP 200
   	          if (res.success) {
                 console.log(res.token);
-                document.cookie = "token=" + res.token + "; max-age=3600; secure; samesite=lax";
-                window.location.replace("https://you-scribe.ru/");
+                // add secure;
+                document.cookie = "token=" + res.token + "; max-age=3600; samesite=lax";
+                window.location.replace("/general");
               }
   	        }
   	      }

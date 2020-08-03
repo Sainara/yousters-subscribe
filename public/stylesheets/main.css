@@ -167,3 +167,48 @@ h2.doc {
 .uk-notification {
   font-family: "GilroyMedium";
 }
+.agreement-cell h3 {
+  margin-bottom: 5px;
+}
+.agr-status{
+  display: inline;
+  font-family: "GilroyRegular";
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  background: #000;
+  margin-bottom: 8px;
+}
+.agreement-cell-a:hover {
+  text-decoration: none;
+}
+.mobile-padding {
+  margin: 10px 0;
+}
+.desctop-padding {
+  margin: 40px 0;
+}
+.full-width-but {
+  display: block;
+  text-align: center;
+}
+.common-buttons a {
+  margin-bottom: 15px;
+}
+.common-buttons a:last-child {
+  margin-top: 35px;
+  margin-bottom: 35px;
+}
+a.with-out-bg {
+  background: transparent;
+  margin-bottom: 5px;
+  padding: 5px;
+}
+a.with-out-bg:hover {
+  background: transparent;
+  opacity: 0.6;
+}
+a.youstersnav {
+  font-family: "GilroyMedium";
+}

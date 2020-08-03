@@ -6,16 +6,19 @@ import {
 
 eMessage.message = "tooManyRequests";
 
+const errorMessage = Object.assign({}, eMessage);
+errorMessage.message = "tooManyRequests";
+
 const primaryLimit = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour window
   max: 250, // start blocking after 150 requests
-  message: eMessage
+  message: errorMessage
 });
 
 const createAccountLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour window
   max: 3, // start blocking after 3 requests
-  message: eMessage
+  message: errorMessage
 });
 
 export {
