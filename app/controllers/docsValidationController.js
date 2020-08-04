@@ -27,7 +27,7 @@ const uploadDocs = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const { inn, email } = req.body;
+  const { email } = req.body;
   const findUserQuery = 'SELECT isvalidated, is_on_validation FROM users WHERE id = $1';
 
   try {
@@ -49,8 +49,8 @@ const uploadDocs = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    const updateQuery = 'UPDATE users SET inn = $1, email = $2, main_passport = $3, second_passport = $4, video_passport = $5, is_on_validation = true, validation_type = $6 WHERE id = $7';
-    const values = [inn, email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location, 'phiz', req.user.id]
+    const updateQuery = 'UPDATE users SET email = $1, main_passport = $2, second_passport = $3, video_passport = $4, is_on_validation = true, validation_type = $5 WHERE id = $6';
+    const values = [email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location, 'phiz', req.user.id]
     const result = await dbQuery.query(updateQuery, values);
 
     return res.status(status.success).send(successMessage);
