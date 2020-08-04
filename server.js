@@ -81,7 +81,7 @@ app.use('', signRoute);
 app.use('', userPageRoute);
 
 
-//app.use('/admin', adminRoute);
+app.use('/admin', adminRoute);
 
 app.use('/legal', legalRoute);
 
