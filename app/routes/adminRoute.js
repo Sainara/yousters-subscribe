@@ -15,7 +15,7 @@ router.post('/person/:id', validateUser);
 
 router.delete('/agreement/:id', deleteAgreement);
 
-router.post('activte', activatePhiz);
+router.post('/activate', activatePhiz);
 
 // router.post('/validate', validate);
 // router.post('/me', verifyAuth, me);
