@@ -21,6 +21,9 @@ import {
 
 import {s3delete} from '../helpers/s3';
 
+import sendNotification from '../services/notificationService';
+
+
 const listOfUsers = async (req, res) => {
 
   const errorMessage = Object.assign({}, eMessage);
@@ -163,10 +166,31 @@ const deleteAgreement = async (req, res) => {
   }
 };
 
+const activatePhiz = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const activateQuery = 'UPDATE users set user_name = $2, isvalidated = true, is_on_validation = false Where id = $1 returning *';
+
+  const {id, name} = req.body
+
+  try {
+
+    await dbQuery.query(activateQuery, [id, name]);
+    sendNotification(name, 'Поздравляем! Ваш профиль верифицирован', id, {deepLink:"https://you-scribe.ru/profileactivation"});
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 export {
   listOfUsers,
   concretUser,
   validateUser,
   deleteUser,
-  deleteAgreement
+  deleteAgreement,
+  activatePhiz
 };

@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { listOfUsers, concretUser, validateUser, deleteUser, deleteAgreement } from '../controllers/adminController';
+import { listOfUsers, concretUser, validateUser, deleteUser, deleteAgreement, activatePhiz } from '../controllers/adminController';
 import verifyAuth from '../middlewares/verifyAuth';
 
 const router = express.Router();
@@ -14,6 +14,8 @@ router.delete('/person/:id', deleteUser);
 router.post('/person/:id', validateUser);
 
 router.delete('/agreement/:id', deleteAgreement);
+
+router.post('activte', activatePhiz);
 
 // router.post('/validate', validate);
 // router.post('/me', verifyAuth, me);

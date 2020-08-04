@@ -212,3 +212,12 @@ a.with-out-bg:hover {
 a.youstersnav {
   font-family: "GilroyMedium";
 }
+.button-with-minwidth {
+   min-width: 250px;
+   text-align: center;
+ }
+.non-phiz-wrap input {
+  width: 275px;
+  margin: 0 auto;
+  border: none;
+ }

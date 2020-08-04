@@ -6,6 +6,7 @@ ALTER TABLE users add COLUMN created_on timestamptz;
 ALTER TABLE users add COLUMN isvalidated bool default false;
 ALTER TABLE users ADD COLUMN main_passport VARCHAR;
 ALTER TABLE users ADD COLUMN second_passport VARCHAR;
+alter table users add column video_passport varchar;
 ALTER TABLE users ADD COLUMN is_on_validation bool default false;
 ALTER TABLE users add COLUMN email VARCHAR;
 ALTER TABLE users add COLUMN inn VARCHAR;

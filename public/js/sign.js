@@ -4,6 +4,17 @@ $(document).ready(function () {
     var sessionID = "";
     var isEnteringCode = false;
 
+    const getCookie = (name) => {
+      let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    if (getCookie('token')) {
+      window.location.replace("/general");
+    }
+
     $(".phone_mask").mask("+7(999)999-99-99",{placeholder:"_"});
 
     $('#api_submit').on('click', function(e) {
@@ -58,6 +69,8 @@ $(document).ready(function () {
   	    })
       }
     });
+
+
 
     const checkPhone = () => {
       return $("#phoneField")[0].value != "";
