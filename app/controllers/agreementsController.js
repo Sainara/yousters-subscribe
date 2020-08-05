@@ -256,10 +256,10 @@ const initSubscription = async (req, res) => {
     var check2 = await dbQuery.query(checkExistDeviceToken, [req.user.id]);
     const checkExistDeviceTokendbResponse = check2.rows[0];
 
-    if (checkExistDeviceTokendbResponse) {
-      sendNotification('Только тссс...', message, req.user.id, {});
-    } else {
-      const sms = snsPublish(req.user.phone, message);
+    console.log(checkExistDeviceTokendbResponse.rows);
+
+    if (!sendNotification('Только тссс...', message, req.user.id, {})) {
+      //const sms = snsPublish(req.user.phone, message);
     }
 
     successMessage.sessionid = sessionid;

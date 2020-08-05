@@ -18,7 +18,10 @@ const sendNotification = async (title, body, user_id, payload) => {
         };
         sendPush(title, body, deviceInfo, payload);
       }
+    } else {
+      return false;
     }
+    return true;
 
 
 
