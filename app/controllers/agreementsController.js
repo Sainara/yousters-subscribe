@@ -253,13 +253,11 @@ const initSubscription = async (req, res) => {
 
     const message =  code + " - Ваш код для Yousters Subscribe."
 
-    var check2 = await dbQuery.query(checkExistDeviceToken, [req.user.id]);
-    const checkExistDeviceTokendbResponse = check2.rows[0];
-
-    console.log(check2.rows);
-
     if (!sendNotification('Только тссс...', message, req.user.id, {})) {
+      console.log("Push not sent");
       //const sms = snsPublish(req.user.phone, message);
+    } else {
+      console.log('push sent');
     }
 
     successMessage.sessionid = sessionid;
