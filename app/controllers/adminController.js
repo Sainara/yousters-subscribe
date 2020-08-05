@@ -178,7 +178,7 @@ const activatePhiz = async (req, res) => {
   try {
 
     await dbQuery.query(activateQuery, [id, name]);
-    sendNotification(name, 'Поздравляем! Ваш профиль верифицирован', id, {deepLink:"https://you-scribe.ru/profileactivation"});
+    sendNotification(name, 'Поздравляем! Ваш профиль верифицирован', id, {deepLink:"https://you-scribe.ru/profileactivation", action: "reloadMe"});
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
