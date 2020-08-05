@@ -65,7 +65,7 @@ const auth = async (req, res) => {
     const checkUser = await dbQuery.query(checkUserExist, [phoneNumber.number]);
 
     if (checkUser.rows[0]) {
-      if (!sendNotification('Только тссс...', message, checkUser.rows[0].id, {})) {
+      if (!(await sendNotification('Только тссс...', message, checkUser.rows[0].id, {}))) {
         console.log("Push not sent");
         const sms = snsPublish(phoneNumber.number, message);
       } else {
