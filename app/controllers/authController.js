@@ -26,6 +26,8 @@ import {
 
 import env from '../../env';
 
+import sendNotification from '../services/notificationService';
+
 const auth = async (req, res) => {
 
   const errorMessage = Object.assign({}, eMessage);
@@ -58,7 +60,13 @@ const auth = async (req, res) => {
     const { rows } = await dbQuery.query(addquery, [sessionid, code, 0, exp, phoneNumber.number]);
 
     const message =  code + " - Ваш код для Yousters Subscribe."
-    const sms = snsPublish(phoneNumber.number, message);
+
+    if (!sendNotification('Только тссс...', message, req.user.id, {})) {
+      console.log("Push not sent");
+      const sms = snsPublish(phoneNumber.number, message);
+    } else {
+      console.log('push sent');
+    }
 
     successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{user.user_name}}</h1>
-    <div class="block">
+    <div v-if="!user.isPhiz" class="block">
       <p class="subtitle">ИНН</p>
       <p class="smalltitle">{{user.inn}}</p>
     </div>

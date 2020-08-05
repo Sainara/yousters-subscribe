@@ -255,7 +255,7 @@ const initSubscription = async (req, res) => {
 
     if (!sendNotification('Только тссс...', message, req.user.id, {})) {
       console.log("Push not sent");
-      //const sms = snsPublish(req.user.phone, message);
+      const sms = snsPublish(req.user.phone, message);
     } else {
       console.log('push sent');
     }
