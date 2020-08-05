@@ -196,6 +196,8 @@ const initSubscription = async (req, res) => {
   const updateQuery = 'UPDATE agreements SET status_id = $2 WHERE uid = $1';
   const checkIsUserValidatedQuery = 'SELECT isvalidated FROM users WHERE id = $1';
 
+  const checkExistDeviceToken = 'SELECT token FROM device_tokens WHERE id = $1';
+
   const addquery = 'INSERT INTO subscribesessions (sessionid, code, trycounter, expiretime, agr_uid, to_num) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
 
   try {
@@ -250,7 +252,15 @@ const initSubscription = async (req, res) => {
     }
 
     const message =  code + " - Ваш код для Yousters Subscribe."
-    const sms = snsPublish(req.user.phone, message);
+
+    var check2 = await dbQuery.query(checkExistDeviceToken, [req.user.id]);
+    const checkExistDeviceTokendbResponse = check2.rows[0];
+
+    if (checkExistDeviceTokendbResponse) {
+      sendNotification('Только тссс...', message, req.user.id, {});
+    } else {
+      const sms = snsPublish(req.user.phone, message);
+    }
 
     successMessage.sessionid = sessionid;
     return res.status(status.success).send(successMessage);
@@ -307,7 +317,7 @@ const validateSubscription = async (req, res) => {
           if (afterSelect.rows[i].subs_id != req.user.id) {
             const getName = await dbQuery.query(getQuery, [dbResponse.agr_uid]);
             const agrName = getName.rows[0].title;
-            sendNotification('Успех', agrName + ' был подписан контрагентом и теперь активен', afterSelect.rows[i].subs_id, {agr_uid: dbResponse.agr_uid});
+            sendNotification('Успех', agrName + ' был подписан контрагентом и теперь активен', afterSelect.rows[i].subs_id, {deepLink: "https://you-scribe.ru/case/" + dbResponse.agr_uid, action: "reloadAgreements"});
           }
         }
 

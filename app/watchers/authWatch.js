@@ -39,7 +39,7 @@ const nonPhizValidationWatcher = async () => {
             for (var g = 0; g < waitors.length; g++) {
               if (waitors[g].inn == operations[i].payerInn) {
                  dbQuery.query(activateQuery, [waitors[g].inn, operations[i].payerName]);
-                 sendNotification(operations[i].payerName, 'Поздравляем! Ваш профиль верифицирован', waitors[g].id, {deepLink:"https://you-scribe.ru/profileactivation"});
+                 sendNotification(operations[i].payerName, 'Поздравляем! Ваш профиль верифицирован', waitors[g].id, {deepLink:"https://you-scribe.ru/profileactivation", action: "reloadMe"});
                  console.log(waitors[g].inn + ' is activated with name - ' + operations[i].payerName);
               }
             }
