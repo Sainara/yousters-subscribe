@@ -43,7 +43,8 @@ const auth = async (req, res) => {
   }
 
   const addquery = 'INSERT INTO entersessions (sessionid, code, trycounter, expiretime, number) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-  const checkquery = 'SELECT * FROM blacklist WHERE phone = $1'
+  const checkquery = 'SELECT * FROM blacklist WHERE phone = $1';
+  const checkUserExist = 'SELECT id FROM users WHERE phone = $1';
 
   try {
 
@@ -61,11 +62,17 @@ const auth = async (req, res) => {
 
     const message =  code + " - Ваш код для Yousters Subscribe."
 
-    if (!sendNotification('Только тссс...', message, req.user.id, {})) {
-      console.log("Push not sent");
-      const sms = snsPublish(phoneNumber.number, message);
+    const checkUser = await dbQuery.query(checkUserExist, [phoneNumber.number]);
+
+    if (checkUser.rows[0]) {
+      if (!sendNotification('Только тссс...', message, checkUser.rows[0].id, {})) {
+        console.log("Push not sent");
+        const sms = snsPublish(phoneNumber.number, message);
+      } else {
+        console.log('push sent');
+      }
     } else {
-      console.log('push sent');
+      const sms = snsPublish(phoneNumber.number, message);
     }
 
     successMessage.sessionid = sessionid;
