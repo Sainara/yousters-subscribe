@@ -10,6 +10,8 @@ const sendNotification = async (title, body, user_id, payload) => {
     const deviceTokens = await dbQuery.query(tryFindDeviceToken, [user_id]);
     const deviceTokensResult = deviceTokens.rows;
 
+    console.log(deviceTokensResult);
+
     if (deviceTokensResult.length > 0) {
       for (var i = 0; i < deviceTokensResult.length; i++) {
         const deviceInfo = {
