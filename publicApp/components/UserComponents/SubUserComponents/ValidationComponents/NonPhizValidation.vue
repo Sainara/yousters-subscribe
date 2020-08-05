@@ -32,13 +32,25 @@ export default {
   },
   methods: {
     sendToValidate: function () {
-      // document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      // window.location.replace("/sign");
+      if (this.isValidEmail() && this.isValidINN()) {
+        this.axios.post('uploadnonphiz', {
+          inn: this.inn,
+          email: this.email
+        }).then(function (response) {
+        if (response.data.success) {
+            //response.data.data;
+            location.reload();
+            //console.log(response.data.data);
+          }
+        });
+      } else {
+        UIkit.notification({message: 'Введите данные', status: 'danger'});
+      }
     },
     toBill: function () {
       if (this.isValidEmail() && this.isValidINN()) {
-        var link =  "/api/v1/bill?inn=" + this.inn + "&email=" + this.email + "&token=" + this.getCookie('token');
-        var win = window.open('/', '_blank');
+        var link =  "https://you-scribe.ru/api/v1/bill?inn=" + this.inn + "&email=" + this.email + "&token=" + this.getCookie('token');
+        var win = window.open(link, '_blank');
         win.focus();
       } else {
         UIkit.notification({message: 'Введите данные', status: 'danger'});
