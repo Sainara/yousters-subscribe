@@ -256,7 +256,7 @@ const initSubscription = async (req, res) => {
     var check2 = await dbQuery.query(checkExistDeviceToken, [req.user.id]);
     const checkExistDeviceTokendbResponse = check2.rows[0];
 
-    console.log(checkExistDeviceTokendbResponse.rows);
+    console.log(check2.rows);
 
     if (!sendNotification('Только тссс...', message, req.user.id, {})) {
       //const sms = snsPublish(req.user.phone, message);
