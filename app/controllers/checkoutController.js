@@ -328,12 +328,18 @@ const renderCheckout = async (req, res) => {
 
     var request = require('request');
 
+    var successURL = "https://you-scribe.ru/api/v1/checkout/" + uid
+
+    if (source == 'web') {
+      successURL += '?source=web';
+    }
+
     var myJSONObject = {
       "TerminalKey": env.tnkf_terminal_id,
       "Amount": amount,
       "OrderId": uid,
       "Description": dbResponse.title,
-      "SuccessURL": "https://you-scribe.ru/api/v1/checkout/" + uid,
+      "SuccessURL": successURL,
       "DATA": {
           "Phone": userData.phone,
           "Email": userData.email
