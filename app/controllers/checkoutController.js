@@ -302,7 +302,7 @@ const renderCheckout = async (req, res) => {
   try {
 
     if (uid == "success") {
-      return res.status(status.success).send('Paid');
+      return res.redirect('/general');
     }
 
 
