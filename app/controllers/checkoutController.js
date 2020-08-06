@@ -290,6 +290,8 @@ const renderCheckout = async (req, res) => {
 
   const { uid } = req.params;
 
+  const { source } = req.query;
+
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
   const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
   const updatePaymentQuery = 'UPDATE payments SET tnkf_id = $1 WHERE uid = $2';
@@ -373,10 +375,16 @@ const renderCheckout = async (req, res) => {
           dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
           if (dbResponse.agr_uid) {
             dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
+            if (source == 'web') {
+              return res.redirect('https://you-scribe.ru/general');
+            }
             return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
           }
           if (dbResponse.paket_id) {
             dbQuery.query(addPaketInfo, [dbResponse.paket_id, dbResponse.user_id, uid]);
+            if (source == 'web') {
+              return res.redirect('https://you-scribe.ru/general');
+            }
             return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
           }
           return res.status(status.success).render('pages/static/errorPage', {Message: 'Что-то пошло не так'});
