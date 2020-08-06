@@ -221,3 +221,63 @@ a.youstersnav {
   margin: 0 auto;
   border: none;
  }
+ .block .uk-card-secondary {
+   background: #F5F7FC;
+   box-shadow: none;
+   margin-bottom: 15px;
+   border-radius: 8px;
+
+ }
+ .block .uk-card-secondary p {
+   font-size: 15px;
+   color: #000;
+ }
+ .block .uk-card-secondary p.title {
+   font-size: 18px;
+   color: #000;
+ }
+ .block .uk-card-secondary h4 {
+   color: #000;
+ }
+ .block .uk-card-secondary span {
+   font-size: 20px;
+   float: right;
+ }
+ .pakets-wrapper {
+   overflow-x: scroll;
+  width: auto;
+  white-space: nowrap;
+  border-radius: 8px;
+ }
+ .paket-wrapper {
+   width: 260px;
+   box-sizing: border-box;
+   padding: 20px;
+   display: inline-block;
+
+   border-radius: 8px;
+   height: 270px;
+   background: #F5F7FC;
+   margin-right: 15px;
+ }
+ .paket-wrapper:last-child {;
+   margin-right: 0px;
+ }
+.paket-wrapper h4 {
+  font-family: 'GilroySemiBold';
+  font-size: 24px;
+}
+.paket-wrapper h4 span {
+  float: right;
+  font-size: 26px;
+}
+.paket-wrapper p {
+  white-space: break-spaces;
+  line-height: 20px;
+}
+.paket-wrapper p.description {
+  font-family: "GilroyRegular";
+}
+.paket-wrapper .main-button {
+  padding: 6px 10px;
+}

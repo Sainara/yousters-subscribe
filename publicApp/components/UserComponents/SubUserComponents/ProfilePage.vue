@@ -80,8 +80,8 @@ export default {
     },
     setTab: function (tab) {
       this.currentTab = tab
-      this.$route.query.page = 'docs';
-      console.log(this.$route.query.page);
+      //this.$route.query.page = 'docs';
+      //console.log(this.$route.query.page);
     }
   },
   computed: {

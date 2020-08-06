@@ -1,6 +1,6 @@
 <template>
   <profile-page v-if="isDontNeedToSendData" v-bind:user='user'></profile-page>
-  <validation-page v-else></validation-page>
+  <validation-page v-else-if="!isDontNeedToSendData"></validation-page>
 </template>
 
 <script>
@@ -8,6 +8,9 @@ import ProfilePage from './SubUserComponents/ProfilePage.vue';
 import ValidationPage from './SubUserComponents/ValidationPage.vue';
 
 export default {
+  data:function () {
+    return {};
+  },
   props: {
     user: Object,
   },
