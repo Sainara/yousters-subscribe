@@ -301,6 +301,8 @@ const renderCheckout = async (req, res) => {
 
   try {
 
+
+
     if (uid == "success") {
       return res.redirect('/general');
     }
@@ -319,6 +321,10 @@ const renderCheckout = async (req, res) => {
     if (!dbResponse) {
       errorMessage.message = "invalidID";
       return res.status(status.bad).send(errorMessage);
+    }
+
+    if (dbResponse.status == 'success') {
+      return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
     }
 
     const rawUserData = await dbQuery.query(getUserData, [dbResponse.user_id]);
@@ -387,11 +393,6 @@ const renderCheckout = async (req, res) => {
             return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
           }
           if (dbResponse.paket_id) {
-            const isPaid = 'SELECT * FROM payments WHERE UID = $1';
-            const isPaidQuery = await dbQuery.query(isPaid, [uid]);
-            if (isPaidQuery.rows[0].status == 'success') {
-              return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
-            }
             dbQuery.query(addPaketInfo, [dbResponse.paket_id, dbResponse.user_id, uid]);
             if (source == 'web') {
               return res.redirect('https://you-scribe.ru/general');
