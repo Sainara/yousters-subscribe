@@ -387,6 +387,11 @@ const renderCheckout = async (req, res) => {
             return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
           }
           if (dbResponse.paket_id) {
+            const isPaid = 'SELECT * FROM payments WHERE UID = $1';
+            const isPaidQuery = await dbQuery.query(isPaid, [uid]);
+            if (isPaidQuery.rows[0].status == 'success') {
+              return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+            }
             dbQuery.query(addPaketInfo, [dbResponse.paket_id, dbResponse.user_id, uid]);
             if (source == 'web') {
               return res.redirect('https://you-scribe.ru/general');
