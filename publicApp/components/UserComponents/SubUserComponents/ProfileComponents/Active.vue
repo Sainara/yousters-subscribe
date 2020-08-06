@@ -56,7 +56,7 @@ export default {
       }).then(function (response) {
         if (response.data.success) {
           var link = "/api/v1/checkout/" + response.data.uid;
-          window.location.replace(link);
+          window.open(link,'_self');
         }
       });
     }
