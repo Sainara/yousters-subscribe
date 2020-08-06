@@ -55,7 +55,7 @@ export default {
         paket_id: id
       }).then(function (response) {
         if (response.data.success) {
-          var link = "/api/v1/checkout/" + response.data.uid;
+          var link = "/api/v1/checkout/" + response.data.uid + "?source=web";
           window.open(link,'_self');
         }
       });
