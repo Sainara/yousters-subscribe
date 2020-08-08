@@ -15,14 +15,13 @@ export default {
   },
   data: function () {
     return {
-      user: this.user,
     }
   },
   methods: {
 
   },
   mounted: function () {
-    console.log(this.user);
+    //console.log(this.user);
   },
   components: {
     CommonPath

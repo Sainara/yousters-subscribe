@@ -15,9 +15,9 @@
     <div v-bind:class="[ isMobile ? 'mobile-padding' : 'desctop-padding' ]">
       <div class="uk-container uk-container-small">
         <template v-if="isMobile">
-          <!-- <keep-alive> -->
+          <keep-alive>
             <component v-bind:is="currentTabComponent" v-bind:user="user" v-bind:agreements='agreements'>{{user.phone}}</component>
-          <!-- </keep-alive> -->
+          </keep-alive>
         </template>
         <template v-else>
           <div uk-grid>
@@ -71,7 +71,7 @@ export default {
       let self = this;
       this.axios.post('getagreements')
         .then(function (response) {
-          console.log(response);
+          //console.log(response);
         if (response.data.success) {
           self.agreements = response.data.data;
 
@@ -89,7 +89,7 @@ export default {
       return this.user.is_on_validation;
     },
     isMobile() {
-      return screen.width <= 760
+      return screen.width <= 960
     },
     currentTabComponent: function() {
       switch (this.currentTab) {

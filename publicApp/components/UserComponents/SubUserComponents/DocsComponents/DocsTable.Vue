@@ -30,7 +30,7 @@ export default {
           return "Активен";
           break;
         case 7:
-          return "Ожидает подписания";
+          return "Ожидает подписания контрагентом";
           break;
         case 5:
           return "Оплачен";
@@ -39,7 +39,7 @@ export default {
           return "Создан";
           break;
         default:
-          return "ХЗ";
+          return "Неизвестно"
           break;
       }
     },

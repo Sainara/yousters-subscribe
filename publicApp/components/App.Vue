@@ -1,7 +1,7 @@
 <template>
   <error-page v-if="nonAuth" message='У вас нет доступа'></error-page>
-  <loading-page v-else-if="isUserLoading"></loading-page>
-  <primary-user-page v-else-if="isUserLoaded" v-bind:user='user'></primary-user-page>
+  <loading-page v-else-if="isLoading"></loading-page>
+  <primary-user-page v-else-if="!isLoading" v-bind:user='user'></primary-user-page>
 </template>
 
 <script>
@@ -13,17 +13,12 @@ export default {
   data: function() {
     return {
       nonAuth: false,
+      isLoading: true,
       token: '',
       user: {},
     };
   },
   computed: {
-    isUserLoading: function () {
-      return this.user == {}
-    },
-    isUserLoaded: function () {
-      return this.user != {}
-    }
   },
   methods: {
     getCookie: function (name) {
@@ -38,6 +33,7 @@ export default {
         .then(function (response) {
         if (response.data.success) {
           self.user = response.data.data;
+          self.isLoading = false;
           //console.log(response.data.data);
         }
       });

@@ -20,7 +20,7 @@ export default {
     }
   },
   mounted: function () {
-    console.log(this.user);
+    //console.log(this.user);
   },
   components: {
     ProfilePage,
