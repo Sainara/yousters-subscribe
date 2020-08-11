@@ -44,7 +44,7 @@ module.exports = {
         ignore: ['*.js.map'],
 
         // Extensions to watch.
-        ext: 'js,njk,json,vue',
+        ext: 'js,njk,json,vue,ejs',
 
         // Unlike the cli option, delay here is in milliseconds (also note that it's a string).
         // Here's 1 second delay:

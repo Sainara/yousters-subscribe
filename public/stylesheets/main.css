@@ -284,3 +284,13 @@ a.youstersnav {
 .uk-form-width-medium {
     width: 300px;
 }
+.vk-icon {
+  fill: #fff;
+  transition: all 0.2s ease-in-out;
+}
+.footer-socials .vk-icon {
+  fill: #999
+}
+.vk-icon:hover {
+  fill: #666;
+}
