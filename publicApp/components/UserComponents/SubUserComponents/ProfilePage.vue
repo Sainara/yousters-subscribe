@@ -24,7 +24,7 @@
             <div class="uk-width-expand">
                 <div class="uk-card uk-card-default uk-card-small uk-card-body">
                   <h2>Документы</h2>
-
+                  <router-link to="/add">Перейти к add</router-link>
                   <docs-table v-bind:agreements="agreements"></docs-table>
                 </div>
             </div>

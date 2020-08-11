@@ -294,3 +294,9 @@ a.youstersnav {
 .vk-icon:hover {
   fill: #666;
 }
+.add-agreement-wrap input {
+  /* width: 400px; */
+  border: none;
+  text-align: center;
+  color: #000;
+}

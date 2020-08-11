@@ -19,6 +19,6 @@ export default {
   //     message: "Hello"
   //   };
   // },
-  props: ['message'],
+  props: ['message']
 };
 </script>
