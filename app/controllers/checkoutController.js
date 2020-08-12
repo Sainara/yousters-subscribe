@@ -192,7 +192,11 @@ const renderCheckout = async (req, res) => {
   }
 
   if (uid == "failure") {
-    return res.status(status.success).send('<h1>Оплата не прошла</h1>');
+    var data = {};
+    data.Message = req.query.reason;
+    data.PaymentURL = "https://you-scribe.ru/api/v1/checkout/" + req.query.uid;
+    console.log(data);
+    return res.status(status.success).render('pages/static/paymentFailure', data);
   }
 
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
@@ -258,7 +262,7 @@ const renderCheckout = async (req, res) => {
             return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
           } else {
             dbQuery.query(updatePaymentStatusQuery, ['failure', dbResponse.uid]);
-            return res.redirect('https://you-scribe.ru/api/v1/checkout/failure');
+            return res.redirect('https://you-scribe.ru/api/v1/checkout/failure?uid=' + dbResponse.uid + '&reason=' + payment.cancellation_details.reason);
           }
           return res.status(status.success).send(successMessage);
         }
