@@ -4,11 +4,11 @@ export default {
   secret: process.env.SECRET || 'youstersbigbigsecret',
   port: process.env.PORT || 8000,
   yandexCheckoutShopId: '731657',
-  yandexCheckoutSecretKey: 'test_IOIH5soFDNF9gRmbEDXnQN8Uy910oH3SouIBxirQmsE',
+  yandexCheckoutSecretKey: 'live_QflFfq4UKgFm8wsKHQCN3Nsq-hVuJPOJD0vl7lu7mMY',
   sms_ru_api_id: 'BE2FD0CD-F301-8524-B59F-A401C359E329',
   sberAuthClientID: 'a5a2d1b0-85d1-4caf-9bea-03cd21de3786',
   sberAuthClientSecret: 'S1jE5eN8oN5gG3xI8xW8tJ5pK0qP6lF4wR1rP5bO3rY8tA8lX5',
-  tnkf_terminal_id: '1595602181033DEMO',
+  tnkf_terminal_id: '1595602181033',
   tnkf_openAPI_id: 't.2w7dOUSTDG8ce4KxiaWWdinlmrD35fgs99T-CSwev_UYADzn79dnYYqoPIP-JSnX-Un3zf8ybKEv7kc7m3Dw_Q',
   dadata_apiKey: '7f51e1b0f4e6aaf6695e7625b2d13405eb5954cf',
   iap_secret: '94036ff7631f455e8288e782ad5d91a1'
