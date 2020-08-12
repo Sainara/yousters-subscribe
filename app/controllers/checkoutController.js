@@ -201,7 +201,7 @@ const renderCheckout = async (req, res) => {
   }
 
   const getPaymentQuery = 'SELECT * FROM payments WHERE uid = $1';
-  const getUserData = 'SELECT phone, inn, email FROM users WHERE id = $1';
+  const getUserData = 'SELECT user_name, phone, inn, email FROM users WHERE id = $1';
   const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1 WHERE uid = $2';
   const updatePaymentStatusQuery = 'UPDATE payments SET status = $1 WHERE uid = $2';
   const updateAgreementQuery = 'UPDATE agreements set status_id = 5 WHERE uid = $1';
@@ -235,7 +235,7 @@ const renderCheckout = async (req, res) => {
         'type': 'embedded'
       },
       'capture': true,
-      'description': uid,
+      'description': dbResponse.title + ' для ' + userData.user_name,
       "receipt": {
           "type": "payment",
           "send": "true",

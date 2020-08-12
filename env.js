@@ -5,6 +5,8 @@ export default {
   port: process.env.PORT || 8000,
   yandexCheckoutShopId: '729974',
   yandexCheckoutSecretKey: 'live_QflFfq4UKgFm8wsKHQCN3Nsq-hVuJPOJD0vl7lu7mMY',
+  // yandexCheckoutShopId: '729974',
+  // yandexCheckoutSecretKey: 'live_QflFfq4UKgFm8wsKHQCN3Nsq-hVuJPOJD0vl7lu7mMY',
   sms_ru_api_id: 'BE2FD0CD-F301-8524-B59F-A401C359E329',
   sberAuthClientID: 'a5a2d1b0-85d1-4caf-9bea-03cd21de3786',
   sberAuthClientSecret: 'S1jE5eN8oN5gG3xI8xW8tJ5pK0qP6lF4wR1rP5bO3rY8tA8lX5',
