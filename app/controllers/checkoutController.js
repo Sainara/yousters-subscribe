@@ -186,6 +186,7 @@ const renderCheckout = async (req, res) => {
   const successMessage = Object.assign({}, sMessage);
 
   const { uid } = req.params;
+  const { source } = req.query;
 
   if (uid == "success") {
     return res.status(status.success);
@@ -194,7 +195,7 @@ const renderCheckout = async (req, res) => {
   if (uid == "failure") {
     var data = {};
     data.Message = req.query.reason;
-    data.PaymentURL = "https://you-scribe.ru/api/v1/checkout/" + req.query.uid;
+    data.PaymentURL = "https://you-scribe.ru/general";
     console.log(data);
     return res.status(status.success).render('pages/static/paymentFailure', data);
   }
@@ -204,6 +205,8 @@ const renderCheckout = async (req, res) => {
   const updatePaymentQuery = 'UPDATE payments SET yndx_id = $1 WHERE uid = $2';
   const updatePaymentStatusQuery = 'UPDATE payments SET status = $1 WHERE uid = $2';
   const updateAgreementQuery = 'UPDATE agreements set status_id = 5 WHERE uid = $1';
+  const addPaketInfo = 'INSERT INTO userpakets(paket_id, user_id, payment_uid) VALUES ($1, $2, $3)';
+
 
   try {
 
@@ -213,6 +216,10 @@ const renderCheckout = async (req, res) => {
     if (!dbResponse) {
       errorMessage.message = "invalidID";
       return res.status(status.bad).send(errorMessage);
+    }
+
+    if (dbResponse.status == 'success') {
+        return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
     }
 
     const rawUserData = await dbQuery.query(getUserData, [dbResponse.user_id]);
@@ -258,13 +265,27 @@ const renderCheckout = async (req, res) => {
         if (payment.status != "pending") {
           if (payment.paid) {
             dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
-            dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
+            //dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
+            if (dbResponse.agr_uid) {
+              dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
+              if (source == 'web') {
+                return res.redirect('https://you-scribe.ru/general');
+              }
+              return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+            }
+            if (dbResponse.paket_id) {
+              dbQuery.query(addPaketInfo, [dbResponse.paket_id, dbResponse.user_id, uid]);
+              if (source == 'web') {
+                return res.redirect('https://you-scribe.ru/general');
+              }
+              return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+            }
             return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
           } else {
             dbQuery.query(updatePaymentStatusQuery, ['failure', dbResponse.uid]);
-            return res.redirect('https://you-scribe.ru/api/v1/checkout/failure?uid=' + dbResponse.uid + '&reason=' + payment.cancellation_details.reason);
+            return res.redirect('https://you-scribe.ru/api/v1/checkout/failure?reason=' + payment.cancellation_details.reason);
           }
-          return res.status(status.success).send(successMessage);
+          // return res.status(status.success).send(successMessage);
         }
 
         var return_url = "https://you-scribe.ru/api/v1/checkout/" + uid;
