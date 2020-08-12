@@ -16,6 +16,8 @@ import checkoutRoute from './app/routes/checkoutRoute';
 import paketRoute from './app/routes/paketRoute';
 import pushRoute from './app/routes/pushRoute';
 
+import kassaData from './static/merchant.ru.yandex.kassa'
+
 
 import adminRoute from './app/routes/adminRoute';
 
@@ -94,6 +96,7 @@ app.get('/support', async (req, res) => {
 });
 
 app.get('/.well-known/apple-app-site-association', (req, res) => res.json(aasa));
+app.get('/.well-known/apple-developer-merchantid-domain-association', (req, res) => res.json(kassaData));
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT } 🚀`))
 
