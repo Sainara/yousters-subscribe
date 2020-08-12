@@ -3,7 +3,7 @@ export default {
   //test_database_url: process.env.TEST_DATABASE_URL,
   secret: process.env.SECRET || 'youstersbigbigsecret',
   port: process.env.PORT || 8000,
-  yandexCheckoutShopId: '731657',
+  yandexCheckoutShopId: '729974',
   yandexCheckoutSecretKey: 'live_QflFfq4UKgFm8wsKHQCN3Nsq-hVuJPOJD0vl7lu7mMY',
   sms_ru_api_id: 'BE2FD0CD-F301-8524-B59F-A401C359E329',
   sberAuthClientID: 'a5a2d1b0-85d1-4caf-9bea-03cd21de3786',
