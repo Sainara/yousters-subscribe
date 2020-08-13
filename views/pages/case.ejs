@@ -3,6 +3,18 @@
 <head>
   <% include ../partials/header.ejs %>
   <meta name="apple-itunes-app" content="app-id=1517313227">
+  <script type="text/javascript">
+    const getCookie = (name) => {
+      let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    if (getCookie('token')) {
+      window.location.replace("/general#/agreement/" + window.location.href.split('/').pop());
+    }
+  </script>
 </head>
 
 <body>
@@ -52,24 +64,12 @@ width="100px" style="margin-right: 20px" />
           <% }); %>
           <% if (subs.length < 2) { %>
             <a href="https://apps.apple.com/us/app/id1517313227" class="main-button case-sub-button">Подписать в приложении</a>
-            <a href="/sign" class="main-button case-sub-button">Авторизоваться и подписать</a>
+            <a href="/sign" style="margin-left: 15px" class="main-button secondary-color-but case-sub-button">Авторизоваться и подписать</a>
           <% }; %>
         </div>
 
       </div>
     </div>
   </div>
-  <script type="text/javascript">
-    const getCookie = (name) => {
-      let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-      ));
-      return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
-
-    if (getCookie('token')) {
-      window.location.replace("/general#/agreement/" + window.location.href.split('/').pop());
-    }
-  </script>
 </body>
 </html>
