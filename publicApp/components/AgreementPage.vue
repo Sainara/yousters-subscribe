@@ -27,12 +27,9 @@
         </div>
         <div v-if="subscribtions.length > 0" class="block">
           <p class="subtitle">Подписали</p>
-          <p v-for="subscribtion in subscribtions" :key="subscribtion.user_name" class="smalltitle">
+          <p v-for="subscribtion in subscribtions" :key="subscribtion.user_name" class="title">
             {{getFormatedSub(subscribtion)}}
           </p></br>
-
-            <!-- <a href="https://apps.apple.com/us/app/id1517313227" class="main-button case-sub-button">Подписать в приложении</a> -->
-
         </div>
         <div class="block">
           <template v-if="agreement.status_id == 1">
@@ -44,7 +41,12 @@
               <a v-else href="#" v-on:click.prevent="payAgr" class="main-button case-sub-button">Оплатить</a>
             </div>
           </template>
-          <a v-if="canBeSubscribed" href="#" v-on:click.prevent="" class="main-button case-sub-button">Подписать</a>
+          <template v-if="canBeSubscribed">
+            <transition name="fade">
+              <input v-if="isEnteringCode" maxlength="6" v-model="code" class="uk-input uk-form-large" type="text" name="code" placeholder="Код">
+            </transition>
+            <a href="#" v-on:click.prevent="subscribe" class="main-button case-sub-button">Подписать</a>
+          </template>
         </div>
 
       </div>
@@ -79,7 +81,10 @@ export default {
       agreement: {},
       subscribtions: [],
       token: '',
-      canBeSubscribed: false
+      canBeSubscribed: false,
+      isEnteringCode:false,
+      code: '',
+      sessionID: ''
     }
   },
   computed: {
@@ -92,16 +97,32 @@ export default {
       ));
       return matches ? decodeURIComponent(matches[1]) : undefined;
     },
+    subscribe: function () {
+      let self = this;
+      if (!this.isEnteringCode) {
+        this.isEnteringCode = true;
+        this.axios.post('initsubscribe', {uid: this.agreement.uid})
+          .then(function (response) {
+          if (response.data.success) {
+            self.sessionID = response.data.sessionid;
+          }
+        });
+      } else {
+        this.axios.post('validatesubscribe', {sessionid: this.sessionID, code: this.code})
+          .then(function (response) {
+          if (response.data.success) {
+            self.$router.go()
+          }
+        });
+      }
+    },
     canBeSubscribedFunc:function () {
       if (this.agreement.status_id == 5 || this.agreement.status_id == 7) {
-        console.log("!!!!!!!!!!222");
         if (this.user.isvalidated) {
-          console.log("!!!!!!!!!!111");
           if (this.subscribtions.length == 0) {
             this.canBeSubscribed = true;
           } else if (this.subscribtions.length == 1) {
             if (this.subscribtions[0].user_name != this.user.user_name) {
-              console.log("!!!!!!!!!!");
               this.canBeSubscribed = true;
             } else {
               this.canBeSubscribed = false;
@@ -116,12 +137,8 @@ export default {
       let self = this;
       this.axios.post('pakets/use', {agr_uid: this.agreement.uid})
         .then(function (response) {
-
-        console.log(response.data);
         if (response.data.success) {
           this.$router.go()
-          //location.reload();
-          //console.log(response.data.data);
         }
       });
     },
@@ -171,10 +188,6 @@ export default {
             }
             self.isHavePaket = all > response.data.data.usage;
           }
-          //self.agreement = response.data.data;
-          console.log(response.data.data);
-
-          //console.log(response.data.data);
         }
       });
     },
@@ -192,8 +205,6 @@ export default {
           if (self.agreement.status_id > 5) {
             self.getSubscribtions()
           }
-
-          //console.log(response.data.data);
         }
       });
     },
@@ -214,8 +225,6 @@ export default {
         if (response.data.success) {
           self.subscribtions = response.data.data;
           self.canBeSubscribedFunc();
-          //self.isLoading = false;
-          //console.log(response.data.data);
         }
       });
     },

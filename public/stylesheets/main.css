@@ -311,3 +311,11 @@ a.youstersnav {
   font-family: "GilroySemiBold" !important;
   margin-top: 40px
 }
+.block input {
+  padding: 0;
+    border: none;
+    width: 125px;
+    font-size: 27px;
+    color: #000;
+  height: 66px;
+}
