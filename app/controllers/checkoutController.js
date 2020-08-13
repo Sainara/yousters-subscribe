@@ -189,7 +189,7 @@ const renderCheckout = async (req, res) => {
   const { source } = req.query;
 
   if (uid == "success") {
-    return res.status(status.success);
+    return res.redirect('/general');
   }
 
   if (uid == "failure") {
