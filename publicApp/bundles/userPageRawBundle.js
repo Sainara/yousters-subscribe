@@ -17,13 +17,12 @@ Vue.config.devtools = true;
 
 import MainPage from '../components/MainPage.vue'
 import CreateAgreement from '../components/CreateAgreement.vue'
-
-
-const Bar = { template: '<div>bar</div>' }
+import AgreementPage from '../components/AgreementPage.vue'
 
 const routes = [
   { path: '/', component: MainPage },
-  { path: '/add', component: CreateAgreement }
+  { path: '/add', component: CreateAgreement},
+  { path: '/agreement/:uid', component: AgreementPage}
 ]
 
 // 3. Создаём экземпляр маршрутизатора и передаём маршруты в опции `routes`

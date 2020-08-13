@@ -14,7 +14,7 @@
               <input type="file" accept="application/pdf" @change="handleFile($event)">
               <input class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
           </div>
-          <p class="subtitle" style="margin-top: 10px">Подходят файлы в формате PDF весом не более 50Мб</p>
+          <p class="subtitle" style="margin-top: 10px; font-size: 13px;">Подходят файлы в формате PDF весом не более 50Мб</p>
         </div>
         <a style="margin-top: 70px" href="#" v-on:click.prevent="addAgreement()" class="main-button full-width-but">Загрузить</a>
       </div>
@@ -53,7 +53,25 @@ export default {
       //console.log(this.mainPage);
     },
     addAgreement:function () {
-      this.isLoading = true
+      const formData = new FormData()
+      formData.set('title', this.agrName);
+      formData.set('doc', this.file);
+
+      if (this.agrName && this.file) {
+        this.isLoading = true;
+        let self = this;
+        this.axios.post('uploadagreement', formData, {})
+          .then(function (response) {
+          if (response.data.success) {
+            self.isLoading = false;
+            self.$router.go(-1);
+          } else {
+            UIkit.notification({message: 'Ошибка(', status: 'danger'});
+          }
+        });
+      } else {
+        UIkit.notification({message: 'Заполните все поля', status: 'danger'});
+      }
     }
   },
   mounted: function () {

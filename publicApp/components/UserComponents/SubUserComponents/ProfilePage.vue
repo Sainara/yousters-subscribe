@@ -15,16 +15,16 @@
     <div v-bind:class="[ isMobile ? 'mobile-padding' : 'desctop-padding' ]">
       <div class="uk-container uk-container-small">
         <template v-if="isMobile">
+          <router-link v-if="currentTab == 'Документы'" class="main-button full-width-but" to="/add">+ Добавить документ</router-link>
           <keep-alive>
-            <component v-bind:is="currentTabComponent" v-bind:user="user" v-bind:agreements='agreements'>{{user.phone}}</component>
+            <component v-bind:is="currentTabComponent" v-bind:ismobile="isMobile" v-bind:user="user" v-bind:agreements='agreements'>{{user.phone}}</component>
           </keep-alive>
         </template>
         <template v-else>
           <div uk-grid>
             <div class="uk-width-expand">
                 <div class="uk-card uk-card-default uk-card-small uk-card-body">
-                  <h2>Документы</h2>
-                  <router-link to="/add">Перейти к add</router-link>
+                  <h2>Документы <router-link class="main-button" style="padding: 0px 11px; float: right;" to="/add">+</router-link></h2>
                   <docs-table v-bind:agreements="agreements"></docs-table>
                 </div>
             </div>

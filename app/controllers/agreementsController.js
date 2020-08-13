@@ -15,6 +15,7 @@ import {
   generateCode,
   generateUserToken,
   generateFileHash,
+  generateEmojiHash
 } from '../helpers/generators';
 
 import {
@@ -55,6 +56,8 @@ const getAgreement = async (req, res) => {
 
   const getQuery = 'SELECT * FROM agreements where uid = $1';
 
+  const { emoji } = req.query;
+
   try {
 
     var { rows } = await dbQuery.query(getQuery, [req.params.uid]);
@@ -68,6 +71,10 @@ const getAgreement = async (req, res) => {
     dbResponse.link = "https://you-scribe.ru/doc/" + dbResponse.uid
     delete dbResponse.creator_id
     delete dbResponse.id
+
+    if (emoji) {
+      dbResponse.hash = generateEmojiHash(dbResponse.hash);
+    }
 
     successMessage.data = dbResponse
     return res.status(status.success).send(successMessage);

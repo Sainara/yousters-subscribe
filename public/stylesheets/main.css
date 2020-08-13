@@ -167,7 +167,8 @@ h2.doc {
 .uk-notification {
   font-family: "GilroyMedium";
 }
-.agreement-cell h3 {
+.agreement-cell h4 {
+  font-family: "GilroyMedium";
   margin-bottom: 5px;
 }
 .agr-status{
@@ -299,4 +300,10 @@ a.youstersnav {
   border: none;
   text-align: center;
   color: #000;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
 }
