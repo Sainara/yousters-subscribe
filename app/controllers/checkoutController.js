@@ -269,7 +269,7 @@ const renderCheckout = async (req, res) => {
             if (dbResponse.agr_uid) {
               dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
               if (source == 'web') {
-                return res.redirect('https://you-scribe.ru/general');
+                return res.redirect('https://you-scribe.ru/general#/agreement/' + dbResponse.agr_uid);
               }
               return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
             }
@@ -289,6 +289,11 @@ const renderCheckout = async (req, res) => {
         }
 
         var return_url = "https://you-scribe.ru/api/v1/checkout/" + uid;
+
+        if (source == 'web') {
+          return_url += '?source=web';
+        }
+
         const result = {
           confirmation_token: payment.confirmation.confirmation_token,
           return_url: return_url,
