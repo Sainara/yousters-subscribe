@@ -111,7 +111,7 @@ export default {
         this.axios.post('validatesubscribe', {sessionid: this.sessionID, code: this.code})
           .then(function (response) {
           if (response.data.success) {
-            this.getAgreement();
+            self.getAgreement();
             //self.$router.go()
           }
         });
@@ -139,7 +139,8 @@ export default {
       this.axios.post('pakets/use', {agr_uid: this.agreement.uid})
         .then(function (response) {
         if (response.data.success) {
-          this.$router.go()
+          self.getAgreement();
+          //self.$router.go()
         }
       });
     },
