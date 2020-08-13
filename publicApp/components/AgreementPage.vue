@@ -33,7 +33,7 @@
         </div>
         <div class="block">
           <template v-if="agreement.status_id == 1">
-            <div v-if="isGetPaketData">
+            <div v-if="isGettingPaketData">
               <a href="#" class="main-button case-sub-button">Загрузка...</a>
             </div>
             <div v-else>
