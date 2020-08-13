@@ -23,16 +23,6 @@
       <ul class="uk-navbar-nav">
             <h2 class="youstersh2">Yousters Subscribe</h2>
         </ul>
-
-    </div>
-    <div class="uk-navbar-right">
-    <a href="https://apps.apple.com/us/app/id1517313227"><img
-src="/images/dwnldAppStoreWhite.svg"
-alt="triangle with all three sides equal"
-height="100px"
-width="100px" style="margin-right: 20px" />
-</a>
-
     </div>
 </nav>
   <div class="uk-container uk-container-xsmall" style="margin-bottom: 50px">
@@ -45,7 +35,7 @@ width="100px" style="margin-right: 20px" />
         </div>
         <div class="block">
           <p class="subtitle">Дата создания</p>
-          <p class="title"><%= moment.utc(agreement.created_at).local().format("DD.MM.YYYY в HH:mm:ss") %></p>
+          <p class="title"><%= moment.utc(agreement.created_at).local().format("DD.MM.YYYY в HH:mm:ss") %> по UTC</p>
         </div>
         <div class="block">
           <p class="subtitle">Ссылка на файл</p>
@@ -60,7 +50,7 @@ width="100px" style="margin-right: 20px" />
             <p class="subtitle">Подписали</p>
           <% }; %>
           <% subs.forEach(function(s) { %>
-            <p class="smalltitle"><%= s.user_name %> (ИНН: <%= s.inn %>) <%= moment.utc(s.created_at).local().format("DD.MM.YYYY в HH:mm:ss")  %> при помощи кода, отправленного на номер телефона <%= s.phone %></p></br>
+            <p class="smalltitle"><%= s.user_name %> (ИНН: <%= s.inn %>) <%= moment.utc(s.created_at).local().format("DD.MM.YYYY в HH:mm:ss")  %> по UTC при помощи кода, отправленного на номер телефона <%= s.phone %></p></br>
           <% }); %>
           <% if (subs.length < 2) { %>
             <div class="uk-grid-small" uk-grid>
@@ -73,7 +63,6 @@ width="100px" style="margin-right: 20px" />
             </div>
           <% }; %>
         </div>
-
       </div>
     </div>
   </div>
