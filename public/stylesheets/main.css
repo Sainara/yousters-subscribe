@@ -307,3 +307,7 @@ a.youstersnav {
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
+.agr_title {
+  font-family: "GilroySemiBold" !important;
+  margin-top: 40px
+}

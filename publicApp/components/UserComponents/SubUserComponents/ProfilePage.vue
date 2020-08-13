@@ -17,7 +17,7 @@
         <template v-if="isMobile">
           <router-link v-if="currentTab == 'Документы'" class="main-button full-width-but" to="/add">+ Добавить документ</router-link>
           <keep-alive>
-            <component v-bind:is="currentTabComponent" v-bind:ismobile="isMobile" v-bind:user="user" v-bind:agreements='agreements'>{{user.phone}}</component>
+            <component v-bind:is="currentTabComponent" v-bind:user="user" v-bind:agreements='agreements'>{{user.phone}}</component>
           </keep-alive>
         </template>
         <template v-else>
@@ -25,7 +25,7 @@
             <div class="uk-width-expand">
                 <div class="uk-card uk-card-default uk-card-small uk-card-body">
                   <h2>Документы <router-link class="main-button" style="padding: 0px 11px; float: right;" to="/add">+</router-link></h2>
-                  <docs-table v-bind:agreements="agreements"></docs-table>
+                  <docs-table v-bind:user="user" v-bind:agreements="agreements"></docs-table>
                 </div>
             </div>
             <div class="uk-width-large">

@@ -17,7 +17,7 @@
 export default {
   props: {
     agreements: Array,
-    ismobile: Boolean
+    user: Object,
   },
   data: function () {
     return {
@@ -46,7 +46,7 @@ export default {
     },
     getAgreementLink: function (uid) {
       //this.$router.push("/agreement/" + uid)
-      this.$router.push({ path: '/agreement/' + uid }) // -> /user/123
+      this.$router.push({ name: 'agreementPage' , params: {uid: uid, user: this.user}}) // -> /user/123
 
     }
   },

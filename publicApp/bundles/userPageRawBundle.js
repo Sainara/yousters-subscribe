@@ -22,7 +22,7 @@ import AgreementPage from '../components/AgreementPage.vue'
 const routes = [
   { path: '/', component: MainPage },
   { path: '/add', component: CreateAgreement},
-  { path: '/agreement/:uid', component: AgreementPage}
+  { path: '/agreement/:uid', name: 'agreementPage', component: AgreementPage, props: true}
 ]
 
 // 3. Создаём экземпляр маршрутизатора и передаём маршруты в опции `routes`
