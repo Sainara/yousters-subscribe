@@ -1,7 +1,7 @@
 <template>
   <error-page v-if="nonAuth" message='У вас нет доступа'></error-page>
   <loading-page v-else-if="isLoading"></loading-page>
-  <div v-else-if="!isLoading" class="uk-container uk-container-xsmall" style="margin-bottom: 30px">
+  <div v-else-if="!isLoading" class="uk-container uk-container-xsmall" style="margin-bottom: 50px">
     <div class="uk-grid-small" uk-grid>
       <div>
         <h2 class="agr_title">{{agreement.title}}</h2>
