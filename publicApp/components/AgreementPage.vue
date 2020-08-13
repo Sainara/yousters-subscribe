@@ -43,7 +43,7 @@
           </template>
           <template v-if="canBeSubscribed">
             <transition name="fade">
-              <input v-if="isEnteringCode" maxlength="6" v-model="code" class="uk-input uk-form-large" type="text" name="code" placeholder="Код">
+              <input v-if="isEnteringCode" maxlength="6" v-model="code" class="uk-input uk-form-large" type="number" name="code" placeholder="Код">
             </transition>
             <a href="#" v-on:click.prevent="subscribe" class="main-button case-sub-button">Подписать</a>
           </template>
@@ -111,7 +111,8 @@ export default {
         this.axios.post('validatesubscribe', {sessionid: this.sessionID, code: this.code})
           .then(function (response) {
           if (response.data.success) {
-            self.$router.go()
+            this.getAgreement();
+            //self.$router.go()
           }
         });
       }
