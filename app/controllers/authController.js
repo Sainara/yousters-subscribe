@@ -91,6 +91,7 @@ const validate = async (req, res) => {
   const { sessionid, code } = req.body;
 
   const getQuery = 'SELECT * FROM entersessions WHERE sessionid = $1';
+  const updateExpire = 'UPDATE entersessions SET expiretime = $1 WHERE sessionid = $2'
 
   try {
 
@@ -112,6 +113,9 @@ const validate = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
     if (dbResponse.code == code || code == "111115") {
+
+      dbQuery.query(updateExpire, [moment().subtract(10, 'seconds'), sessionid]);
+
       const findUserQuery = 'SELECT id, phone, isvalidated, is_on_validation, user_name, inn, email FROM users WHERE phone = $1';
       //console.log(dbResponse.number);
       const { rows } = await dbQuery.query(findUserQuery, [dbResponse.number]);

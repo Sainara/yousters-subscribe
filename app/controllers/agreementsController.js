@@ -288,6 +288,7 @@ const validateSubscription = async (req, res) => {
   const updateQuery = 'UPDATE agreements SET status_id = $2 WHERE uid = $1';
 
   const selectSessionsQuery = 'SELECT * FROM subscribesessions WHERE sessionid = $1';
+  const updateExpire = 'UPDATE subscribesessions SET expiretime = $1 WHERE sessionid = $2'
 
   try {
 
@@ -310,6 +311,9 @@ const validateSubscription = async (req, res) => {
     }
 
     if (dbResponse.code == code || code == "111115") {
+
+      dbQuery.query(updateExpire, [moment().subtract(10, 'seconds'), sessionid]);
+
       var values = [dbResponse.agr_uid, req.user.id, moment()]
       var create = await dbQuery.query(createQuery, values);
 
