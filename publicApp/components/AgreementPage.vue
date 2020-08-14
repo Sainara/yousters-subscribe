@@ -47,6 +47,7 @@
             </transition>
             <a href="#" v-on:click.prevent="subscribe" class="main-button case-sub-button">Подписать</a>
           </template>
+          <a href="#" v-if="isReadyToShare" v-on:click.prevent="share" class="main-button case-sub-button">{{shareText}}</a>
         </div>
 
       </div>
@@ -83,8 +84,10 @@ export default {
       token: '',
       canBeSubscribed: false,
       isEnteringCode:false,
+      isReadyToShare: false,
       code: '',
-      sessionID: ''
+      sessionID: '',
+      shareText: 'Поделиться'
     }
   },
   computed: {
@@ -96,6 +99,16 @@ export default {
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
       ));
       return matches ? decodeURIComponent(matches[1]) : undefined;
+    },
+    share: function () {
+      let self = this;
+      navigator.clipboard.writeText('https://you-scribe.ru/case/' + this.agreement.uid)
+      .then(() => {
+          self.shareText = "Ссылка скопирована";
+      })
+      .catch(err => {
+        console.log('Something went wrong', err);
+      });
     },
     subscribe: function () {
       let self = this;
@@ -206,6 +219,9 @@ export default {
           }
           if (self.agreement.status_id > 5) {
             self.getSubscribtions()
+          }
+          if (self.agreement.status_id == 10) {
+            self.isReadyToShare = true;
           }
         }
       });
