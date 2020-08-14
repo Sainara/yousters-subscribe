@@ -15,7 +15,7 @@
         </div>
         <div class="block">
           <p class="subtitle">Ссылка на файл</p>
-          <p class="smalltitle"><a href="<%= agreement.link %>">{{agreement.link}}</a></p>
+          <p class="smalltitle"><a :href="agreement.link">{{agreement.link}}</a></p>
         </div>
         <div class="block">
           <p class="subtitle">Хэш (SHA256) файла</p>
