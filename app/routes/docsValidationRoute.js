@@ -12,7 +12,8 @@ var cpUpload = uploader.fields([{ name: 'main', maxCount: 1 }, { name: 'secondar
 router.post('/uploaddocs', primaryLimit, verifyAuth, cpUpload, uploadDocs);
 
 router.get('/bill', primaryLimit, verifyAuth, renderBill);
-router.post('/uploadnonphiz', primaryLimit, verifyAuth, uploadNonPhizData);
+var nonPhizUpload = uploader.fields([{ name: 'video', maxCount: 1 }])
+router.post('/uploadnonphiz', primaryLimit, verifyAuth, nonPhizUpload, uploadNonPhizData);
 //console.log(uploader);
 //router.post('/validate', validate);
 

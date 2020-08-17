@@ -170,6 +170,7 @@ const uploadAgreement = async (req, res) => {
   const { title } = req.body;
 
   if (!isValidNameLength(title)) {
+    s3delete(req.file.location.split('/').pop())
     errorMessage.message = "inValidName";
     return res.status(status.bad).send(errorMessage);
   }

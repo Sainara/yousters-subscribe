@@ -22,6 +22,8 @@ import {
 
 import env from '../../env';
 
+import {s3delete} from '../helpers/s3';
+
 const uploadDocs = async (req, res) => {
 
   const errorMessage = Object.assign({}, eMessage);
@@ -35,16 +37,25 @@ const uploadDocs = async (req, res) => {
     const dbResponse = rows[0];
 
     if (!dbResponse) {
+      s3delete(req.files['main'][0].location.split('/').pop())
+      s3delete(req.files['secondary'][0].location.split('/').pop())
+      s3delete(req.files['video'][0].location.split('/').pop())
       errorMessage.message = "userNotFound";
       return res.status(status.bad).send(errorMessage);
     }
 
     if (dbResponse.isvalidated) {
+      s3delete(req.files['main'][0].location.split('/').pop())
+      s3delete(req.files['secondary'][0].location.split('/').pop())
+      s3delete(req.files['video'][0].location.split('/').pop())
       errorMessage.message = "userValidated";
       return res.status(status.bad).send(errorMessage);
     }
 
     if (dbResponse.is_on_validation) {
+      s3delete(req.files['main'][0].location.split('/').pop())
+      s3delete(req.files['secondary'][0].location.split('/').pop())
+      s3delete(req.files['video'][0].location.split('/').pop())
       errorMessage.message = "userOnValidate";
       return res.status(status.bad).send(errorMessage);
     }
@@ -73,22 +84,25 @@ const uploadNonPhizData = async (req, res) => {
     const dbResponse = rows[0];
 
     if (!dbResponse) {
+      s3delete(req.files['video'][0].location.split('/').pop())
       errorMessage.message = "userNotFound";
       return res.status(status.bad).send(errorMessage);
     }
 
     if (dbResponse.isvalidated) {
+      s3delete(req.files['video'][0].location.split('/').pop())
       errorMessage.message = "userValidated";
       return res.status(status.bad).send(errorMessage);
     }
 
     if (dbResponse.is_on_validation) {
+      s3delete(req.files['video'][0].location.split('/').pop())
       errorMessage.message = "userOnValidate";
       return res.status(status.bad).send(errorMessage);
     }
 
-    const updateQuery = 'UPDATE users SET inn = $1, email = $2, is_on_validation = true, validation_type = $3 WHERE id = $4';
-    const values = [inn, email, 'nonPhiz', req.user.id]
+    const updateQuery = 'UPDATE users SET inn = $1, email = $2, video_passport = $3 is_on_validation = true, validation_type = $4 WHERE id = $5';
+    const values = [inn, email, req.files['video'][0].location, 'nonPhiz', req.user.id]
     const result = await dbQuery.query(updateQuery, values);
 
     return res.status(status.success).send(successMessage);

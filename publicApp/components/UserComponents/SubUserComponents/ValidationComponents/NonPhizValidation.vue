@@ -8,12 +8,20 @@
            <input v-model="email" class="uk-input uk-form-width-medium uk-form-large" type="email" name="email" placeholder="Email">
         </div>
     </div>
-    <p style="margin: 20px 10px" class="subtitle">Для идентификации необходимо перевести 1₽ с вашего расчетного счета, ссылка на счет на оплату появится, после ввода ИНН и Email, так же ссылка будет доступна на экране профиля после нажатия кнопки "Оплатил"</p>
+    <p style="margin: 20px 2px 7px" class="smalltitle">Запишите селфи-видео с паспортом в котором вы произносите ваш номер телефона. Должно быть видно вас и фото на паспорте</p>
+    <div uk-form-custom="target: true">
+        <input type="file" accept="video/*" @change="handleVideoPage($event)">
+        <input class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
+    </div>
+    <p style="margin: 20px 10px" class="subtitle">Для идентификации необходимо перевести 1₽ с вашего расчетного счета, ссылка на счет на оплату появится, после ввода ИНН, Email и селфи-видео, так же ссылка будет доступна на экране профиля после нажатия кнопки "Оплатил"</p>
     <a href="#" v-on:click.prevent="toBill()" class="main-button secondary-color-but full-width-but" style="margin-bottom: 40px">Счет на оплату</a>
     <a style="margin-top: 70px" href="#" v-on:click.prevent="sendToValidate()" class="main-button full-width-but">Оплатил</a>
   </div>
 </template>
 <script>
+import LoadingPage from '../../../SubComponents/LoadingPage.vue';
+
+
 export default {
   props: {
     //user: Object,
@@ -21,7 +29,9 @@ export default {
   data: function () {
     return {
       inn: '',
-      email: ''
+      email: '',
+      videoPage: '',
+      isLoading: false
     };
   },
   computed: {
@@ -32,13 +42,18 @@ export default {
   },
   methods: {
     sendToValidate: function () {
-      if (this.isValidEmail() && this.isValidINN()) {
-        this.axios.post('uploadnonphiz', {
-          inn: this.inn,
-          email: this.email
-        }).then(function (response) {
+
+      const formData = new FormData()
+      formData.set('email', this.email);
+      formData.set('inn', this.inn);
+      formData.set('video', this.videoPage);
+
+      if (this.isValidEmail() && this.isValidINN() && this.videoPage) {
+        this.isLoading = true;
+        this.axios.post('uploadnonphiz', formData, {}).then(function (response) {
         if (response.data.success) {
             //response.data.data;
+            self.isLoading = false;
             location.reload();
             //console.log(response.data.data);
           }
@@ -60,6 +75,9 @@ export default {
       const regEx = new RegExp("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}");
       return regEx.test(this.email);
     },
+    handleVideoPage(evt) {
+      this.videoPage = evt.target.files[0];
+    },
     isValidINN: function () {
       const regEx = new RegExp("^([0-9]{10}|[0-9]{12})$");
       return regEx.test(this.inn);
@@ -76,7 +94,7 @@ export default {
     //document.addEventListener("backbutton", this.yourCallBackFunction, false);
   },
   components: {
-
+    LoadingPage
   }
 };
 </script>
