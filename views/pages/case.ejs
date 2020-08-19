@@ -50,7 +50,12 @@
             <p class="subtitle">Подписали</p>
           <% }; %>
           <% subs.forEach(function(s) { %>
-            <p class="smalltitle"><%= s.user_name %> (ИНН: <%= s.inn %>) <%= moment.utc(s.created_at).local().format("DD.MM.YYYY в HH:mm:ss")  %> по UTC при помощи кода, отправленного на номер телефона <%= s.phone %></p></br>
+            <% if (s.inn.length > 0) { %>
+              <p class="smalltitle"><%= s.user_name %> (ИНН: <%= s.inn %>) <%= moment.utc(s.created_at).local().format("DD.MM.YYYY в HH:mm:ss")  %> по UTC при помощи кода, отправленного на номер телефона <%= s.phone %></p></br>
+            <% }; %>
+            <% if (!s.inn) { %>
+              <p class="smalltitle"><%= s.user_name %> - <%= moment.utc(s.created_at).local().format("DD.MM.YYYY в HH:mm:ss")  %> по UTC при помощи кода, отправленного на номер телефона <%= s.phone %></p></br>
+            <% }; %>
           <% }); %>
           <% if (subs.length < 2) { %>
             <div class="uk-grid-small" uk-grid>
