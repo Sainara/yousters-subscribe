@@ -25,7 +25,7 @@ router.post('/getagreements', primaryLimit, verifyAuth, getAgreements);
 router.post('/getagreementssubs', primaryLimit, verifyAuth, getAgreementSubs);
 
 router.post('/initsubscribe', primaryLimit, verifyAuth, initSubscription);
-router.post('/validatesubscribe', primaryLimit, verifyAuth, validateSubscription);
+router.post('/validatesubscribe', primaryLimit, verifyAuth, uploader.single('video'), validateSubscription);
 
 router.post('/addagreement', primaryLimit, verifyAuth, addAgreementToAdded);
 

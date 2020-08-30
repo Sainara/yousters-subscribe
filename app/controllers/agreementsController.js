@@ -141,7 +141,7 @@ const getAgreementSubs = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const getQuery = 'SELECT s.created_at, u.inn, u.phone, u.user_name FROM subscribtion as s inner join users as u on s.subs_id = u.id WHERE s.agr_uid = $1';
+  const getQuery = 'SELECT s.isVerified, s.video_url, s.created_at, u.inn, u.phone, u.user_name FROM subscribtion as s inner join users as u on s.subs_id = u.id WHERE s.agr_uid = $1';
   const { uid } = req.body
 
   try {
@@ -283,7 +283,7 @@ const validateSubscription = async (req, res) => {
 
   const { sessionid, code } = req.body;
 
-  const createQuery = 'INSERT INTO subscribtion(agr_uid, subs_id, created_at) VALUES ($1, $2, $3)';
+  const createQuery = 'INSERT INTO subscribtion(agr_uid, subs_id, created_at, video_url, isVerified) VALUES ($1, $2, $3, $4, $5)';
   const getQuery = 'SELECT title FROM agreements WHERE uid = $1';
   const selectQuery = 'SELECT * FROM subscribtion WHERE agr_uid = $1';
   const updateQuery = 'UPDATE agreements SET status_id = $2 WHERE uid = $1';
@@ -298,16 +298,19 @@ const validateSubscription = async (req, res) => {
 
     if (!dbResponse) {
       errorMessage.message = "invalid sessionid";
+      s3delete(req.file.location.split('/').pop())
       return res.status(status.bad).send(errorMessage);
     }
 
     if (dbResponse.trycounter > 3) {
       errorMessage.message = "too many tries";
+      s3delete(req.file.location.split('/').pop())
       return res.status(status.bad).send(errorMessage);
     }
 
     if (moment().isAfter(dbResponse.expiretime, moment.ISO_8601)) {
       errorMessage.message = "session expire";
+      s3delete(req.file.location.split('/').pop())
       return res.status(status.bad).send(errorMessage);
     }
 
@@ -315,19 +318,19 @@ const validateSubscription = async (req, res) => {
 
       dbQuery.query(updateExpire, [moment().subtract(10, 'seconds'), sessionid]);
 
-      var values = [dbResponse.agr_uid, req.user.id, moment()]
+      var values = [dbResponse.agr_uid, req.user.id, moment(), req.file.location, false]
       var create = await dbQuery.query(createQuery, values);
 
 
       var afterSelect = await dbQuery.query(selectQuery, [dbResponse.agr_uid]);
       if (afterSelect.rows.length == 2) {
-        dbQuery.query(updateQuery, [dbResponse.agr_uid, '10']);
+        dbQuery.query(updateQuery, [dbResponse.agr_uid, '8']);
         //console.log(afterSelect.rows);
         for (var i = 0; i < afterSelect.rows.length; i++) {
           if (afterSelect.rows[i].subs_id != req.user.id) {
             const getName = await dbQuery.query(getQuery, [dbResponse.agr_uid]);
             const agrName = getName.rows[0].title;
-            sendNotification('Успех', agrName + ' был подписан контрагентом и теперь активен', afterSelect.rows[i].subs_id, {deepLink: "https://you-scribe.ru/case/" + dbResponse.agr_uid, action: "reloadAgreements"});
+            sendNotification('Почти готово', agrName + ' был подписан контрагентом, вам осталось только подтвердить его подпись', afterSelect.rows[i].subs_id, {deepLink: "https://you-scribe.ru/case/" + dbResponse.agr_uid, action: "reloadAgreements"});
           }
         }
 
@@ -341,7 +344,7 @@ const validateSubscription = async (req, res) => {
 
       var count = ++dbResponse.trycounter
       const { rows } = await dbQuery.query(guery, [count, sessionid]);
-
+      s3delete(req.file.location.split('/').pop())
       errorMessage.message = "wrongCode";
       return res.status(status.bad).send(errorMessage);
     }
@@ -349,6 +352,7 @@ const validateSubscription = async (req, res) => {
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
+    s3delete(req.file.location.split('/').pop())
     return res.status(status.bad).send(errorMessage);
   }
 };
