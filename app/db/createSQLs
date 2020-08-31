@@ -19,6 +19,9 @@ ALTER TABLE agreements ADD COLUMN status_id int default 1;
 ALTER TABLE agreements add COLUMN uid VARCHAR;
 
 CREATE TABLE subscribtion(id serial PRIMARY KEY, agr_uid VARCHAR, subs_id int, created_at timestamptz);
+ALTER table subscribtion add column video_url varchar;
+alter tabs subscribtion add column isverified bool;
+alter table subscribtion add column uid varchar;
 
 CREATE TABLE device_tokens(id serial PRIMARY KEY, user_id int, device_type VARCHAR, token VARCHAR);
 
