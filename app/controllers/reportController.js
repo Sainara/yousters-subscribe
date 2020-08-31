@@ -35,7 +35,7 @@ const subscribtionReport = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    var createReportResp = await dbQuery.query(createReport, [sub_uid, reason, 'created', moment()]);
+    //var createReportResp = await dbQuery.query(createReport, [sub_uid, reason, 'created', moment()]);
 
     return res.status(status.success).send(successMessage);
   } catch (error) {
