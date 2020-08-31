@@ -14,20 +14,20 @@ const subscribtionReport = async (req, res) => {
   const successMessage = Object.assign({}, sMessage);
 
   const { sub_uid, reason } = req.body;
-  //const checkExistOfSub = 'SELECT agr_uid FROM subscribtion WHERE subs_uid = $1';
-  const checkReportExistance = 'SELECT * FROM subs_reports WHERE sub_uid = $1 AND reason = $2 AND status = created';
+  const checkExistOfSub = 'SELECT agr_uid FROM subscribtion WHERE subs_uid = $1';
+  const checkReportExistance = 'SELECT * FROM subs_reports WHERE sub_uid = $1 AND reason = $2 AND status = $3';
   const createReport = 'INSERT INTO subs_reports(sub_uid, reason, status, created_at) VALUES ($1, $2, $3, $4)';
 
   try {
-    // var { rows } = await dbQuery.query(checkExistOfSub, [sub_uid]);
-    // const dbResponse = rows[0];
-    //
-    // if (!dbResponse) {
-    //   errorMessage.message = "subNotExist";
-    //   return res.status(status.bad).send(errorMessage);
-    // }
+    var { rows } = await dbQuery.query(checkExistOfSub, [sub_uid]);
+    const dbResponse = rows[0];
 
-    var checkReportExistanceResp = await dbQuery.query(checkReportExistance, [sub_uid, reason]);
+    if (!dbResponse) {
+      errorMessage.message = "subNotExist";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var checkReportExistanceResp = await dbQuery.query(checkReportExistance, [sub_uid, reason, "created"]);
     const checkReportExistanceRespdbResponse = checkReportExistanceResp.rows[0];
 
     if (checkReportExistanceRespdbResponse) {
@@ -35,7 +35,7 @@ const subscribtionReport = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    //var createReportResp = await dbQuery.query(createReport, [sub_uid, reason, 'created', moment()]);
+    var createReportResp = await dbQuery.query(createReport, [sub_uid, reason, 'created', moment()]);
 
     return res.status(status.success).send(successMessage);
   } catch (error) {
