@@ -140,7 +140,7 @@ const renderSubVideo = async (req, res) => {
                 // data.size returns the size, "data" is the object that fs.stat outputs.
                 var end = array[1] ? parseInt(array[1], 10) : data.ContentLength - 1;
                 // Here we decide the size of every chunck we will be sending
-                var chunck = 1024 * 1000;
+                var chunck = (end - start) + 1;
                 // And then we set the headers and status code 206
                 res.writeHead(206, {
                     // We tell the units that we use to messure the ranges
