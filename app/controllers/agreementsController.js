@@ -261,7 +261,7 @@ const initSubscription = async (req, res) => {
 
     const message =  code + " - Ваш код для Yousters Subscribe."
 
-    if (!( await sendNotification('Только тссс...', message, req.user.id, {}))) {
+    if (!( await sendNotification('Только тссс...', message, req.user.id, {action: "code:"+code}}))) {
       console.log("Push not sent");
       const sms = snsPublish(req.user.phone, message);
     } else {
