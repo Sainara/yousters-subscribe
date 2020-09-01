@@ -136,7 +136,7 @@ const renderSubVideo = async (req, res) => {
     var bufferStream = new stream.PassThrough();
 
 // Write your buffer
-bufferStream.end(data.Body.slice(start, ends));
+bufferStream.end(data.Body.slice(start, end));
 
 // Pipe it to something else  (i.e. stdout)
 
