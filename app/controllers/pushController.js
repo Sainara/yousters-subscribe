@@ -80,7 +80,7 @@ const removeDeviceToken = async (req, res) => {
     const dbResponse = check.rows[0];
 
     if (dbResponse) {
-      await dbQuery.query(removeQuery, [req.user.id, deviceToken]);
+      await dbQuery.query(removeQuery, [req.user.id, type]);
       return res.status(status.success).send(successMessage);
     }
 
