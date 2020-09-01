@@ -123,6 +123,7 @@ const renderSubVideo = async (req, res) => {
 
     if (req.headers.range) {
 
+      var total = data.ContentLength
       // meaning client (browser) has moved the forward/back slider
       // which has sent this request back to this server logic ... cool
 
