@@ -124,27 +124,64 @@ const renderSubVideo = async (req, res) => {
   var total = data.ContentLength
     console.log(req.headers);
 
-    if (req.headers.range) {
+    if (req.headers['range']) {
+                // We store the header in a variable
+                let range = req.headers['range'];
+                // Then we remove the first part and split the string in every dash "-"
+                var array = range.replace('bytes=', "").split("-");
+                // After that we store the number where we start to read our buffer;
+                var start = parseInt(array[0], 10);
+                // We check if there is and end, if not, we just send the total size of the file
+                // Total size is total -1, because we start counting from the 0.
+                // data.size returns the size, "data" is the object that fs.stat outputs.
+                var end = array[1] ? parseInt(array[1], 10) : data.size - 1;
+                // Here we decide the size of every chunck we will be sending
+                var chunck = 1024 * 1000;
+                // And then we set the headers and status code 206
+                res.writeHead(206, {
+                    // We tell the units that we use to messure the ranges
+                    'Accept-Ranges': 'bytes',
+                    // We tell the range of the content that we are sending
+                    "Content-Range": "bytes " + start + "-" + end + "/" + data.size,
+                    // Tell the length of the chunck. We use this to control the flow of the stream.
+                    // The "chunck" is a variable that we set in line 38 of this gist.
+                    'Content-Length': chunck,
+                    // Set the MIME-type
+                    'Content-Type': 'video/mp4',
+                    // And also set that we dont want to cache out file
+                    // This is just to make our example work as if allways were the first time we ask the file.
+                    'Cache-Control': 'no-cache'
+                });
 
+                // If the ranges headers can't be fulfilled, we will be sending a stream anyway,
+                // but the browser will need to assume things and slow down the process.
 
-      // meaning client (browser) has moved the forward/back slider
-      // which has sent this request back to this server logic ... cool
+                // Time to make our readable stream
+                // First we create a readableStream and store in a variable
+                // We pass the start and end parameters so NodeJS can know wich part needs to read and send as buffer.
+                let readable = streamifier.createReadStream(data.Body, { start, end });
+                // If for some reason we cant create our Readable Strea, we end the response.
+                if (readable == null) {
+                    console.log('readable = null');
+                    return res.end();
+                // If not...
+                } else {
+                    // First we use the event .on('open') to listen when the readable is ready to rock
+                    // Then we provide a function to pipe to res.
+                    readable.on('open', () => {
+                        console.log('we are on open');
+                        // This function is esential. Here we are puting all the buffer chunk to the response object.
+                        readable.pipe(res);
+                    });
+                    // We also be waiting for that umpleasing error event.
+                    readable.on('error', (err) => {
+                      // If it happen, we will send the error with the .end() method.
+                        res.end(err);
+                        console.log(err);
+                    });
 
-      var range = req.headers.range;
-      var parts = range.replace(/bytes=/, "").split("-");
-      var partialstart = parts[0];
-      var partialend = parts[1];
-
-      var start = parseInt(partialstart, 10);
-      var end = partialend ? parseInt(partialend, 10) : total-1;
-      var chunksize = (end-start)+1;
-      console.log('RANGE: ' + start + ' - ' + end + ' = ' + chunksize);
-
-      var file = streamifier.createReadStream(data.Body, {start: start, end: end});
-      res.writeHead(206, { 'Content-Range': 'bytes ' + start + '-' + end + '/' + total, 'Accept-Ranges': 'bytes', 'Content-Length': chunksize, 'Content-Type': data.ContentType });
-      file.pipe(res);
-
-    } else {
+                }
+            } else {
 
       console.log('ALL: ' + total);
       res.writeHead(200, { 'Content-Length': total, 'Content-Type': data.ContentType });
