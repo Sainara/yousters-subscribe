@@ -125,8 +125,12 @@ const renderSubVideo = async (req, res) => {
     console.log(req.headers);
 
     if (req.headers['range']) {
+
+
                 // We store the header in a variable
                 let range = req.headers['range'];
+
+                console.log(range);
                 // Then we remove the first part and split the string in every dash "-"
                 var array = range.replace('bytes=', "").split("-");
                 // After that we store the number where we start to read our buffer;
