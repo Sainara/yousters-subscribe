@@ -147,7 +147,7 @@ const renderSubVideo = async (req, res) => {
                     // The "chunck" is a variable that we set in line 38 of this gist.
                     'Content-Length': chunck,
                     // Set the MIME-type
-                    'Content-Type': 'video/mp4',
+                    'Content-Type': data.ContentType,
                     // And also set that we dont want to cache out file
                     // This is just to make our example work as if allways were the first time we ask the file.
                     'Cache-Control': 'no-cache'
