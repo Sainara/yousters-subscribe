@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import dbQuery from '../db/dbQuery';
 var sha256File = require('sha256-file');
 
+var streamifier = require('streamifier');
+
 import {
   hashPassword,
   isValidEmail,
@@ -119,10 +121,32 @@ const renderSubVideo = async (req, res) => {
     var key = dbResponse.video_url.split('/').pop()
     var data = await s3get(key);
 
-    res.set('Content-type', data.ContentType);
-    res.set('Accept-Ranges', 'bytes');
-    res.set('Transfer-Encoding', 'chunked')
-    res.end(data.Body);
+    if (req.headers.range) {
+
+      // meaning client (browser) has moved the forward/back slider
+      // which has sent this request back to this server logic ... cool
+
+      var range = req.headers.range;
+      var parts = range.replace(/bytes=/, "").split("-");
+      var partialstart = parts[0];
+      var partialend = parts[1];
+
+      var start = parseInt(partialstart, 10);
+      var end = partialend ? parseInt(partialend, 10) : total-1;
+      var chunksize = (end-start)+1;
+      console.log('RANGE: ' + start + ' - ' + end + ' = ' + chunksize);
+
+      var file = streamifier.createReadStream(data.Body, {start: start, end: end});
+      res.writeHead(206, { 'Content-Range': 'bytes ' + start + '-' + end + '/' + total, 'Accept-Ranges': 'bytes', 'Content-Length': chunksize, 'Content-Type': data.ContentType });
+      file.pipe(res);
+
+    } else {
+
+      console.log('ALL: ' + total);
+      res.writeHead(200, { 'Content-Length': total, 'Content-Type': data.ContentType });
+      streamifier.createReadStream(data.Body).pipe(res);
+    }
+
   } catch (error) {
     console.error(error);
     notFoundRoute(req, res)
