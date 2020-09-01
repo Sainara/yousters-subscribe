@@ -121,9 +121,12 @@ const renderSubVideo = async (req, res) => {
     var key = dbResponse.video_url.split('/').pop()
     var data = await s3get(key);
 
+  var total = data.ContentLength
+    print(req.headers);
+
     if (req.headers.range) {
 
-      var total = data.ContentLength
+
       // meaning client (browser) has moved the forward/back slider
       // which has sent this request back to this server logic ... cool
 
