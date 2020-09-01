@@ -14,7 +14,7 @@ const subscribtionReport = async (req, res) => {
   const successMessage = Object.assign({}, sMessage);
 
   const { sub_uid, reason } = req.body;
-  const checkExistOfSub = 'SELECT agr_uid FROM subscribtion WHERE subs_uid = $1';
+  const checkExistOfSub = 'SELECT agr_uid FROM subscribtion WHERE subs_id = $1';
   const checkReportExistance = 'SELECT * FROM subs_reports WHERE sub_uid = $1 AND reason = $2 AND status = $3';
   const createReport = 'INSERT INTO subs_reports(sub_uid, reason, status, created_at) VALUES ($1, $2, $3, $4)';
 
