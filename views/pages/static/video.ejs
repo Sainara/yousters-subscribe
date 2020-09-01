@@ -3,8 +3,8 @@
   <head>
     <% include ../../partials/header.ejs %>
   </head>
-  <body>
-      <video controls autoplay>
+  <body style="background-color: #000">
+      <video style="width: 100vw;height: 100vh;position: fixed;top: 0;left: 0;" controls autoplay>
         <source src="<%= videoURL %>" type="<%= videoType %>">
       </video>
 
