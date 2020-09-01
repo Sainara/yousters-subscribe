@@ -122,6 +122,7 @@ const renderSubVideo = async (req, res) => {
 
     const results = {
       'videoURL': dbResponse.video_url,
+      "videoType" : 'video/quicktime'
      };
     res.render('pages/static/video.ejs', results);
 
