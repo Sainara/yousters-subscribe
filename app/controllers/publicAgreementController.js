@@ -138,6 +138,8 @@ const renderSubVideo = async (req, res) => {
 // Write your buffer
 bufferStream.end(data.Body.slice(start, end));
 
+console.log(bufferStream);
+
 // Pipe it to something else  (i.e. stdout)
 
     //const file = fs.createReadStream(data.Body, {start, end})
