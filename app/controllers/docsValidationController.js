@@ -101,7 +101,7 @@ const uploadNonPhizData = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    const updateQuery = 'UPDATE users SET inn = $1, email = $2, video_passport = $3 is_on_validation = true, validation_type = $4 WHERE id = $5';
+    const updateQuery = 'UPDATE users SET inn = $1, email = $2, video_passport = $3, is_on_validation = true, validation_type = $4 WHERE id = $5';
     const values = [inn, email, req.files['video'][0].location, 'nonPhiz', req.user.id]
     const result = await dbQuery.query(updateQuery, values);
 
