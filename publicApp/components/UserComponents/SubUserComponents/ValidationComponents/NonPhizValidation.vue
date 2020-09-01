@@ -1,21 +1,24 @@
 <template>
-  <div class="uk-container uk-container-xsmall">
-    <div uk-grid class="non-phiz-wrap">
-         <div>
-           <input v-model="inn" class="uk-input uk-form-width-medium uk-form-large" type="text" name="inn" placeholder="ИНН">
-         </div>
-         <div style="margin-top:0px">
-           <input v-model="email" class="uk-input uk-form-width-medium uk-form-large" type="email" name="email" placeholder="Email">
-        </div>
+  <div>
+    <loading-page v-if="isLoading"></loading-page>
+    <div v-else class="uk-container uk-container-xsmall">
+      <div uk-grid class="non-phiz-wrap">
+           <div>
+             <input v-model="inn" class="uk-input uk-form-width-medium uk-form-large" type="text" name="inn" placeholder="ИНН">
+           </div>
+           <div style="margin-top:0px">
+             <input v-model="email" class="uk-input uk-form-width-medium uk-form-large" type="email" name="email" placeholder="Email">
+          </div>
+      </div>
+      <p style="margin: 20px 2px 7px" class="smalltitle">Запишите селфи-видео с паспортом в котором вы произносите ваш номер телефона. Должно быть видно вас и фото на паспорте</p>
+      <div uk-form-custom="target: true">
+          <input type="file" accept="video/*" @change="handleVideoPage($event)">
+          <input class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
+      </div>
+      <p style="margin: 20px 10px" class="subtitle">Для идентификации необходимо перевести 1₽ с вашего расчетного счета, ссылка на счет на оплату появится, после ввода ИНН, Email и селфи-видео, так же ссылка будет доступна на экране профиля после нажатия кнопки "Оплатил"</p>
+      <a href="#" v-on:click.prevent="toBill()" class="main-button secondary-color-but full-width-but" style="margin-bottom: 40px">Счет на оплату</a>
+      <a style="margin-top: 70px" href="#" v-on:click.prevent="sendToValidate()" class="main-button full-width-but">Оплатил</a>
     </div>
-    <p style="margin: 20px 2px 7px" class="smalltitle">Запишите селфи-видео с паспортом в котором вы произносите ваш номер телефона. Должно быть видно вас и фото на паспорте</p>
-    <div uk-form-custom="target: true">
-        <input type="file" accept="video/*" @change="handleVideoPage($event)">
-        <input class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
-    </div>
-    <p style="margin: 20px 10px" class="subtitle">Для идентификации необходимо перевести 1₽ с вашего расчетного счета, ссылка на счет на оплату появится, после ввода ИНН, Email и селфи-видео, так же ссылка будет доступна на экране профиля после нажатия кнопки "Оплатил"</p>
-    <a href="#" v-on:click.prevent="toBill()" class="main-button secondary-color-but full-width-but" style="margin-bottom: 40px">Счет на оплату</a>
-    <a style="margin-top: 70px" href="#" v-on:click.prevent="sendToValidate()" class="main-button full-width-but">Оплатил</a>
   </div>
 </template>
 <script>

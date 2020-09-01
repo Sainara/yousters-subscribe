@@ -17,6 +17,8 @@ create TABLE blacklist(id serial PRIMARY KEY, phone VARCHAR not null, reason VAR
 create TABLE agreements(id serial PRIMARY KEY, title VARCHAR, hash VARCHAR, link VARCHAR, created_at timestamptz, creator_id int);
 ALTER TABLE agreements ADD COLUMN status_id int default 1;
 ALTER TABLE agreements add COLUMN uid VARCHAR;
+ALTER TABLE agreements add COLUMN unumber VARCHAR;
+
 
 CREATE TABLE subscribtion(id serial PRIMARY KEY, agr_uid VARCHAR, subs_id int, created_at timestamptz);
 ALTER table subscribtion add column video_url varchar;

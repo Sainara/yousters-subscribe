@@ -175,13 +175,13 @@ const uploadAgreement = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 
-  const createQuery = 'INSERT INTO agreements (title, hash, link, created_at, creator_id, uid) VALUES ($1, $2, $3, $4, $5, $6)';
+  const createQuery = 'INSERT INTO agreements (title, hash, link, created_at, creator_id, uid, unumber) VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
   try {
 
     var hash = await generateFileHash(req.file.location);
 
-    var values = [title, hash, req.file.location, moment(), req.user.id, uuidv4()]
+    var values = [title, hash, req.file.location, moment(), req.user.id, uuidv4(), generateCode(6)]
     var { rows } = await dbQuery.query(createQuery, values);
 
     return res.status(status.success).send(successMessage);
