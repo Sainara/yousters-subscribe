@@ -55,14 +55,14 @@
                 <% if (s.uid) { %>
                     Ссылка на видео-подтверждение <a href="/sub/<%= s.uid %>/video">https://you-scribe.ru/sub/<%= s.uid %>/video</a>
                   <% }; %>
-            </br></p></br>
+            </p></br>
             <% }; %>
             <% if (!s.inn) { %>
               <p class="smalltitle"><%= s.user_name %> - <%= moment.utc(s.created_at).local().format("DD.MM.YYYY в HH:mm:ss")  %> по UTC при помощи кода, отправленного на номер телефона <%= s.phone %></br>
                 <% if (s.uid) { %>
                     Ссылка на видео-подтверждение <a href="/sub/<%= s.uid %>/video">https://you-scribe.ru/sub/<%= s.uid %>/video</a>
                   <% }; %>
-            </br></p></br>
+          </p></br>
             <% }; %>
 
           <% }); %>
