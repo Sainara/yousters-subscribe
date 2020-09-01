@@ -23,6 +23,7 @@ import {
 } from '../helpers/status';
 
 import {snsPublish} from '../helpers/sns';
+import {s3delete} from '../helpers/s3';
 
 import sendNotification from '../services/notificationService';
 

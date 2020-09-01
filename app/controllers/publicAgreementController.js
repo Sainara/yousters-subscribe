@@ -35,7 +35,7 @@ const renderCase = async (req, res) => {
   const { uid } = req.params;
 
   const getQuery = 'SELECT * FROM agreements WHERE uid = $1';
-  const getSubsQuery = 'SELECT s.created_at, u.inn, u.phone, u.user_name FROM subscribtion as s inner join users as u on s.subs_id = u.id WHERE s.agr_uid = $1';
+  const getSubsQuery = 'SELECT s.created_at, s.uid, u.inn, u.phone, u.user_name FROM subscribtion as s inner join users as u on s.subs_id = u.id WHERE s.agr_uid = $1';
 
   try {
 
