@@ -165,6 +165,7 @@ const renderSubVideo = async (req, res) => {
                 // We pass the start and end parameters so NodeJS can know wich part needs to read and send as buffer.
                 let readable = streamifier.createReadStream(data.Body, { start, end });
                 console.log(readable);
+                readable.pipe(res);
                 // If for some reason we cant create our Readable Strea, we end the response.
                 if (readable == null) {
                     console.log('readable = null');
