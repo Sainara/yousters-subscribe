@@ -56,6 +56,7 @@
             <% if (!s.inn) { %>
               <p class="smalltitle"><%= s.user_name %> - <%= moment.utc(s.created_at).local().format("DD.MM.YYYY в HH:mm:ss")  %> по UTC при помощи кода, отправленного на номер телефона <%= s.phone %></p></br>
             <% }; %>
+            <p class="smalltitle">Ссылка на видео-подтверждение <a href="/sub/<%= s.uid %>/video">https://you-scribe.ru/sub/<%= agreement.link %>/video</a></p>
           <% }); %>
           <% if (subs.length < 2) { %>
             <div class="uk-grid-small" uk-grid>
