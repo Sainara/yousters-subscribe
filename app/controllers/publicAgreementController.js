@@ -134,7 +134,7 @@ const renderSubVideo = async (req, res) => {
                 // We check if there is and end, if not, we just send the total size of the file
                 // Total size is total -1, because we start counting from the 0.
                 // data.size returns the size, "data" is the object that fs.stat outputs.
-                var end = array[1] ? parseInt(array[1], 10) : data.size - 1;
+                var end = array[1] ? parseInt(array[1], 10) : data.ContentLength - 1;
                 // Here we decide the size of every chunck we will be sending
                 var chunck = 1024 * 1000;
                 // And then we set the headers and status code 206
@@ -142,7 +142,7 @@ const renderSubVideo = async (req, res) => {
                     // We tell the units that we use to messure the ranges
                     'Accept-Ranges': 'bytes',
                     // We tell the range of the content that we are sending
-                    "Content-Range": "bytes " + start + "-" + end + "/" + data.size,
+                    "Content-Range": "bytes " + start + "-" + end + "/" + data.ContentLength,
                     // Tell the length of the chunck. We use this to control the flow of the stream.
                     // The "chunck" is a variable that we set in line 38 of this gist.
                     'Content-Length': chunck,
