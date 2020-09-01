@@ -120,8 +120,9 @@ const renderSubVideo = async (req, res) => {
     var data = await s3get(key);
 
     res.set('Content-type', data.ContentType);
-    res.set('Accept-Ranges', 'bytes')
-    res.send(data.Body);
+    res.set('Accept-Ranges', 'bytes');
+    data.Body.pipe(res);
+    //res.send();
   } catch (error) {
     console.error(error);
     notFoundRoute(req, res)
