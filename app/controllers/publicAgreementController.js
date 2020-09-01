@@ -118,47 +118,12 @@ const renderSubVideo = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    var key = dbResponse.video_url.split('/').pop()
-    var data = await s3get(key);
+    //var key = dbResponse.video_url.split('/').pop()
 
-  var total = data.ContentLength
-    console.log(req.headers);
-
-  const fileSize = data.ContentLength
-  const range = req.headers.range
-  if (range) {
-    const parts = range.replace(/bytes=/, "").split("-")
-    const start = parseInt(parts[0], 10)
-    const end = parts[1]
-      ? parseInt(parts[1], 10)
-      : fileSize-1
-    const chunksize = (end-start)+1
-    var bufferStream = new stream.PassThrough();
-
-// Write your buffer
-bufferStream.end(data.Body.slice(start, end));
-
-console.log(bufferStream);
-
-// Pipe it to something else  (i.e. stdout)
-
-    //const file = fs.createReadStream(data.Body, {start, end})
-    const head = {
-      'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-      'Accept-Ranges': 'bytes',
-      'Content-Length': chunksize,
-      'Content-Type': data.ContentType,
-    }
-    res.writeHead(206, head);
-    bufferStream.pipe(res)
-  } else {
-    const head = {
-      'Content-Length': fileSize,
-      'Content-Type': data.ContentType
-    }
-    res.writeHead(200, head)
-    fs.createReadStream(path).pipe(res)
-  }
+    const results = {
+      'videoURL': dbResponse.video_url,
+     };
+    res.render('pages/static/video.ejs', results);
 
   } catch (error) {
     console.error(error);
