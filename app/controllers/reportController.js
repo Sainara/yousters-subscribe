@@ -26,6 +26,7 @@ const subscribtionReport = async (req, res) => {
       errorMessage.message = "subNotExist";
       return res.status(status.bad).send(errorMessage);
     }
+    console.log("exist");
 
     var checkReportExistanceResp = await dbQuery.query(checkReportExistance, [sub_uid, reason, "created"]);
     const checkReportExistanceRespdbResponse = checkReportExistanceResp.rows[0];
@@ -34,6 +35,7 @@ const subscribtionReport = async (req, res) => {
       errorMessage.message = "reportAlreadyExist";
       return res.status(status.bad).send(errorMessage);
     }
+    console.log("exist 2");
 
     var createReportResp = await dbQuery.query(createReport, [sub_uid, reason, 'created', moment()]);
 
