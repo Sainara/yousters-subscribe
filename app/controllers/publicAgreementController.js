@@ -97,7 +97,38 @@ const renderDoc = async (req, res) => {
   }
 };
 
+const renderSubVideo = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const { uid } = req.params;
+
+  const getQuery = 'SELECT video_url FROM subscribtion WHERE uid = $1';
+
+  try {
+
+    const { rows } = await dbQuery.query(getQuery, [uid]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "invalidSubscribtionID";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    var key = dbResponse.video_url.split('/').pop()
+    var data = await s3get(key);
+
+    res.set('Content-type', 'video/quicktime');
+    res.send(data.Body);
+  } catch (error) {
+    console.error(error);
+    notFoundRoute(req, res)
+  }
+};
+
 export {
   renderCase,
-  renderDoc
+  renderDoc,
+  renderSubVideo
 };
