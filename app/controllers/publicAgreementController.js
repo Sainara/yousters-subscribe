@@ -122,7 +122,7 @@ const renderSubVideo = async (req, res) => {
     var data = await s3get(key);
 
   var total = data.ContentLength
-    print(req.headers);
+    console.log(req.headers);
 
     if (req.headers.range) {
 
