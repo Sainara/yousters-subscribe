@@ -119,7 +119,8 @@ const renderSubVideo = async (req, res) => {
     var key = dbResponse.video_url.split('/').pop()
     var data = await s3get(key);
 
-    res.set('Content-type', 'video/quicktime');
+    res.set('Content-type', data.ContentType);
+    res.set('Accept-Ranges', 'bytes')
     res.send(data.Body);
   } catch (error) {
     console.error(error);
