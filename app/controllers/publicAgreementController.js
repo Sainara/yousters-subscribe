@@ -122,7 +122,7 @@ const renderSubVideo = async (req, res) => {
     res.set('Content-type', data.ContentType);
     res.set('Accept-Ranges', 'bytes');
     res.set('Transfer-Encoding', 'chunked')
-    res.send(data.Body);
+    res.end(data.Body);
   } catch (error) {
     console.error(error);
     notFoundRoute(req, res)
