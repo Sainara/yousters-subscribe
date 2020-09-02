@@ -9,10 +9,10 @@ module.exports = {
         path: path.resolve('./public/js'),
         filename: 'bundle.js',
     },
-    //mode: 'development',
+    mode: 'production',
     resolve: {
       alias: {
-        vue: 'vue/dist/vue.js',
+        vue: 'vue/dist/vue.min.js',
         //vue-route: 'kh'
       }
     },
