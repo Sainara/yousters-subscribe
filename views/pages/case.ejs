@@ -4,6 +4,20 @@
   <% include ../partials/header.ejs %>
   <meta name="apple-itunes-app" content="app-id=1517313227">
   <script type="text/javascript">
+
+    const queryString = window.location.search;
+
+    const urlParams = new URLSearchParams(queryString);
+    const action = urlParams.get('action')
+
+    if (action == "print") {
+      window.print()
+    } else {
+      if (getCookie('token')) {
+        window.location.replace("/general#/agreement/" + window.location.href.split('/').pop());
+      }
+    }
+
     const getCookie = (name) => {
       let matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -11,9 +25,6 @@
       return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-    if (getCookie('token')) {
-      window.location.replace("/general#/agreement/" + window.location.href.split('/').pop());
-    }
   </script>
 </head>
 

@@ -4,7 +4,7 @@
   <div v-else-if="!isLoading" class="uk-container uk-container-xsmall" style="margin-bottom: 50px">
     <div class="uk-grid-small" uk-grid>
       <div>
-        <h2 class="agr_title">{{agreement.title}} #{{agreement.unumber}}</h2>
+        <h2 class="agr_title">{{agreement.title}} #{{agreement.unumber}} <a href="#" v-on:click.prevent="toPrint" class="hide-on-print uk-icon-link" uk-icon="print"></a></h2>
         <div class="block">
           <p class="subtitle">Статус</p>
           <p class="title">{{getAgreementStatusString(agreement.status_id)}}</p>
@@ -108,6 +108,10 @@ export default {
 
   },
   methods: {
+    toPrint: function () {
+      var link = 'https://you-scribe.ru/case/' + this.agreement.uid + '?action=print';
+      window.open(link,'_blank');
+    },
     getCookie: function (name) {
       let matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
