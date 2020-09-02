@@ -96,7 +96,7 @@
     });
     docqrcode.makeCode('<%= agreement.link %>');
     <% subs.forEach(function(s) { %>
-      var qrcode<%= s.uid %> = new QRCode(document.getElementById("<%= s.uid %>"), {
+      var qrcode = new QRCode(document.getElementById("<%= s.uid %>"), {
         width : 200,
         height : 200
       });
