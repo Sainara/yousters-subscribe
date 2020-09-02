@@ -299,7 +299,13 @@ export default {
       }
     },
     addAgreementToAdded: function () {
+      let self = this;
 
+      this.axios.post('addagreement', {uid: this.$route.params.uid})
+        .then(function (response) {
+        if (response.data.success) {
+        }
+      });
     }
   },
   mounted: function () {
@@ -309,17 +315,6 @@ export default {
     } else {
       this.axios.defaults.headers['token'] = this.token;
       this.getAgreement();
-
-      let self = this;
-
-      this.axios.post('addagreement', {uid: this.$route.params.uid})
-        .then(function (response) {
-          console.log(response);
-        if (response.data.success) {
-          console.log(response);
-        }
-      });
-
       this.addAgreementToAdded();
       if (!this.user.user_name) {
         this.getUser();

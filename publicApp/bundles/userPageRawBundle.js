@@ -13,7 +13,7 @@ Vue.use(VueAxios, Axios.create({
   }
 }));
 
-Vue.config.devtools = true;
+//Vue.config.devtools = true;
 
 import MainPage from '../components/MainPage.vue'
 import CreateAgreement from '../components/CreateAgreement.vue'
