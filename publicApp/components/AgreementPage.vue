@@ -43,7 +43,15 @@
           </template>
           <template v-if="canBeSubscribed">
             <transition name="fade">
-              <input v-if="isEnteringCode" maxlength="6" v-model="code" class="uk-input uk-form-large" type="number" name="code" placeholder="Код">
+              <div style="float:left" v-if="isEnteringCode">
+                <p style="margin: 20px 2px 7px" class="smalltitle">Запишите селфи-видео с паспортом в котором вы произносите: "Я согласен с заключением договора номер {{agreement.unumber}}"</p>
+                <div uk-form-custom="target: true">
+                    <input type="file" accept="video/*" @change="handleVideoPage($event)">
+                    <input class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
+                </div><br>
+                <input maxlength="6" v-model="code" class="uk-input uk-form-large code-input" type="number" name="code" placeholder="Код">
+              </div>
+
             </transition>
             <a href="#" v-on:click.prevent="subscribe" class="main-button case-sub-button">Подписать</a>
           </template>
@@ -87,6 +95,7 @@ export default {
       isReadyToShare: false,
       code: '',
       sessionID: '',
+      video: '',
       shareText: 'Поделиться'
     }
   },
@@ -121,14 +130,29 @@ export default {
           }
         });
       } else {
-        this.axios.post('validatesubscribe', {sessionid: this.sessionID, code: this.code})
-          .then(function (response) {
-          if (response.data.success) {
-            self.getAgreement();
-            //self.$router.go()
-          }
-        });
+
+        const formData = new FormData()
+        formData.set('sessionid', this.sessionID);
+        formData.set('code', this.code);
+        formData.set('video', this.video);
+
+        if (this.code.length == 6 && this.video) {
+          this.isLoading = true;
+          this.axios.post('validatesubscribe', formData, {})
+            .then(function (response) {
+            if (response.data.success) {
+              self.isLoading = false;
+              location.reload();
+              //self.$router.go()
+            }
+          });
+        } else {
+          UIkit.notification({message: 'Заполните данные', status: 'danger'});
+        }
       }
+    },
+    handleVideoPage(evt) {
+      this.video = evt.target.files[0];
     },
     canBeSubscribedFunc:function () {
       if (this.agreement.status_id == 5 || this.agreement.status_id == 7) {
@@ -181,7 +205,7 @@ export default {
     },
     getFormatedSub:function (sub) {
       if (sub.inn) {
-        return sub.user_name + ' (ИНН: ' + s.inn + ') '+ this.getFormatedTime(sub.created_at) +' при помощи кода, отправленного на номер телефона ' + sub.phone
+        return sub.user_name + ' (ИНН: ' + sub.inn + ') '+ this.getFormatedTime(sub.created_at) +' при помощи кода, отправленного на номер телефона ' + sub.phone
       } else {
         return sub.user_name + ' - '+ this.getFormatedTime(sub.created_at) +' при помощи кода, отправленного на номер телефона ' + sub.phone
       }
