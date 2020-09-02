@@ -82,9 +82,11 @@
     <div uk-grid>
       <div class="">
         <div id="docqrcode" style="width:200px; height:200px; margin-top:15px;"></div>
+        <p>Ссылка на документ</p>
       </div>
       <% subs.forEach(function(s) { %>
         <div id="<%= s.uid %>" style="width:200px; height:200px; margin-top:15px;"></div>
+        <p>Ссылка на видео-подтвержение <%= s.user_name %></p>
       <% }); %>
     </div>
   </div>
