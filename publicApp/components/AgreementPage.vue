@@ -303,6 +303,7 @@ export default {
 
       this.axios.post('addagreement', {uid: this.$route.params.uid})
         .then(function (response) {
+          console.log(response);
         if (response.data.success) {
         }
       });
