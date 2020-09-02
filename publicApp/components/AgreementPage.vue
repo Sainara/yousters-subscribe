@@ -297,6 +297,15 @@ export default {
           return "Неизвестно"
           break;
       }
+    },
+    addAgreementToAdded: function () {
+      let self = this;
+      this.axios.post('addagreement', {uid: this.$route.params.uid})
+        .then(function (response) {
+        if (response.data.success) {
+          
+        }
+      });
     }
   },
   mounted: function () {
@@ -306,6 +315,7 @@ export default {
     } else {
       this.axios.defaults.headers['token'] = this.token;
       this.getAgreement();
+      this.addAgreementToAdded();
       if (!this.user.user_name) {
         this.getUser();
       }
