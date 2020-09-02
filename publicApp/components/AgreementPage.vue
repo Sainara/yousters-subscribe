@@ -300,11 +300,12 @@ export default {
     },
     addAgreementToAdded: function () {
       let self = this;
+
       this.axios.post('addagreement', {uid: this.$route.params.uid})
         .then(function (response) {
-          print(response);
+          console.log(response);
         if (response.data.success) {
-          print(response);
+          console.log(response);
         }
       });
     }
