@@ -138,7 +138,8 @@ export default {
           .then(function (response) {
           if (response.data.success) {
             self.isLoading = false;
-            location.reload();
+            self.$router.push({ name: 'mainPage'});
+
           }
         });
       } else {

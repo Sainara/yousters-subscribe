@@ -18,10 +18,13 @@ Vue.config.devtools = true;
 import MainPage from '../components/MainPage.vue'
 import CreateAgreement from '../components/CreateAgreement.vue'
 import AgreementPage from '../components/AgreementPage.vue'
+import ValidationPage from '../components/UserComponents/SubUserComponents/ValidationPage.vue';
+
 
 const routes = [
-  { path: '/', component: MainPage },
+  { path: '/', name: 'mainPage', component: MainPage },
   { path: '/add', component: CreateAgreement},
+  { path: '/validate', component: ValidationPage},
   { path: '/agreement/:uid', name: 'agreementPage', component: AgreementPage, props: true}
 ]
 

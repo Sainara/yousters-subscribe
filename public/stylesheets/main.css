@@ -312,6 +312,7 @@ a.youstersnav {
   margin-top: 40px
 }
 .block .code-input {
+  margin: 10px 0;
   padding: 20px 0;
     border: none;
     width: 125px;

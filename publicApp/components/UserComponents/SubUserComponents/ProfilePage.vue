@@ -30,8 +30,9 @@
             </div>
             <div class="uk-width-large">
                 <div class="uk-card uk-card-default uk-card-small uk-card-body">
+                  <not-on-validation v-if="isNotOnValidation">{{user.phone}}</not-on-validation>
                   <on-validation v-if="isOnValidation">{{user.phone}}</on-validation>
-                  <active v-else v-bind:user="user"></active>
+                  <active v-if="user.isvalidated" v-bind:user="user"></active>
                 </div>
             </div>
           </div>
@@ -43,6 +44,7 @@
 </template>
 
 <script>
+import NotOnValidation from './ProfileComponents/NotOnValidation.vue';
 import OnValidation from './ProfileComponents/OnValidation.vue';
 import Active from './ProfileComponents/Active.vue';
 import DocsTable from './DocsComponents/DocsTable.vue'
@@ -88,6 +90,9 @@ export default {
     isOnValidation: function () {
       return this.user.is_on_validation;
     },
+    isNotOnValidation: function () {
+      return !this.user.is_on_validation &&!this.user.isvalidated;
+    },
     isMobile() {
       return screen.width <= 960
     },
@@ -97,6 +102,9 @@ export default {
           return 'DocsTable';
           break;
         case 'Профиль':
+        if (!this.user.is_on_validation &&!this.user.isvalidated) {
+          return 'NotOnValidation';
+        }
           if (this.user.is_on_validation) {
               return 'OnValidation';
           } else {
@@ -120,6 +128,7 @@ export default {
     };
   },
   components: {
+    NotOnValidation,
     OnValidation,
     Active,
     DocsTable

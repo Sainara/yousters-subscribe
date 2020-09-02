@@ -15,7 +15,7 @@
           <input type="file" accept="video/*" @change="handleVideoPage($event)">
           <input class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
       </div>
-      
+
       <p style="margin: 20px 10px" class="subtitle">Для идентификации необходимо перевести 1₽ с вашего расчетного счета, ссылка на счет на оплату появится, после ввода ИНН, Email и селфи-видео, так же ссылка будет доступна на экране профиля после нажатия кнопки "Оплатил"</p>
       <a href="#" v-on:click.prevent="toBill()" class="main-button secondary-color-but full-width-but" style="margin-bottom: 40px">Счет на оплату</a>
       <a style="margin-top: 70px" href="#" v-on:click.prevent="sendToValidate()" class="main-button full-width-but">Оплатил</a>
@@ -58,7 +58,7 @@ export default {
         if (response.data.success) {
             //response.data.data;
             self.isLoading = false;
-            location.reload();
+            self.$router.push({ name: 'mainPage'});
             //console.log(response.data.data);
           }
         });

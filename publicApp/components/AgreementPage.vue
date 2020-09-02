@@ -4,7 +4,7 @@
   <div v-else-if="!isLoading" class="uk-container uk-container-xsmall" style="margin-bottom: 50px">
     <div class="uk-grid-small" uk-grid>
       <div>
-        <h2 class="agr_title">{{agreement.title}}</h2>
+        <h2 class="agr_title">{{agreement.title}} #{{agreement.unumber}}</h2>
         <div class="block">
           <p class="subtitle">Статус</p>
           <p class="title">{{getAgreementStatusString(agreement.status_id)}}</p>
@@ -27,9 +27,14 @@
         </div>
         <div v-if="subscribtions.length > 0" class="block">
           <p class="subtitle">Подписали</p>
-          <p v-for="subscribtion in subscribtions" :key="subscribtion.user_name" class="title">
-            {{getFormatedSub(subscribtion)}}
-          </p></br>
+          <div v-for="subscribtion in subscribtions" :key="subscribtion.user_name">
+            <p class="title">
+              {{getFormatedSub(subscribtion)}}</br>
+            </p>
+            <p class="smalltitle">Ссылка на видео-подтверждение <a :href="'/sub/' + subscribtion.uid + '/video'">https://you-scribe.ru/sub/{{subscribtion.uid}}/video</a></p>
+            </br>
+          </div>
+
         </div>
         <div class="block">
           <template v-if="agreement.status_id == 1">
@@ -44,7 +49,7 @@
           <template v-if="canBeSubscribed">
             <transition name="fade">
               <div style="float:left" v-if="isEnteringCode">
-                <p style="margin: 20px 2px 7px" class="smalltitle">Запишите селфи-видео с паспортом в котором вы произносите: "Я согласен с заключением договора номер {{agreement.unumber}}"</p>
+                <p style="margin: 20px 2px 7px" class="smalltitle">Запишите селфи-видео в котором вы произносите: "Я согласен с заключением договора номер {{agreement.unumber}}"</p>
                 <div uk-form-custom="target: true">
                     <input type="file" accept="video/*" @change="handleVideoPage($event)">
                     <input class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
