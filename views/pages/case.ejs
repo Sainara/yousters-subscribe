@@ -79,6 +79,25 @@
         </div>
       </div>
     </div>
+    <div uk-grid>
+      <div class="">
+        <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+      </div>
+      <div class="">
+
+      </div>
+      <div class="">
+
+      </div>
+    </div>
   </div>
+  <script type="text/javascript" src="/js/qrcode.min.js"></script>
+  <script type="text/javascript">
+  var qrcode = new QRCode(document.getElementById("qrcode"), {
+    width : 100,
+    height : 100
+  });
+  qrcode.makeCode(<%= agreement.link %>);
+  </script>
 </body>
 </html>
