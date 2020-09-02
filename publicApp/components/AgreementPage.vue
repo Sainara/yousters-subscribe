@@ -302,6 +302,7 @@ export default {
       let self = this;
       this.axios.post('addagreement', {uid: this.$route.params.uid})
         .then(function (response) {
+          print(response);
         if (response.data.success) {
           print(response);
         }
