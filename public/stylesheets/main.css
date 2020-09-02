@@ -320,3 +320,12 @@ a.youstersnav {
     color: #000;
   height: 66px;
 }
+
+@media print {
+  .main-button {
+    display: none;
+  }
+  .hide-on-print {
+    display: none;
+  }
+}
