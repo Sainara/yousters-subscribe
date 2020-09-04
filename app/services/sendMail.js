@@ -3,14 +3,13 @@ import env from '../../env';
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(env.sendGridMailAPIKey);
 
-const sendMail = async (to, from, subject, text, html) => {
+const sendMail = async (to, from, subject, html) => {
 
   const msg = {
     to: to,
     from: from,
     subject: subject,
-    text: text,
-    html: html,
+    html: '<p>' + html + '</p>',
   };
   sgMail.send(msg);
 
