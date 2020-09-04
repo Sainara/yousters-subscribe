@@ -4,7 +4,7 @@ import {
   eMessage, sMessage, status,
 } from './status';
 
-eMessage.message = "tooManyRequests";
+//eMessage.message = "tooManyRequests";
 
 const errorMessage = Object.assign({}, eMessage);
 errorMessage.message = "tooManyRequests";

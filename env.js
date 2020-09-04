@@ -3,6 +3,7 @@ export default {
   //test_database_url: process.env.TEST_DATABASE_URL,
   secret: process.env.SECRET || 'youstersbigbigsecret',
   port: process.env.PORT || 8000,
+  sendGridMailAPIKey: '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',
   yandexCheckoutShopId: '729974',
   yandexCheckoutSecretKey: 'live_QflFfq4UKgFm8wsKHQCN3Nsq-hVuJPOJD0vl7lu7mMY',
   // yandexCheckoutShopId: '729974',
