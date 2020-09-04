@@ -23,6 +23,8 @@ import {
 import env from '../../env';
 
 import {s3delete} from '../helpers/s3';
+import sendMail from '../services/sendMail';
+
 
 const uploadDocs = async (req, res) => {
 
@@ -63,6 +65,8 @@ const uploadDocs = async (req, res) => {
     const updateQuery = 'UPDATE users SET email = $1, main_passport = $2, second_passport = $3, video_passport = $4, is_on_validation = true, validation_type = $5 WHERE id = $6';
     const values = [email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location, 'phiz', req.user.id]
     const result = await dbQuery.query(updateQuery, values);
+
+    sendMail('ceo@you-scribe.ru', 'info@you-scribe.ru', 'Загружены документы на проверку', 'Профиль с номером ' + dbResponse3.phone + "прислал документы на проверку");
 
     return res.status(status.success).send(successMessage);
   } catch (error) {

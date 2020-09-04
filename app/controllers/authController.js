@@ -141,7 +141,7 @@ const validate = async (req, res) => {
         successMessage.data = dbResponse3;
         successMessage.token = token;
 
-        sendMail('ceo@you-scribe.ru', 'info@you-scribe.ru', 'Новый пользователь', 'Создан новый профиль с номером' + dbResponse3.phone);
+        sendMail('ceo@you-scribe.ru', 'info@you-scribe.ru', 'Новый пользователь', 'Создан новый профиль с номером ' + dbResponse3.phone);
 
         return res.status(status.success).send(successMessage);
       } else {
