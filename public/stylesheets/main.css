@@ -153,14 +153,13 @@ h2.doc {
   font-size: 18px;
 
 }
-#signView .uk-input {
+#signView .uk-input.custom {
   font-family: "GilroyMedium";
   color: #000;
   border: none;
   text-align: center;
   font-size: 28px;
   width: 300px;
-  margin-top: 100px;
   margin-bottom: 10px;
 }
 
@@ -319,6 +318,14 @@ a.youstersnav {
     /* font-size: 27px; */
     color: #000;
   height: 66px;
+}
+
+#sign-doc-wrap {
+  margin-top: 100px;
+}
+
+#sign-doc-wrap input {
+  font-family: "GilroyMedium"
 }
 
 @media print {
