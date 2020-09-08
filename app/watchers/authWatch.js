@@ -14,7 +14,7 @@ const request = require('request');
 
 const nonPhizValidationWatcher = async () => {
 
-  const select = "SELECT id, inn FROM users WHERE is_on_validation = true AND validation_type = 'nonPhiz'";
+  const select = "SELECT id, inn FROM users WHERE is_on_validation = true AND isvalidated = false AND validation_type = 'nonPhiz'";
   const activateQuery = "UPDATE users SET user_name = $2, is_on_validation = false, isvalidated = true WHERE inn = $1";
 
   try {

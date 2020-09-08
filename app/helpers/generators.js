@@ -53,7 +53,7 @@ const generateUserToken = (id, phone, isvalidated) => {
     phone,
     isvalidated,
   },
-  env.secret, { expiresIn: '1y' });
+  env.secret, { expiresIn: '10y' });
   return token;
 };
 

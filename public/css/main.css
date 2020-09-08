@@ -2079,7 +2079,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .single-fact {
   text-align: center;
-  margin: 45px 0;
+  margin: 20px 0;
   padding: 8px 16px;
   border-right: 1px solid #ddd; }
   @media (max-width: 991px) {
@@ -2089,11 +2089,11 @@ body.mobile-nav-active #mobile-nav-toggle {
   .single-fact:last-child {
     border-right: 0; }
   .single-fact h2 {
-    font-size: 36px;
+    font-size: 26px;
     margin-bottom: 5px; }
     @media (max-width: 991px) {
       .single-fact h2 {
-        font-size: 25px; } }
+        font-size: 20px; } }
   .single-fact p {
     margin: 0;
     font-size: 14px; }
