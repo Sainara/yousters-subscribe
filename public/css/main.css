@@ -1987,7 +1987,10 @@ body.mobile-nav-active #mobile-nav-toggle {
   width: 100%; }
   @media (max-width: 991px) {
     .home-about-left img {
-      display: none; } }
+      display: none; }
+      .home-about-left svg {
+        display: none; }
+    }
 
 .home-about-right h1 {
   padding: 20px 0; }
@@ -2189,7 +2192,6 @@ body.mobile-nav-active #mobile-nav-toggle {
         text-align: center; } }
 
 .pricing-area {
-  padding: 100px 0;
   position: relative; }
   @media (max-width: 991px) {
     .pricing-area {

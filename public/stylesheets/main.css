@@ -328,6 +328,23 @@ a.youstersnav {
   font-family: "GilroyMedium"
 }
 
+
+@media (min-width: 991px) {
+  .home-about-right {
+    margin-bottom: 30px
+  }
+}
+@media (max-width: 991px) {
+  .home-about-right {
+    margin-bottom: 0px
+  }
+}
+
+
+.home-about-right p {
+    margin-bottom: 40px;
+}
+
 @media print {
   .main-button {
     display: none;
