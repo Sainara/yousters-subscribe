@@ -71,11 +71,77 @@ const createDialog = async (req, res) => {
   }
 };
 
+const getMessages = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const { dialog_id } = req.body;
+
+  // if (!isValidNameLength(title)) {
+  //   errorMessage.message = "inValidName";
+  //   return res.status(status.bad).send(errorMessage);
+  // }
+
+  const getQuery = 'SELECT * from messages WHERE dialog_id = $1';
+
+  try {
+
+    var { rows } = await dbQuery.query(getQuery, [dialog_id]);
+
+    // if () {
+    //
+    // }
+
+    successMessage.data = {};
+    successMessage.data.dialogId = rows[0].id;
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
+
+const createMessage = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const types = ["text"];
+
+  const { content, type, dialog_id } = req.body;
+
+  // if (!isValidNameLength(title)) {
+  //   errorMessage.message = "inValidName";
+  //   return res.status(status.bad).send(errorMessage);
+  // }
+
+  if (!types.includes(type)) {
+    errorMessage.message = "invalidType"
+    return res.status(status.bad).send(errorMessage);
+  }
+
+  const createQuery = 'INSERT INTO dialogs (m_content, m_type, creator_id, dialog_id) VALUES ($1, $2, $3, $4) RETURNING id';
+
+  try {
+    var vals = [content, type, req.user.id, dialog_id];
+    var { rows } = await dbQuery.query(createQuery, vals);
+    successMessage.data = {};
+    successMessage.data.message_id = rows[0].id;
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
 
 
 
 
 export {
   getDialogs,
-  createDialog
+  createDialog,
+  getMessages,
+  createMessage
 };

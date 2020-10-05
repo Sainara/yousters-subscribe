@@ -56,3 +56,8 @@ Create table userpakets(id serial PRIMARY KEY, paket_id int, user_id int, create
 Create table pakets_usage(id serial PRIMARY KEY, agr_uid varchar, user_id int, created_at timestamptz default CURRENT_TIMESTAMP);
 
 CREATE TABLE subs_reports(id serial PRIMARY KEY, sub_uid VARCHAR, reason VARCHAR, status varchar, created_at timestamptz);
+
+
+Create table dialogs(id serial PRIMARY KEY, title VARCHAR, creator_id int, created_at timestamptz default CURRENT_TIMESTAMP);
+
+Create table messages(id serial PRIMARY KEY, m_content VARCHAR, m_type VARCHAR, is_read bool default false, read_at timestamptz, creator_id int, dialog_id int, created_at timestamptz default CURRENT_TIMESTAMP);
