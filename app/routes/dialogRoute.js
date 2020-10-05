@@ -13,7 +13,7 @@ router.get('/dialog', primaryLimit, verifyAuth, getDialogs);
 router.post('/dialog', primaryLimit, verifyAuth, createDialog);
 
 router.get('/message', primaryLimit, verifyAuth, getMessages);
-router.post('/message', primaryLimit, verifyAuth, getMessages);
+router.post('/message', primaryLimit, verifyAuth, createMessage);
 
 //console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
