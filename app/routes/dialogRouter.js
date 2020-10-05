@@ -13,8 +13,4 @@ router.get('/dialog', primaryLimit, verifyAuth, getDialogs);
 router.post('/dialog', primaryLimit, verifyAuth, createDialog);
 
 
-// router.post('/validate', validate);
-// router.post('/me', verifyAuth, me);
-// router.post('/token', verifyAuth, addToken);
-////
 export default router;
