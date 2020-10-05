@@ -12,5 +12,6 @@ const router = express.Router();
 router.get('/dialog', primaryLimit, verifyAuth, getDialogs);
 router.post('/dialog', primaryLimit, verifyAuth, createDialog);
 
+console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 export default router;
