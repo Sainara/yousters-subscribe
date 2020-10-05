@@ -76,7 +76,7 @@ const getMessages = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const { dialog_id } = req.body;
+  const { dialog_id } = req.query;
 
   // if (!isValidNameLength(title)) {
   //   errorMessage.message = "inValidName";
