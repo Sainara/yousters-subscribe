@@ -61,8 +61,7 @@ const createDialog = async (req, res) => {
 
   try {
 
-    var values = [title, req.user.id];
-    var { rows } = await dbQuery.query(createQuery, values);
+    var { rows } = await dbQuery.query(createQuery, [title, req.user.id]);
     successMessage.data = {};
     successMessage.data.dialogId = rows[0].id;
     return res.status(status.success).send(successMessage);
