@@ -122,7 +122,7 @@ const createMessage = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 
-  const createQuery = 'INSERT INTO dialogs (m_content, m_type, creator_id, dialog_id) VALUES ($1, $2, $3, $4) RETURNING *';
+  const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_id) VALUES ($1, $2, $3, $4) RETURNING *';
 
   try {
     var vals = [content, type, req.user.id, dialog_id];
