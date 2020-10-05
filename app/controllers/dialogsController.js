@@ -93,8 +93,8 @@ const getMessages = async (req, res) => {
     //
     // }
 
-    successMessage.data = {};
-    successMessage.data.dialogId = rows[0].id;
+    successMessage.data = rows;
+    //successMessage.data.dialogId = rows[0].id;
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
