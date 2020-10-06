@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@sendgrid/mail": "^7.1.0",
+    "@small-tech/express-ws": "^1.0.1",
     "apn": "^2.2.0",
     "aws-sdk": "^2.678.0",
     "axios": "^0.19.2",
