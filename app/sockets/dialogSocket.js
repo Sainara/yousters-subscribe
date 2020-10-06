@@ -53,6 +53,15 @@ const connectToDialog = async (ws, req) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
+  ws.on('open', function open() {
+    console.log('connected');
+    console.log(req.user.phone);
+  });
+
+  ws.on('close', function close() {
+    console.log('disconnected');
+  });
+
     ws.on('message', function(msg) {
       console.log(msg.toString('utf8'));
 
