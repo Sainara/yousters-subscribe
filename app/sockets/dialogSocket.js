@@ -119,7 +119,7 @@ const connectToDialog = async (ws, req) => {
         return
       }
 
-      const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_id) VALUES ($1, $2, $3, $4) RETURNING *';
+      const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
       try {
         (async() => {
@@ -155,7 +155,7 @@ const connectToDialog = async (ws, req) => {
   //   return res.status(status.bad).send(errorMessage);
   // }
 
-  const getQuery = 'SELECT * from messages WHERE dialog_id = $1';
+  const getQuery = 'SELECT * from messages WHERE dialog_uid = $1';
 
   try {
 
