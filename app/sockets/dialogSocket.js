@@ -150,7 +150,9 @@ const connectToDialog = async (ws, req) => {
     // if () {
     //
     // }
-    console.log(JSON.stringify(rows));
+    //console.log(JSON.stringify(rows));
+
+    console.log(ws.clients);
 
     ws.send(JSON.stringify(rows));
     //successMessage.data.dialogId = rows[0].id;
