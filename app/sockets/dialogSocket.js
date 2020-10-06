@@ -106,14 +106,40 @@ const connectToDialog = async (ws, req) => {
       //   console.log(files);
       // });
 
+      const types = ["text"];
+
+      //const { content, type, dialog_id } = req.body;
+
+      // if (!isValidNameLength(title)) {
+      //   errorMessage.message = "inValidName";
+      //   return res.status(status.bad).send(errorMessage);
+      // }
+
+      if (!types.includes(type)) {
+        return
+      }
+
+      const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_id) VALUES ($1, $2, $3, $4) RETURNING *';
+
+      try {
+        var vals = [result['content'], result['type'], req.user.id, req.params.uid];
+        var { rows } = await dbQuery.query(createQuery, vals);
+        ws.send(rows);
+        //return res.status(status.success).send(successMessage);
+      } catch (error) {
+        console.error(error);
+        //eeeturn res.status(status.bad).send(errorMessage);
+      }
+
+      //JSON.stringify(successMessage));
 
     });
 
     //v
-    ws.send(req.params.uid)
-    ws.send(JSON.stringify(successMessage));
+    //ws.send(req.params.uid)
 
-    console.log('!!!!!!!!!');
+
+    console.log('connection');
     //console.log('socket', req.testing);
 
 
@@ -136,7 +162,7 @@ const connectToDialog = async (ws, req) => {
     //
     // }
 
-    successMessage.data = rows;
+    ws.send(rows);
     //successMessage.data.dialogId = rows[0].id;
     //return res.status(status.success).send(successMessage);
   } catch (error) {

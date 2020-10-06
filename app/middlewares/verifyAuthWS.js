@@ -17,7 +17,6 @@ const verifyTokenWS = async (ws, req, next) => {
 
   const errorMessage = Object.assign({}, eMessage);
 
-  console.log(req.headers);
   const token = req.headers.token || req.query.token;
   if (!token) {
     console.log('destroy');
