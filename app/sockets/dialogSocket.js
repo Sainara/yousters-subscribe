@@ -114,10 +114,10 @@ const connectToDialog = async (ws, req) => {
           var vals = [result['content'], result['type'], req.user.id, req.params.uid];
           var { rows } = await dbQuery.query(createQuery, vals);
         //console.log(JSON.stringify(rows));
-            ws._socket.clients.forEach(function each(client) {
-              if (client.readyState === WebSocket.OPEN) {
+            this.getWss().clients.forEach(function each(client) {
+              //if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify(rows));
-              }
+              //}
             });
           //ws.send();
         })()
