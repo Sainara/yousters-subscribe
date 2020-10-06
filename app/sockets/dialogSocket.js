@@ -115,7 +115,7 @@ const connectToDialog = async (ws, req) => {
       //   return res.status(status.bad).send(errorMessage);
       // }
 
-      if (!types.includes(type)) {
+      if (!types.includes(result['type'])) {
         return
       }
 
