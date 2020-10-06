@@ -122,9 +122,12 @@ const connectToDialog = async (ws, req) => {
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_id) VALUES ($1, $2, $3, $4) RETURNING *';
 
       try {
-        var vals = [result['content'], result['type'], req.user.id, req.params.uid];
-        var { rows } = await dbQuery.query(createQuery, vals);
-        ws.send(rows);
+        (async() => {
+          var vals = [result['content'], result['type'], req.user.id, req.params.uid];
+          var { rows } = await dbQuery.query(createQuery, vals);
+          ws.send(rows);
+        })()
+
         //return res.status(status.success).send(successMessage);
       } catch (error) {
         console.error(error);
