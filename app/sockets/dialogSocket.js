@@ -106,7 +106,7 @@ const connectToDialog = async (ws, req) => {
           var vals = [result['content'], result['type'], req.user.id, req.params.uid];
           var { rows } = await dbQuery.query(createQuery, vals);
           console.log(rows);
-          ws.send(rows);
+          ws.send(JSON.stringify(rows));
         })()
 
         //return res.status(status.success).send(successMessage);
@@ -143,7 +143,7 @@ const connectToDialog = async (ws, req) => {
     // }
     console.log(rows);
 
-    ws.send(rows);
+    ws.send(JSON.stringify(rows));
     //successMessage.data.dialogId = rows[0].id;
     //return res.status(status.success).send(successMessage);
   } catch (error) {
