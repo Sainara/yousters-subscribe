@@ -56,9 +56,6 @@ const connectToDialog = async (ws, req) => {
     ws.on('message', function(msg) {
       console.log(msg.toString('utf8'));
 
-      //const boundary = getBoundary(msg.toString('utf8'))
-      //console.log(boundary);
-
       const boundary = getBoundary(msg.toString('utf8'))
         if (!boundary) {
           endRequestWithError(response, body, 400, 'Boundary information missing', callback)
@@ -92,32 +89,15 @@ const connectToDialog = async (ws, req) => {
           }
         }
         console.log(result);
-      //   let result = {}
-      //   const rawDataArray = rawData.split(boundary)
-      //   for (let item of rawDataArray) {
-      //     console.log(item);
-      // }
-      //console.log(JSON.parse(msg));
-
-      // var form = new formidable.IncomingForm();
-      //
-      // form.parse(msg, function(err, fields, files) {
-      //   console.log(fields);
-      //   console.log(files);
-      // });
 
       const types = ["text"];
 
-      //const { content, type, dialog_id } = req.body;
-
-      // if (!isValidNameLength(title)) {
-      //   errorMessage.message = "inValidName";
-      //   return res.status(status.bad).send(errorMessage);
-      // }
 
       if (!types.includes(result['type'])) {
         return
       }
+
+      console.log();
 
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
@@ -125,6 +105,7 @@ const connectToDialog = async (ws, req) => {
         (async() => {
           var vals = [result['content'], result['type'], req.user.id, req.params.uid];
           var { rows } = await dbQuery.query(createQuery, vals);
+          console.log(rows);
           ws.send(rows);
         })()
 
@@ -143,12 +124,8 @@ const connectToDialog = async (ws, req) => {
 
 
     console.log('connection');
-    //console.log('socket', req.testing);
 
-
-
-
-  const { dialog_id } = req.query;
+  //const { dialog_id } = req.params.uid;
 
   // if (!isValidNameLength(title)) {
   //   errorMessage.message = "inValidName";
@@ -159,7 +136,7 @@ const connectToDialog = async (ws, req) => {
 
   try {
 
-    var { rows } = await dbQuery.query(getQuery, [dialog_id]);
+    var { rows } = await dbQuery.query(getQuery, [req.params.uid]);
 
     // if () {
     //
