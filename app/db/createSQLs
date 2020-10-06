@@ -59,5 +59,7 @@ CREATE TABLE subs_reports(id serial PRIMARY KEY, sub_uid VARCHAR, reason VARCHAR
 
 
 Create table dialogs(id serial PRIMARY KEY, title VARCHAR, creator_id int, created_at timestamptz default CURRENT_TIMESTAMP);
+alter table dialogs add column uid varchar;
+
 
 Create table messages(id serial PRIMARY KEY, m_content VARCHAR, m_type VARCHAR, is_read bool default false, read_at timestamptz, creator_id int, dialog_id int, created_at timestamptz default CURRENT_TIMESTAMP);

@@ -57,13 +57,14 @@ const createDialog = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 
-  const createQuery = 'INSERT INTO dialogs (title, creator_id) VALUES ($1, $2) RETURNING id';
+  const createQuery = 'INSERT INTO dialogs (title, creator_id, uid) VALUES ($1, $2, $3) RETURNING id, uid';
 
   try {
 
-    var { rows } = await dbQuery.query(createQuery, [title, req.user.id]);
+    var { rows } = await dbQuery.query(createQuery, [title, req.user.id, uuidv4()]);
     successMessage.data = {};
     successMessage.data.dialogId = rows[0].id;
+    successMessage.data.dialogUId = rows[0].uid;
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
