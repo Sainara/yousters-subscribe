@@ -26,7 +26,6 @@ import {s3delete} from '../helpers/s3';
 
 import sendNotification from '../services/notificationService';
 
-var formidable = require('formidable');
 
 function getBoundary(request) {
   let contentType = request.split('\n')[0];
@@ -157,7 +156,7 @@ const connectToDialog = async (ws, req) => {
     // }
     //console.log(JSON.stringify(rows));
 
-    console.log(ws.getWss().clients);
+    console.log(this.getWss().clients);
 
     ws.send(JSON.stringify(rows));
     //successMessage.data.dialogId = rows[0].id;
