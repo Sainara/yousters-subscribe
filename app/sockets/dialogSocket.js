@@ -97,7 +97,7 @@ const connectToDialog = async (ws, req) => {
             result[name] = value
           }
         }
-        console.log(result);
+        //console.log(result);
 
       const types = ["text"];
 
@@ -106,7 +106,7 @@ const connectToDialog = async (ws, req) => {
         return
       }
 
-      console.log();
+      //console.log();
 
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
@@ -114,7 +114,7 @@ const connectToDialog = async (ws, req) => {
         (async() => {
           var vals = [result['content'], result['type'], req.user.id, req.params.uid];
           var { rows } = await dbQuery.query(createQuery, vals);
-          console.log(JSON.stringify(rows));
+        //console.log(JSON.stringify(rows));
           ws.send(JSON.stringify(rows));
         })()
 
