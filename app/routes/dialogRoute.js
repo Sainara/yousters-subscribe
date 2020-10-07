@@ -7,10 +7,14 @@ import verifyAuthWS from '../middlewares/verifyAuthWS';
 import { primaryLimit } from '../helpers/rateLimits';
 
 
-const router = express.Router();
-var expressWs = require('express-ws')(router);
+
+var expressWs = require('express-ws')(express.Router());
 
 // Routes
+const router = expressWs.app;
+console.log(connectToDialog);
+connectToDialog.server = router.getWss();
+console.log(connectToDialog);
 router.ws('/dialog/:uid', verifyAuthWS, connectToDialog);
 
 console.log(expressWs);
