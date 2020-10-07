@@ -13,7 +13,7 @@ var expressWs = require('express-ws')(express.Router());
 // Routes
 const router = expressWs.app;
 console.log("ROUTER THIS");
-console.log(this);
+console.log(router);
 connectToDialog.server = router.wsApp;
 //console.log(connectToDialog);
 router.ws('/dialog/:uid', verifyAuthWS, connectToDialog);
