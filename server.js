@@ -37,9 +37,11 @@ import userPageRoute from './publicApp/routes/userPageRoute';
 import nonPhizValidationWatcher from './app/watchers/authWatch';
 
 
-var app = express();
 
-//var expressWs = require('express-ws')(app);
+
+var expressWs = require('express-ws')(express());
+
+var app = expressWs.app;
 
 const API_PATH = "/api/v1";
 const PORT = env.port;
@@ -75,6 +77,10 @@ repeat()
   .do(() => console.log("check users to validate by nonPhiz"))
   .do(nonPhizValidationWatcher)
   .every(1000 * 60 * 30);
+
+  repeat()
+    .do(() => console.log(expressWs.getWss()))
+    .every(5 * 1000);
 
 
 app.use(API_PATH, authRoute);
