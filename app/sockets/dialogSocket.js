@@ -120,10 +120,11 @@ const connectToDialog = async (ws, req) => {
           var { rows } = await dbQuery.query(createQuery, vals);
         //console.log(JSON.stringify(rows));
         //console.log(self);
+        console.log(self.connectToDialog.server.getWss().clients.length);
             self.connectToDialog.server.getWss().clients.forEach(function each(client) {
               //if (client.readyState === WebSocket.OPEN) {
-              console.log("!!@!###!#!!#");
-              console.log(client);
+              //console.log("!!@!###!#!!#");
+              //console.log(client);
                 client.send(JSON.stringify(rows));
               //}
             });
