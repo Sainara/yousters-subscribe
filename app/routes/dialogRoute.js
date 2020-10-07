@@ -12,12 +12,12 @@ var expressWs = require('express-ws')(express.Router());
 
 // Routes
 const router = expressWs.app;
-console.log(connectToDialog);
+//console.log(connectToDialog);
 connectToDialog.server = expressWs.getWss();
-console.log(connectToDialog);
+//console.log(connectToDialog);
 router.ws('/dialog/:uid', verifyAuthWS, connectToDialog);
 
-console.log(expressWs);
+//console.log(expressWs);
 
 router.get('/dialog', primaryLimit, verifyAuth, getDialogs);
 router.post('/dialog', primaryLimit, verifyAuth, createDialog);
