@@ -32,6 +32,11 @@ const verifyTokenWS = async (ws, req, next) => {
       phone: decoded.phone,
       isvalidated: decoded.isvalidated,
     };
+    ws.user = {
+      id: decoded.id,
+      phone: decoded.phone,
+      isvalidated: decoded.isvalidated,
+    };
     console.log(req.user);
     next();
   } catch (error) {
