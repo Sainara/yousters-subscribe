@@ -84,6 +84,7 @@ repeat()
   //
 
 app.use(API_PATH, authRoute);
+dialogRoute.wsApp = expressWs;
 app.use(API_PATH, dialogRoute);
 
 app.use(API_PATH, docsValidationRoute);
