@@ -124,7 +124,7 @@ const connectToDialog = async (ws, req) => {
             self.connectToDialog.server.getWss().clients.forEach(function each(client) {
               //if (client.readyState === WebSocket.OPEN) {
               console.log("!!@!###!#!!#");
-              console.log(client.user);
+              console.log(client.d_uid);
                 client.send(JSON.stringify(rows));
               //}
             });
@@ -146,7 +146,7 @@ const connectToDialog = async (ws, req) => {
 
 
     console.log('connection');
-
+    ws.d_uid = req.params.uid;
   //const { dialog_id } = req.params.uid;
 
   // if (!isValidNameLength(title)) {
