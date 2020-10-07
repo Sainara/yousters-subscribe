@@ -87,7 +87,7 @@ app.use(API_PATH, authRoute);
 
 // import  from ';
 
-var dialogRoute = require('./app/routes/dialogRoute')(app);
+var dialogRoute = require('./app/routes/dialogRoute')(expressWs);
 
 app.use(API_PATH, dialogRoute);
 

@@ -16,7 +16,7 @@ module.exports = function(app){
   const router = expressWs.app;
   console.log("ROUTER app");
   console.log(app);
-  //connectToDialog.server = router.wsApp;
+  connectToDialog.server = app;
   //console.log(connectToDialog);
   router.ws('/dialog/:uid', verifyAuthWS, connectToDialog);
 
