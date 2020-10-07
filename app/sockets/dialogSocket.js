@@ -122,6 +122,8 @@ const connectToDialog = async (ws, req) => {
         //console.log(self);
             self.connectToDialog.server.getWss().clients.forEach(function each(client) {
               //if (client.readyState === WebSocket.OPEN) {
+              console.log("!!@!###!#!!#");
+              console.log(client);
                 client.send(JSON.stringify(rows));
               //}
             });
