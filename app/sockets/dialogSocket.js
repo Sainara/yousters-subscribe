@@ -63,6 +63,9 @@ const connectToDialog = async (ws, req) => {
 
   var self = this;
 
+  console.log(self);
+  console.log(self.connectToDialog.getWss().server.clients);
+
     ws.on('message', function(msg) {
       console.log(msg.toString('utf8'));
 
@@ -107,8 +110,7 @@ const connectToDialog = async (ws, req) => {
         return
       }
 //console.log("SELFFFFFFFFFF");
-//      console.log(self);
-//console.log(self.connectToDialog.server.clients);
+
 //console.log(server);
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
