@@ -64,7 +64,7 @@ const connectToDialog = async (ws, req) => {
   var self = this;
 
   console.log(self);
-  console.log(self.connectToDialog.getWss().server.clients);
+  console.log(self.connectToDialog.server.getWss().server.clients);
 
     ws.on('message', function(msg) {
       console.log(msg.toString('utf8'));
