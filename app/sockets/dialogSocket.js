@@ -108,7 +108,7 @@ const connectToDialog = async (ws, req) => {
       }
 console.log("SELFFFFFFFFFF");
       console.log(self);
-console.log(self.server);
+console.log(self.connectToDialog.server);
 //console.log(server);
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
