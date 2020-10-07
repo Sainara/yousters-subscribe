@@ -78,10 +78,10 @@ repeat()
   .do(nonPhizValidationWatcher)
   .every(1000 * 60 * 30);
 
-  repeat()
-    .do(() => console.log(expressWs.getWss()))
-    .every(5 * 1000);
-
+  // repeat()
+  //   .do(() => console.log(expressWs.getWss()))
+  //   .every(5 * 1000);
+  //
 
 app.use(API_PATH, authRoute);
 app.use(API_PATH, dialogRoute);
