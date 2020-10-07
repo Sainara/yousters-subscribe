@@ -13,7 +13,7 @@ var expressWs = require('express-ws')(router);
 // Routes
 router.ws('/dialog/:uid', verifyAuthWS, connectToDialog);
 
-console.log(router);
+//console.log(router);
 
 router.get('/dialog', primaryLimit, verifyAuth, getDialogs);
 router.post('/dialog', primaryLimit, verifyAuth, createDialog);
