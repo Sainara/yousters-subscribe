@@ -39,7 +39,7 @@ import nonPhizValidationWatcher from './app/watchers/authWatch';
 
 var app = express();
 
-var expressWs = require('express-ws')(app);
+//var expressWs = require('express-ws')(app);
 
 const API_PATH = "/api/v1";
 const PORT = env.port;
