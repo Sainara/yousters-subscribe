@@ -106,9 +106,9 @@ const connectToDialog = async (ws, req) => {
       if (!types.includes(result['type'])) {
         return
       }
-console.log("SELFFFFFFFFFF");
-      console.log(self);
-console.log(self.connectToDialog.server);
+//console.log("SELFFFFFFFFFF");
+//      console.log(self);
+//console.log(self.connectToDialog.server.clients);
 //console.log(server);
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
@@ -117,8 +117,8 @@ console.log(self.connectToDialog.server);
           var vals = [result['content'], result['type'], req.user.id, req.params.uid];
           var { rows } = await dbQuery.query(createQuery, vals);
         //console.log(JSON.stringify(rows));
-        console.log(self);
-            self.server.clients.forEach(function each(client) {
+        //console.log(self);
+            self.connectToDialog.server.clients.forEach(function each(client) {
               //if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify(rows));
               //}
