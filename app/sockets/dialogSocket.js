@@ -106,7 +106,7 @@ const connectToDialog = async (ws, req) => {
       }
 
       //console.log();
-
+console.log(this);
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
       try {
@@ -114,6 +114,7 @@ const connectToDialog = async (ws, req) => {
           var vals = [result['content'], result['type'], req.user.id, req.params.uid];
           var { rows } = await dbQuery.query(createQuery, vals);
         //console.log(JSON.stringify(rows));
+        console.log(this);
             this.getWss().clients.forEach(function each(client) {
               //if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify(rows));
@@ -156,8 +157,8 @@ const connectToDialog = async (ws, req) => {
     // }
     //console.log(JSON.stringify(rows));
 
-    console.log(this);
-    console.log(ws);
+    //console.log(this);
+    //console.log(ws);
 
     ws.send(JSON.stringify(rows));
     //successMessage.data.dialogId = rows[0].id;

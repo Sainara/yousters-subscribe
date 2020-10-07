@@ -80,8 +80,6 @@ repeat()
 app.use(API_PATH, authRoute);
 app.use(API_PATH, dialogRoute);
 
-console.log(app);
-
 app.use(API_PATH, docsValidationRoute);
 app.use(API_PATH, agreementsRoute);
 app.use(API_PATH, checkoutRoute);
