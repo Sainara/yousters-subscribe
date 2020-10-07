@@ -13,7 +13,6 @@ import env from './env';
 import authRoute from './app/routes/authRoute';
 import docsValidationRoute from './app/routes/docsValidationRoute';
 import agreementsRoute from './app/routes/agreementsRoute';
-import dialogRoute from './app/routes/dialogRoute';
 import publicAgreementRoute from './app/routes/publicAgreementRoute';
 import checkoutRoute from './app/routes/checkoutRoute';
 import paketRoute from './app/routes/paketRoute';
@@ -84,7 +83,12 @@ repeat()
   //
 
 app.use(API_PATH, authRoute);
-dialogRoute.wsApp = expressWs;
+//dialogRoute.wsApp = expressWs;
+
+// import  from ';
+
+var dialogRoute = require('./app/routes/dialogRoute')(app);
+
 app.use(API_PATH, dialogRoute);
 
 app.use(API_PATH, docsValidationRoute);
