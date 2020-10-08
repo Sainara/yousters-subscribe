@@ -102,21 +102,7 @@ const connectToDialog = async (ws, req) => {
           }
         }
 
-      var vals;
 
-      switch (result['type']) {
-        case "text":
-          vals = [result['content'], result['type'], req.user.id, req.params.uid];
-          break;
-        case "image":
-          var imageData = await s3upload(result['content'], uuidv4());
-          console.log(imageData);
-          vals = ["", result['type'], req.user.id, req.params.uid];
-          return
-          break;
-        default:
-          return
-      }
 
 
 
@@ -124,6 +110,25 @@ const connectToDialog = async (ws, req) => {
 
       try {
         (async() => {
+
+          var vals;
+
+          switch (result['type']) {
+            case "text":
+              vals = [result['content'], result['type'], req.user.id, req.params.uid];
+              break;
+            case "image":
+              var imageData = await s3upload(result['content'], uuidv4());
+              console.log(imageData);
+              vals = ["", result['type'], req.user.id, req.params.uid];
+              return
+              break;
+            default:
+              return
+          }
+
+
+
           var { rows } = await dbQuery.query(createQuery, vals);
 
             self.connectToDialog.server.getWss().clients.forEach(function each(client) {
