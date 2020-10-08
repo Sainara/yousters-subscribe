@@ -121,7 +121,8 @@ const connectToDialog = async (ws, req) => {
             //console.log(result.files[0]['Content-Type']);
             var uid = "message-media-" + uuidv4();
               console.log(uid);
-              var imageData = await s3upload(result['content'], result.files[0]['Content-Type'], uid);
+              console.log(result['content']);
+              //var imageData = await s3upload(result['content'], result.files[0]['Content-Type'], uid);
               console.log(imageData);
               //vals = ["", result['type'], req.user.id, req.params.uid];
               return
