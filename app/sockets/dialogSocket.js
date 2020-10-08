@@ -103,7 +103,7 @@ const connectToDialog = async (ws, req) => {
         }
 
 
-        console.log(result);
+        console.log(result.files);
 
 
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
