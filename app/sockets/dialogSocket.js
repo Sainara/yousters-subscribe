@@ -103,7 +103,7 @@ const connectToDialog = async (ws, req) => {
         }
 
 
-        console.log(result.files);
+        console.log(result.files[0]['content']);
 
 
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
@@ -120,7 +120,7 @@ const connectToDialog = async (ws, req) => {
             case "image":
               //var imageData = await s3upload(result['content'], uuidv4());
               //console.log(imageData);
-              //svals = ["", result['type'], req.user.id, req.params.uid];
+              //vals = ["", result['type'], req.user.id, req.params.uid];
               return
               break;
             default:
