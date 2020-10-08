@@ -69,13 +69,13 @@ const connectToDialog = async (ws, req) => {
     ws.on('message', function(msg) {
       //console.log(msg);
 
-      const boundary = getBoundary(msg.toString('csisolatin1'))
+      const boundary = getBoundary(msg.toString('latin1'))
         if (!boundary) {
           endRequestWithError(response, body, 400, 'Boundary information missing', callback)
           return
         }
         let result = {}
-        const rawDataArray = msg.toString('csisolatin1').split(boundary)
+        const rawDataArray = msg.toString('latin1').split(boundary)
         console.log(rawDataArray);
         for (let item of rawDataArray) {
           // Use non-matching groups to exclude part of the result
@@ -125,7 +125,7 @@ const connectToDialog = async (ws, req) => {
             //console.log(result.files[0]['Content-Type']);
             var uid = "message-media-" + uuidv4();
               console.log(uid);
-              var imageData = await s3upload(Buffer.from(result.files[0]['content'], 'utf8'), result.files[0]['Content-Type'], uid);
+              var imageData = await s3upload(Buffer.from(result.files[0]['content'], 'latin1'), result.files[0]['Content-Type'], uid);
               console.log(imageData);
               //vals = ["", result['type'], req.user.id, req.params.uid];
               return
