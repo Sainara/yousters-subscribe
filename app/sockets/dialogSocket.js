@@ -117,7 +117,7 @@ const connectToDialog = async (ws, req) => {
           switch (result['type']) {
             case "text":
             var text = Buffer.from(result['content'], 'latin1').toString('utf-8');
-            if text == "" {
+            if (text == "") {
               return ;
             }
               vals = [text, result['type'], req.user.id, req.params.uid];
