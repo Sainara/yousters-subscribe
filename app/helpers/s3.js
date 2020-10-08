@@ -48,16 +48,16 @@ const s3upload = (data, ct, key) => {
       Bucket: BUCKET_NAME,
       Key: key
      };
-     console.log(ct);
-     s3.putObject(params, function(err, data) {
-       if (err) {
-         console.log(err, err.stack);
-         reject(err);
-       } else {
-        console.log(data);
-        resolve(data);
-      }        // successful response
-     });
+     var options = {partSize: 10 * 1024 * 1024, queueSize: 1};
+      s3.upload(params, options, function(err, data) {
+        if (err) {
+          console.log(err, err.stack);
+          reject(err);
+        } else {
+         console.log(data);
+         resolve(data);
+       }
+      });
   });
 }
 
