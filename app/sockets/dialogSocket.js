@@ -22,7 +22,7 @@ import {
 } from '../helpers/status';
 
 import {snsPublish} from '../helpers/sns';
-import {s3delete} from '../helpers/s3';
+import {s3delete, s3upload} from '../helpers/s3';
 
 import sendNotification from '../services/notificationService';
 
@@ -101,44 +101,40 @@ const connectToDialog = async (ws, req) => {
             result[name] = value
           }
         }
-        //console.log(result);
 
-      const types = ["text"];
+      var vals;
 
-
-      if (!types.includes(result['type'])) {
-        return
+      switch (result['type']) {
+        case "text":
+          vals = [result['content'], result['type'], req.user.id, req.params.uid];
+          break;
+        case "image":
+          var imageData = await s3upload(result['content'], uuidv4());
+          console.log(imageData);
+          vals = ["", result['type'], req.user.id, req.params.uid];
+          return
+          break;
+        default:
+          return
       }
-//console.log("SELFFFFFFFFFF");
 
-//console.log(server);
+
+
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
       try {
         (async() => {
-          var vals = [result['content'], result['type'], req.user.id, req.params.uid];
           var { rows } = await dbQuery.query(createQuery, vals);
-        //console.log(JSON.stringify(rows));
-        //console.log(self);
-        //console.log(self.connectToDialog.server.getWss().clients);
+
             self.connectToDialog.server.getWss().clients.forEach(function each(client) {
               if (client.d_uid == req.params.uid) {
-              //console.log("!!@!###!#!!#");
-            //  console.log(client.d_uid);
                 client.send(JSON.stringify(rows));
               }
             });
-          //ws.send();
         })()
-
-        //return res.status(status.success).send(successMessage);
       } catch (error) {
         console.error(error);
-        //eeeturn res.status(status.bad).send(errorMessage);
       }
-
-      //JSON.stringify(successMessage));
-
     });
 
     //v

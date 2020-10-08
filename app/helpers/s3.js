@@ -39,6 +39,26 @@ const uploader = multer({
   })
 })
 
+const s3upload = (data, key) => {
+  return new Promise((resolve, reject) => {
+    var params = {
+      ACL: 'public-read',
+      Body: data,
+      Bucket: BUCKET_NAME,
+      Key: key
+     };
+     s3.putObject(params, function(err, data) {
+       if (err) {
+         console.log(err, err.stack);
+         reject(err);
+       } else {
+        console.log(data);
+        resolve(data);
+      }        // successful response
+     });
+  });
+}
+
 const s3get = (key) => {
   return new Promise((resolve, reject) => {
     var params = {
@@ -78,6 +98,7 @@ const s3delete = (key) => {
 //
 export {
   uploader,
+  s3upload,
   s3get,
   s3delete
 };
