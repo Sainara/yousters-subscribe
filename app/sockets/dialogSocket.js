@@ -118,8 +118,10 @@ const connectToDialog = async (ws, req) => {
               vals = [result['content'], result['type'], req.user.id, req.params.uid];
               break;
             case "image":
-            console.log(result.files[0]['content']);
-              //var imageData = await s3upload(result['content'], uuidv4());
+            //console.log(result.files[0]['Content-Type']);
+            var uid = "message-media-" + uuidv4();
+              console.log(uid);
+              var imageData = await s3upload(result.files[0]['content'], result.files[0]['Content-Type'], uid);
               //console.log(imageData);
               //vals = ["", result['type'], req.user.id, req.params.uid];
               return

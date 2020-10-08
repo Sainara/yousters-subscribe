@@ -39,11 +39,12 @@ const uploader = multer({
   })
 })
 
-const s3upload = (data, key) => {
+const s3upload = (data, ct, key) => {
   return new Promise((resolve, reject) => {
     var params = {
       ACL: 'public-read',
       Body: data,
+      ContentType: ct,
       Bucket: BUCKET_NAME,
       Key: key
      };
