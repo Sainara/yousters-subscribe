@@ -48,6 +48,7 @@ const s3upload = (data, ct, key) => {
       Bucket: BUCKET_NAME,
       Key: key
      };
+     console.log(ct);
      s3.putObject(params, function(err, data) {
        if (err) {
          console.log(err, err.stack);
