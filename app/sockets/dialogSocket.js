@@ -76,15 +76,15 @@ const connectToDialog = async (ws, req) => {
         }
         let result = {}
         const rawDataArray = msg.toString('latin1').split(boundary)
-        console.log(rawDataArray);
+
         for (let item of rawDataArray) {
           // Use non-matching groups to exclude part of the result
           let name = getMatching(item, /(?:name=")(.+?)(?:")/)
           if (!name || !(name = name.trim())) continue
-          console.log("ITEM");
-          console.log(item);
+
+
           let value = getMatching(item, /(?:\r\n\r\n)([\S\s]*)(?:\r\n--$)/)
-          console.log(value);
+
           if (!value) continue
           let filename = getMatching(item, /(?:filename=")(.*?)(?:")/)
           if (filename && (filename = filename.trim())) {
@@ -105,9 +105,6 @@ const connectToDialog = async (ws, req) => {
             result[name] = value
           }
         }
-
-
-        console.log("\n");
 //return
 
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
@@ -119,7 +116,12 @@ const connectToDialog = async (ws, req) => {
 
           switch (result['type']) {
             case "text":
-              vals = [result['content'], result['type'], req.user.id, req.params.uid];
+            var text = Buffer.from(result['content'], 'latin1').toString('utf-8');
+            if text == "" {
+              return ;
+            }
+              vals = [text, result['type'], req.user.id, req.params.uid];
+
               break;
             case "image":
             //console.log(result.files[0]['Content-Type']);
@@ -127,8 +129,7 @@ const connectToDialog = async (ws, req) => {
               console.log(uid);
               var imageData = await s3upload(Buffer.from(result.files[0]['content'], 'latin1'), result.files[0]['Content-Type'], uid);
               console.log(imageData);
-              //vals = ["", result['type'], req.user.id, req.params.uid];
-              return
+              vals = [imageData.Location, result['type'], req.user.id, req.params.uid];
               break;
             default:
               return
