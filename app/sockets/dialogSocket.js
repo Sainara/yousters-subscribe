@@ -76,6 +76,7 @@ const connectToDialog = async (ws, req) => {
         }
         let result = {}
         const rawDataArray = msg.toString('utf8').split(boundary)
+        console.log(rawDataArray);
         for (let item of rawDataArray) {
           // Use non-matching groups to exclude part of the result
           let name = getMatching(item, /(?:name=")(.+?)(?:")/)
@@ -83,6 +84,7 @@ const connectToDialog = async (ws, req) => {
           console.log("ITEM");
           console.log(item);
           let value = getMatching(item, /(?:\r\n\r\n)([\S\s]*)(?:\r\n--$)/)
+          console.log(value);
           if (!value) continue
           let filename = getMatching(item, /(?:filename=")(.*?)(?:")/)
           if (filename && (filename = filename.trim())) {
@@ -106,7 +108,7 @@ const connectToDialog = async (ws, req) => {
 
 
         console.log("\n");
-
+//return
 
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
@@ -123,8 +125,8 @@ const connectToDialog = async (ws, req) => {
             //console.log(result.files[0]['Content-Type']);
             var uid = "message-media-" + uuidv4();
               console.log(uid);
-              var imageData = await s3upload(Buffer.from(result.files[0]['content'], 'utf8'), result.files[0]['Content-Type'], uid);
-              console.log(imageData);
+              //var imageData = await s3upload(Buffer.from(result.files[0]['content'], 'utf8'), result.files[0]['Content-Type'], uid);
+              //console.log(imageData);
               //vals = ["", result['type'], req.user.id, req.params.uid];
               return
               break;
