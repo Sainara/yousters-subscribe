@@ -69,31 +69,6 @@ const connectToDialog = async (ws, req) => {
     ws.on('message', function(msg) {
       //console.log(msg);
 
-
-      var Busboy = require('busboy');
-
-      var busboy = new Busboy();
-        busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-          console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
-          file.on('data', function(data) {
-            console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
-          });
-          file.on('end', function() {
-            console.log('File [' + fieldname + '] Finished');
-          });
-        });
-        busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
-          console.log('Field [' + fieldname + ']: value: ' + inspect(val));
-        });
-        busboy.on('finish', function() {
-          console.log('Done parsing form!');
-          //res.writeHead(303, { Connection: 'close', Location: '/' });
-          //res.end();
-        });
-        msg.pipe(busboy);
-
-      return
-
       const boundary = getBoundary(msg.toString('utf8'))
         if (!boundary) {
           endRequestWithError(response, body, 400, 'Boundary information missing', callback)
@@ -105,6 +80,8 @@ const connectToDialog = async (ws, req) => {
           // Use non-matching groups to exclude part of the result
           let name = getMatching(item, /(?:name=")(.+?)(?:")/)
           if (!name || !(name = name.trim())) continue
+          console.log("ITEM");
+          console.log(item);
           let value = getMatching(item, /(?:\r\n\r\n)([\S\s]*)(?:\r\n--$)/)
           if (!value) continue
           let filename = getMatching(item, /(?:filename=")(.*?)(?:")/)
