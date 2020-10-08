@@ -67,7 +67,7 @@ const connectToDialog = async (ws, req) => {
   //console.log(self.connectToDialog.server.getWss().clients);
 
     ws.on('message', function(msg) {
-      console.log(msg.toString('utf8'));
+      //console.log(msg.toString('utf8'));
 
       const boundary = getBoundary(msg.toString('utf8'))
         if (!boundary) {
@@ -103,7 +103,7 @@ const connectToDialog = async (ws, req) => {
         }
 
 
-
+        console.log(result);
 
 
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
