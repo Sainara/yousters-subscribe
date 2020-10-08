@@ -69,13 +69,13 @@ const connectToDialog = async (ws, req) => {
     ws.on('message', function(msg) {
       //console.log(msg);
 
-      const boundary = getBoundary(msg.toString('utf8'))
+      const boundary = getBoundary(msg.toString('latin1'))
         if (!boundary) {
           endRequestWithError(response, body, 400, 'Boundary information missing', callback)
           return
         }
         let result = {}
-        const rawDataArray = msg.toString('utf8').split(boundary)
+        const rawDataArray = msg.toString('latin1').split(boundary)
         console.log(rawDataArray);
         for (let item of rawDataArray) {
           // Use non-matching groups to exclude part of the result
