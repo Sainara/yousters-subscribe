@@ -124,6 +124,7 @@ const connectToDialog = async (ws, req) => {
 
               break;
             case "image":
+            case "document":
             //console.log(result.files[0]['Content-Type']);
             var uid = "message-media-" + uuidv4();
               console.log(uid);
