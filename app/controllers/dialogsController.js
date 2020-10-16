@@ -31,7 +31,7 @@ const getDialogs = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const getQuery = 'SELECT id, title, uid from dialogs WHERE creator_id = $1';
+  const getQuery = 'SELECT id, title, uid, dialog_type, dialog_status from dialogs WHERE creator_id = $1';
 
   try {
 
@@ -50,21 +50,19 @@ const createDialog = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const { title } = req.body;
+  const { title, type } = req.body;
 
   if (!isValidNameLength(title)) {
     errorMessage.message = "inValidName";
     return res.status(status.bad).send(errorMessage);
   }
 
-  const createQuery = 'INSERT INTO dialogs (title, creator_id, uid) VALUES ($1, $2, $3) RETURNING id, uid';
+  const createQuery = 'INSERT INTO dialogs (title, creator_id, uid, dialog_type, dialog_status) VALUES ($1, $2, $3, $4, $5) RETURNING id, uid';
 
   try {
 
-    var { rows } = await dbQuery.query(createQuery, [title, req.user.id, uuidv4()]);
-    successMessage.data = {};
-    successMessage.data.dialogId = rows[0].id;
-    successMessage.data.dialogUId = rows[0].uid;
+    var { rows } = await dbQuery.query(createQuery, [title, req.user.id, uuidv4(), type, "created"]);
+
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
