@@ -60,14 +60,14 @@ const createDialog = async (req, res) => {
   const content = "";
 
   const createQuery = 'INSERT INTO dialogs (title, creator_id, uid, dialog_type, dialog_status) VALUES ($1, $2, $3, $4, $5) RETURNING id, uid';
-  const createMessageQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_id) VALUES ($1, $2, $3, $4)';
+  const createMessageQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4)';
 
 
   try {
 
     var { rows } = await dbQuery.query(createQuery, [title, req.user.id, uuidv4(), type, "created"]);
 
-    var vals = [content, "text", 1, rows[0].id];
+    var vals = [content, "text", 1, rows[0].uid];
     var a = await dbQuery.query(createMessageQuery, vals);
 
     return res.status(status.success).send(successMessage);
