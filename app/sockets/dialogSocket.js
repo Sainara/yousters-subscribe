@@ -47,6 +47,15 @@ function getMatching(string, regex) {
   return matches[1]
 }
 
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 const connectToDialog = async (ws, req) => {
 
   const errorMessage = Object.assign({}, eMessage);
@@ -63,49 +72,60 @@ const connectToDialog = async (ws, req) => {
 
   var self = this;
 
-  //console.log(self);
-  //console.log(self.connectToDialog.server.getWss().clients);
+  ws.on('message', function(msg) {
 
-    ws.on('message', function(msg) {
-      //console.log(msg);
+    var msgUTF = msg.toString('utf-8');
 
-      const boundary = getBoundary(msg.toString('latin1'))
-        if (!boundary) {
-          endRequestWithError(response, body, 400, 'Boundary information missing', callback)
-          return
-        }
-        let result = {}
-        const rawDataArray = msg.toString('latin1').split(boundary)
+    if (IsJsonString(msgUTF)) {
+      var json = JSON.parse(msgUTF);
 
-        for (let item of rawDataArray) {
-          // Use non-matching groups to exclude part of the result
-          let name = getMatching(item, /(?:name=")(.+?)(?:")/)
-          if (!name || !(name = name.trim())) continue
+      switch (json.type) {
+        case "offer":
+          
+          break;
+        default:
+          break;
+      }
+    } else {
+
+      var msgLatin1 = msg.toString('latin1');
+
+      const boundary = getBoundary(msgLatin1);
+      if (!boundary) {
+        endRequestWithError(response, body, 400, 'Boundary information missing', callback)
+        return
+      }
+      let result = {}
+      const rawDataArray = msgLatin1.split(boundary)
+
+      for (let item of rawDataArray) {
+        // Use non-matching groups to exclude part of the result
+        let name = getMatching(item, /(?:name=")(.+?)(?:")/)
+        if (!name || !(name = name.trim())) continue
 
 
-          let value = getMatching(item, /(?:\r\n\r\n)([\S\s]*)(?:\r\n--$)/)
+        let value = getMatching(item, /(?:\r\n\r\n)([\S\s]*)(?:\r\n--$)/)
 
-          if (!value) continue
-          let filename = getMatching(item, /(?:filename=")(.*?)(?:")/)
-          if (filename && (filename = filename.trim())) {
-            // Add the file information in a files array
-            let file = {}
-            file[name] = value
-            file['filename'] = filename
-            let contentType = getMatching(item, /(?:Content-Type:)(.*?)(?:\r\n)/)
-            if (contentType && (contentType = contentType.trim())) {
-              file['Content-Type'] = contentType
-            }
-            if (!result.files) {
-              result.files = []
-            }
-            result.files.push(file)
-          } else {
-            // Key/Value pair
-            result[name] = value
+        if (!value) continue
+        let filename = getMatching(item, /(?:filename=")(.*?)(?:")/)
+        if (filename && (filename = filename.trim())) {
+          // Add the file information in a files array
+          let file = {}
+          file[name] = value
+          file['filename'] = filename
+          let contentType = getMatching(item, /(?:Content-Type:)(.*?)(?:\r\n)/)
+          if (contentType && (contentType = contentType.trim())) {
+            file['Content-Type'] = contentType
           }
+          if (!result.files) {
+            result.files = []
+          }
+          result.files.push(file)
+        } else {
+          // Key/Value pair
+          result[name] = value
         }
-//return
+      }
 
       const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
@@ -116,81 +136,61 @@ const connectToDialog = async (ws, req) => {
 
           switch (result['type']) {
             case "text":
-            var text = Buffer.from(result['content'], 'latin1').toString('utf-8');
-            if (text == "") {
-              return ;
-            }
+              var text = Buffer.from(result['content'], 'latin1').toString('utf-8');
+              if (text == "") {
+                return ;
+              }
               vals = [text, result['type'], req.user.id, req.params.uid];
 
               break;
             case "image":
             case "document":
             case "voice":
-            //console.log(result.files[0]['Content-Type']);
-            var uid = "message-media-" + uuidv4();
-              console.log(uid);
-              console.log("type");
-              console.log(result.files[0]['Content-Type']);
+              var uid = "message-media-" + result['type'] + uuidv4();
               var imageData = await s3upload(Buffer.from(result.files[0]['content'], 'latin1'), result.files[0]['Content-Type'], uid);
-              console.log(imageData);
               vals = [imageData.Location, result['type'], req.user.id, req.params.uid];
               break;
             default:
               return
           }
 
-
-
           var { rows } = await dbQuery.query(createQuery, vals);
 
-            self.connectToDialog.server.getWss().clients.forEach(function each(client) {
-              if (client.d_uid == req.params.uid) {
-                client.send(JSON.stringify(rows));
-              }
-            });
+          self.connectToDialog.server.getWss().clients.forEach(function each(client) {
+            if (client.d_uid == req.params.uid) {
+              var response = {};
+              response.type = "message";
+              response.data = rows;
+
+              client.send(JSON.stringify(response));
+            }
+          });
         })()
       } catch (error) {
         console.error(error);
       }
-    });
+    }
+  });
 
-    //v
-    //ws.send(req.params.uid)
-
-
-    console.log('connection');
-    ws.d_uid = req.params.uid;
-  //const { dialog_id } = req.params.uid;
-
-  // if (!isValidNameLength(title)) {
-  //   errorMessage.message = "inValidName";
-  //   return res.status(status.bad).send(errorMessage);
-  // }
+  console.log('connection');
+  ws.d_uid = req.params.uid;
 
   const getQuery = 'SELECT * from messages WHERE dialog_uid = $1';
 
   try {
 
     var { rows } = await dbQuery.query(getQuery, [req.params.uid]);
+    var response = {};
+    response.type = "message";
+    response.data = rows;
+    ws.send(JSON.stringify(response));
 
-    // if () {
-    //
-    // }
-    //console.log(JSON.stringify(rows));
 
-    //console.log(this);
-    //console.log(ws);
-
-    ws.send(JSON.stringify(rows));
-    //successMessage.data.dialogId = rows[0].id;
-    //return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
     //return res.status(status.bad).send(errorMessage);
   }
 };
-
-
 
 
 export {
