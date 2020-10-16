@@ -183,8 +183,7 @@ const connectToDialog = async (ws, req) => {
     var response = {};
     response.type = "message";
     response.data = rows;
-    console.log("RESPONSE");
-    console.log(response);
+    
     ws.send(JSON.stringify(response));
 
 
