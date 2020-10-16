@@ -57,7 +57,7 @@ const createDialog = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 
-  const content = "";
+  const content = "Здравствуйте, давайте начнем составление договора!\n\nПока вы будете рассказывать какой договор вам нужен, мы уже будет подбирать вам юристов, чтобы вы могли выбрать исполнител";
 
   const createQuery = 'INSERT INTO dialogs (title, creator_id, uid, dialog_type, dialog_status) VALUES ($1, $2, $3, $4, $5) RETURNING id, uid';
   const createMessageQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4)';
