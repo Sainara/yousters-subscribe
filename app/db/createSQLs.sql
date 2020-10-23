@@ -70,7 +70,7 @@ alter table offers add column creator_id int;
 alter table offers add column level VARCHAR;
 
 
-CREATE TABLE lawyers(id serial PRIMARY KEY, phone VARCHAR, user_name VARCHAR, level VARCHAR, password VARCHAR);
+CREATE TABLE lawyers(id serial PRIMARY KEY, phone VARCHAR, user_name VARCHAR, lawyer_level VARCHAR, password VARCHAR);
 
 ALTER TABLE lawyers add COLUMN created_on timestamptz default CURRENT_TIMESTAMP;
 ALTER TABLE lawyers add COLUMN email VARCHAR;

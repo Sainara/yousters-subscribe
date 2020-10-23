@@ -206,7 +206,7 @@ const validateLawyer = async (req, res) => {
 
       dbQuery.query(updateExpire, [moment().subtract(10, 'seconds'), sessionid]);
 
-      const findUserQuery = 'SELECT phone, user_name, email, level FROM lawyers WHERE phone = $1';
+      const findUserQuery = 'SELECT phone, user_name, email, lawyer_level FROM lawyers WHERE phone = $1';
       const { rows } = await dbQuery.query(findUserQuery, [dbResponse.number]);
 
       const dbResponse2 = rows[0];
@@ -276,7 +276,7 @@ const meLawyer = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const getQuery = 'SELECT phone, user_name, email, level FROM lawyers WHERE id = $1';
+  const getQuery = 'SELECT phone, user_name, email, lawyer_level FROM lawyers WHERE id = $1';
 
   try {
 
