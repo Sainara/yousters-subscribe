@@ -1,14 +1,14 @@
 <template>
   <error-page v-if="nonAuth" message='У вас нет доступа'></error-page>
   <loading-page v-else-if="isLoading"></loading-page>
-  <h5>{{user.phone}}</h5>
-  <!-- <primary-user-page v-else-if="!isLoading" v-bind:user='user'></primary-user-page> -->
+  <!-- <h5>{{user.phone}}</h5> -->
+  <primary-lawyer-page v-else-if="!isLoading" v-bind:lawyer='user'></primary-lawyer-page>
 </template>
 
 <script>
 import ErrorPage from './SubComponents/ErrorPage.vue';
 import LoadingPage from './SubComponents/LoadingPage.vue';
-// import PrimaryUserPage from './UserComponents/PrimaryUserPage.vue';
+import PrimaryLawyerPage from './UserComponents/PrimaryLawyerPage.vue';
 
 export default {
   data: function() {
@@ -53,7 +53,7 @@ export default {
   components: {
     ErrorPage,
     LoadingPage,
-    // PrimaryUserPage
+    PrimaryLawyerPage
   }
 };
 </script>
