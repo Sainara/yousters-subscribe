@@ -16,7 +16,7 @@
       <div class="uk-container uk-container-small">
           <!-- <router-link v-if="currentTab == 'Документы'" class="main-button full-width-but" to="/add">+ Добавить документ</router-link> -->
           <keep-alive>
-            <component v-bind:is="currentTabComponent" v-bind:user="user" v-bind:avOffers="avOffers"></component>
+            <component v-bind:is="currentTabComponent" v-bind:user="user" v-bind:av-offers="avOffers"></component>
           </keep-alive>
 
       </div>
@@ -50,8 +50,9 @@ export default {
     },
     getAvOffers: function () {
       let self = this;
-      this.axios.post('dialog/lawyer')
+      this.axios.get('dialog/lawyer')
         .then(function (response) {
+          console.log(response);
         if (response.data.success) {
           self.avOffers = response.data.data;
 
