@@ -4,10 +4,13 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const path = require('path'); // Ding
 
 module.exports = {
-    entry: './publicApp/bundles/userPageRawBundle.js',
+    entry: {
+      userBundle: './publicApp/bundles/userPageRawBundle.js',
+      lawyerBundle: './publicApp/bundles/lawyerPageRawBundle.js',
+    },
     output: {
         path: path.resolve('./public/js'),
-        filename: 'bundle.js',
+        filename: '[name].js',
     },
     mode: 'production',
     resolve: {

@@ -7,7 +7,6 @@ const cors = require('cors');
 import moment from 'moment';
 import repeat from "repeat";
 
-
 import env from './env';
 
 import authRoute from './app/routes/authRoute';
@@ -21,7 +20,6 @@ import reportRoute from './app/routes/reportRoute';
 
 //import kassaData from './static/merchant.ru.yandex.kassa'
 
-
 import adminRoute from './app/routes/adminRoute';
 
 import aasa from './ios/apple-app-site-association';
@@ -29,17 +27,12 @@ import aasa from './ios/apple-app-site-association';
 import legalRoute from './publicApp/routes/legalRoute';
 import notFoundRoute from './publicApp/routes/404Route';
 
-import signRoute from './publicApp/routes/signRoute';
 import userPageRoute from './publicApp/routes/userPageRoute';
-
+import lawyerPageRoute from './publicApp/routes/lawyerPageRoute';
 
 import nonPhizValidationWatcher from './app/watchers/authWatch';
 
-
-
-
 var expressWs = require('express-ws')(express());
-
 var app = expressWs.app;
 
 const API_PATH = "/api/v1";
@@ -83,9 +76,6 @@ repeat()
   //
 
 app.use(API_PATH, authRoute);
-//dialogRoute.wsApp = expressWs;
-
-// import  from ';
 
 var dialogRoute = require('./app/routes/dialogRoute')(expressWs);
 
@@ -100,13 +90,12 @@ app.use(API_PATH, reportRoute);
 
 
 app.use('', publicAgreementRoute);
-app.use('', signRoute);
 app.use('', userPageRoute);
-
+app.use('/legal', legalRoute);
+app.use('/forlawyer', lawyerPageRoute);
 
 app.use('/admin', adminRoute);
 
-app.use('/legal', legalRoute);
 
 
 app.get('/', async (req, res) => {
@@ -124,17 +113,5 @@ const server = app.listen(PORT, () => console.log(`Listening on ${ PORT } 🚀`)
 
 app.use(notFoundRoute);
 
-
-
-// const io = socket(server);
-//
-// io.on("connection", function (socket) {
-//   console.log("Made socket connection");
-// });
-//
-// io.on("token", function (data) {
-//   console.log("Made token");
-//   console.log(data);
-// });
 
 export default app;

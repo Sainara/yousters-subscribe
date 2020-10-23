@@ -143,7 +143,6 @@ const createPayment = async (req, res) => {
   }
 
   if (type == 'paket') {
-
     const { paket_id } = req.body;
 
     const checkPaketQuery = 'SELECT * FROM paketplans WHERE iap_id = $1';
@@ -164,6 +163,38 @@ const createPayment = async (req, res) => {
       const dbResponse = check.rows[check.rows.length - 1];
 
       const values = [uuidv4(), req.user.id, checkPaketdbResponse.id, checkPaketdbResponse.price, moment(), checkPaketdbResponse.title];
+      const {rows} = await dbQuery.query(createQuery, values);
+
+      successMessage.uid = rows[0].uid;
+      return res.status(status.success).send(successMessage);
+
+    } catch (error) {
+      console.error(error);
+      return res.status(status.bad).send(errorMessage);
+    }
+  }
+
+  if (type == 'documentService') {
+    const { offer_id } = req.body;
+
+    const checkOfferQuery = 'SELECT * FROM offers WHERE uid = $1';
+    // const checkExistQuery = 'SELECT uid, status FROM payments WHERE paket_id = $1 AND user_id = $2';
+    const createQuery = 'INSERT INTO payments (uid, user_id, offer_id, amount, created_at, title) VALUES ($1, $2, $3, $4, $5, $6) returning uid';
+
+    try {
+
+      var checkOffer = await dbQuery.query(checkOfferQuery, [offer_id]);
+      const checkOfferdbResponse = checkOffer.rows[0];
+
+      if (!checkOfferdbResponse) {
+        errorMessage.message = "offerNotFound";
+        return res.status(status.bad).send(errorMessage);
+      }
+
+      // var check = await dbQuery.query(checkExistQuery, [checkPaketdbResponse.id, req.user.id]);
+      // const dbResponse = check.rows[check.rows.length - 1];
+
+      const values = [uuidv4(), req.user.id, checkOfferdbResponse.uid, checkOfferdbResponse.price, moment(), checkOfferdbResponse.title];
       const {rows} = await dbQuery.query(createQuery, values);
 
       successMessage.uid = rows[0].uid;

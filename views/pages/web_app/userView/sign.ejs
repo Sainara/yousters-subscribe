@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../../../partials/header.ejs %>
+</head>
+
+<body>
+  <div class="uk-container uk-container-xsmall">
+    <div class="uk-grid-small" uk-grid>
+      <div id="signView">
+        <h1 class="certificate" style="margin-top: 60px">Yousters Subscribe</h1>
+        <h3 class="subtitle">Подпись в один клик</h3>
+        <form>
+
+            <div class="uk-margin" style="margin-top: 100px">
+                <input id="phoneField" class="custom uk-input uk-form-width-medium uk-form-large phone_mask" type="text" name="phone" placeholder="Номер телефона">
+                <input id="codeField" maxlength="6" hidden class="custom uk-input uk-form-width-medium uk-form-large" type="number" name="code" placeholder="Код">
+            </div>
+            <a href="#" id="api_submit" class="main-button case-sub-button">Продолжить</a>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.js" type="text/javascript"></script>
+  <script src="/js/userSign.js"></script>
+</body>
+</html>

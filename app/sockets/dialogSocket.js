@@ -175,21 +175,28 @@ const connectToDialog = async (ws, req) => {
   console.log('connection');
   ws.d_uid = req.params.uid;
 
-  const getQuery = 'SELECT * from messages WHERE dialog_uid = $1';
+  const getMessagesQuery = 'SELECT * from messages WHERE dialog_uid = $1';
 
   try {
-
-    var { rows } = await dbQuery.query(getQuery, [req.params.uid]);
+    var { rows } = await dbQuery.query(getMessagesQuery, [req.params.uid]);
     var response = {};
     response.type = "message";
     response.data = rows;
-    
     ws.send(JSON.stringify(response));
-
-
   } catch (error) {
     console.error(error);
-    //return res.status(status.bad).send(errorMessage);
+  }
+
+  const getOffersQuery = 'SELECT * from offers WHERE dialog_uid = $1';
+
+  try {
+    var { rows } = await dbQuery.query(getOffersQuery, [req.params.uid]);
+    var response = {};
+    response.type = "offer";
+    response.data = rows;
+    ws.send(JSON.stringify(response));
+  } catch (error) {
+    console.error(error);
   }
 };
 

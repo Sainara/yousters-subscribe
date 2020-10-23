@@ -84,21 +84,11 @@ const getMessages = async (req, res) => {
 
   const { dialog_id } = req.query;
 
-  // if (!isValidNameLength(title)) {
-  //   errorMessage.message = "inValidName";
-  //   return res.status(status.bad).send(errorMessage);
-  // }
-
   const getQuery = 'SELECT * from messages WHERE dialog_id = $1';
 
   try {
 
     var { rows } = await dbQuery.query(getQuery, [dialog_id]);
-
-    // if () {
-    //
-    // }
-
     successMessage.data = rows;
     //successMessage.data.dialogId = rows[0].id;
     return res.status(status.success).send(successMessage);
@@ -118,11 +108,6 @@ const createMessage = async (req, res) => {
 
   const { content, type, dialog_id } = req.body;
 
-  // if (!isValidNameLength(title)) {
-  //   errorMessage.message = "inValidName";
-  //   return res.status(status.bad).send(errorMessage);
-  // }
-
   if (!types.includes(type)) {
     errorMessage.message = "invalidType"
     return res.status(status.bad).send(errorMessage);
@@ -141,6 +126,37 @@ const createMessage = async (req, res) => {
   }
 };
 
+const createOffer = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const { description, price, dialog_id } = req.body;
+
+  const createQuery = 'INSERT INTO offers (title, price, description, status, uid, dialog_uid, creator_id, level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *';
+
+  try {
+
+    var vals = ["title", price, description, "created", uuidv4(), dialog_id, req.user.id, req.user.level];
+    var { rows } = await dbQuery.query(createQuery, vals);
+    successMessage.data = rows[0];
+
+    self.createOffer.server.getWss().clients.forEach(function each(client) {
+      if (client.d_uid == dialog_id) {
+        var response = {};
+        response.type = "offer";
+        response.data = rows;
+
+        client.send(JSON.stringify(response));
+      }
+    });
+
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
 
 
 
@@ -148,5 +164,6 @@ export {
   getDialogs,
   createDialog,
   getMessages,
-  createMessage
+  createMessage,
+  createOffer
 };

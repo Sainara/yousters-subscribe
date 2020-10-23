@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav v-if="isMobile" class="uk-navbar-container" uk-navbar>
+    <nav class="uk-navbar-container" uk-navbar>
       <div class="uk-navbar-left" style="width:100%">
           <ul class="uk-navbar-nav" style="width:100%">
               <li style="width:50%"
@@ -14,13 +14,13 @@
   </nav>
     <div v-bind:class="[ isMobile ? 'mobile-padding' : 'desctop-padding' ]">
       <div class="uk-container uk-container-small">
-        <template v-if="isMobile">
+        <!-- <template v-if="isMobile"> -->
           <router-link v-if="currentTab == 'Документы'" class="main-button full-width-but" to="/add">+ Добавить документ</router-link>
           <keep-alive>
             <component v-bind:is="currentTabComponent" v-bind:user="user" v-bind:agreements='agreements'>{{user.phone}}</component>
           </keep-alive>
-        </template>
-        <template v-else>
+        <!-- </template> -->
+        <!-- <template v-else>
           <div uk-grid>
             <div class="uk-width-expand">
                 <div class="uk-card uk-card-default uk-card-small uk-card-body">
@@ -36,7 +36,7 @@
                 </div>
             </div>
           </div>
-        </template>
+        </template> -->
       </div>
     </div>
   </div>
@@ -92,9 +92,6 @@ export default {
     },
     isNotOnValidation: function () {
       return !this.user.is_on_validation &&!this.user.isvalidated;
-    },
-    isMobile() {
-      return screen.width <= 960
     },
     currentTabComponent: function() {
       switch (this.currentTab) {

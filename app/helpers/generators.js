@@ -47,11 +47,11 @@ const generateCode = (n) => {
         return ("" + number).substring(add);
 }
 
-const generateUserToken = (id, phone, isvalidated) => {
+const generateUserToken = (id, phone, level) => {
   const token = jwt.sign({
     id,
     phone,
-    isvalidated,
+    level,
   },
   env.secret, { expiresIn: '10y' });
   return token;

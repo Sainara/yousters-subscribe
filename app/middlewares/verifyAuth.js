@@ -29,7 +29,7 @@ const verifyToken = async (req, res, next) => {
     req.user = {
       id: decoded.id,
       phone: decoded.phone,
-      isvalidated: decoded.isvalidated,
+      level: decoded.level,
     };
     console.log(req.user);
     next();

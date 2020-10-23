@@ -64,3 +64,13 @@ alter table dialogs add column dialog_type varchar;
 alter table dialogs add column dialog_status varchar;
 
 Create table messages(id serial PRIMARY KEY, m_content VARCHAR, m_type VARCHAR, is_read bool default false, read_at timestamptz, creator_id int, dialog_id int, created_at timestamptz default CURRENT_TIMESTAMP);
+
+Create table offers(id serial PRIMARY KEY, title VARCHAR, price VARCHAR, description VARCHAR, status VARCHAR, uid varchar, dialog_uid varchar);
+alter table offers add column creator_id int;
+alter table offers add column level VARCHAR;
+
+
+CREATE TABLE lawyers(id serial PRIMARY KEY, phone VARCHAR, user_name VARCHAR, level VARCHAR, password VARCHAR);
+
+ALTER TABLE lawyers add COLUMN created_on timestamptz default CURRENT_TIMESTAMP;
+ALTER TABLE lawyers add COLUMN email VARCHAR;

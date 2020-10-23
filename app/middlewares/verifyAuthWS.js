@@ -30,12 +30,12 @@ const verifyTokenWS = async (ws, req, next) => {
     req.user = {
       id: decoded.id,
       phone: decoded.phone,
-      isvalidated: decoded.isvalidated,
+      level: decoded.level,
     };
     ws.user = {
       id: decoded.id,
       phone: decoded.phone,
-      isvalidated: decoded.isvalidated,
+      level: decoded.level,
     };
     console.log(req.user);
     next();

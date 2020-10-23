@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getDialogs, createDialog, getMessages, createMessage } from '../controllers/dialogsController';
+import { getDialogs, createDialog, getMessages, createMessage, createOffer } from '../controllers/dialogsController';
 import { connectToDialog } from '../sockets/dialogSocket';
 import verifyAuth from '../middlewares/verifyAuth';
 import verifyAuthWS from '../middlewares/verifyAuthWS';
@@ -14,8 +14,7 @@ var expressWs = require('express-ws')(express.Router());
 module.exports = function(app){
 
   const router = expressWs.app;
-  console.log("ROUTER app");
-  console.log(app);
+
   connectToDialog.server = app;
   //console.log(connectToDialog);
   router.ws('/dialog/:uid', verifyAuthWS, connectToDialog);
@@ -29,6 +28,9 @@ module.exports = function(app){
 
   router.get('/message', primaryLimit, verifyAuth, getMessages);
   router.post('/message', primaryLimit, verifyAuth, createMessage);
+
+  createOffer.server = app;
+  router.post('/offer', primaryLimit, verifyAuth, createOffer);
 
 
     return router;

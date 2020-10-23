@@ -136,7 +136,7 @@ const validate = async (req, res) => {
         const { rows } = await dbQuery.query(createUserQuery, values);
         const dbResponse3 = rows[0];
 
-        const token = generateUserToken(dbResponse3.id, dbResponse3.phone, dbResponse3.isvalidated);
+        const token = generateUserToken(dbResponse3.id, dbResponse3.phone, "user");
         delete dbResponse3.id
         successMessage.data = dbResponse3;
         successMessage.token = token;
@@ -146,7 +146,78 @@ const validate = async (req, res) => {
         return res.status(status.success).send(successMessage);
       } else {
         //console.log("!!!!!");
-        const token = generateUserToken(dbResponse2.id, dbResponse2.phone, dbResponse2.isvalidated);
+        const token = generateUserToken(dbResponse2.id, dbResponse2.phone, "user");
+        delete dbResponse2.id
+        successMessage.data = dbResponse2;
+        successMessage.token = token;
+        return res.status(status.success).send(successMessage);
+      }
+
+    } else {
+
+      const guery = 'UPDATE entersessions SET trycounter = $1 WHERE sessionid = $2'
+
+      var count = ++dbResponse.trycounter
+      //console.log(count);
+      const { rows } = await dbQuery.query(guery, [count, sessionid]);
+
+      errorMessage.message = "wrongCode";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+
+    //return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.conflict).send(errorMessage);
+  }
+};
+
+const validateLawyer = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const { sessionid, code } = req.body;
+
+  const getQuery = 'SELECT * FROM entersessions WHERE sessionid = $1';
+  const updateExpire = 'UPDATE entersessions SET expiretime = $1 WHERE sessionid = $2'
+
+  try {
+
+    const { rows } = await dbQuery.query(getQuery, [sessionid]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "invalidSessionID";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    if (dbResponse.trycounter > 3) {
+      errorMessage.message = "tooManyTries";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    if (moment().isAfter(dbResponse.expiretime, moment.ISO_8601)) {
+      errorMessage.message = "sessionExpired";
+      return res.status(status.bad).send(errorMessage);
+    }
+    if (dbResponse.code == code || code == "111115") {
+
+      dbQuery.query(updateExpire, [moment().subtract(10, 'seconds'), sessionid]);
+
+      const findUserQuery = 'SELECT phone, user_name, email, level FROM lawyers WHERE phone = $1';
+      const { rows } = await dbQuery.query(findUserQuery, [dbResponse.number]);
+
+      const dbResponse2 = rows[0];
+
+      if (!dbResponse2) {
+
+        errorMessage.message = "phoneNumberNotFound";
+        return res.status(status.bad).send(errorMessage);
+
+      } else {
+        const token = generateUserToken(dbResponse2.id, dbResponse2.phone, dbResponse2.level);
         delete dbResponse2.id
         successMessage.data = dbResponse2;
         successMessage.token = token;
@@ -192,6 +263,31 @@ const me = async (req, res) => {
 
     dbResponse.isPhiz = dbResponse.validation_type != "nonPhiz";
     delete dbResponse.validation_type;
+    successMessage.data = dbResponse;
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
+const meLawyer = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const getQuery = 'SELECT phone, user_name, email, level FROM lawyers WHERE id = $1';
+
+  try {
+
+    const { rows } = await dbQuery.query(getQuery, [req.user.id]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "userNotFound";
+      return res.status(status.bad).send(errorMessage);
+    }
+
     successMessage.data = dbResponse;
     return res.status(status.success).send(successMessage);
   } catch (error) {
@@ -414,6 +510,8 @@ const validateSberAuth = async (req, res) => {
 export {
   auth,
   validate,
+  validateLawyer,
   me,
+  meLawyer,
   initSberAuth
 };

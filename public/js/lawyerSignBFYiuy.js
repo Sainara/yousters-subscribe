@@ -11,8 +11,8 @@ $(document).ready(function () {
       return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-    if (getCookie('token')) {
-      window.location.replace("/general");
+    if (getCookie('lawyer-token')) {
+      window.location.replace("/forlawyer/general");
     }
 
     $(".phone_mask").mask("+7(999)999-99-99",{placeholder:"_"});
@@ -26,7 +26,7 @@ $(document).ready(function () {
         };
         $.ajax({
   	      method: "POST", // метод HTTP, используемый для запроса
-  	      url: "https://you-scribe.ru/api/v1/validate", // строка, содержащая URL адрес, на который отправляется запрос
+  	      url: "https://you-scribe.ru/api/v1/validatelawyer", // строка, содержащая URL адрес, на который отправляется запрос
           contentType: "application/json",
           dataType: 'json',
   	      data: JSON.stringify({ // данные, которые будут отправлены на сервер
@@ -38,8 +38,8 @@ $(document).ready(function () {
   	          if (res.success) {
                 console.log(res.token);
                 // add secure;
-                document.cookie = "token=" + res.token + "; max-age=3600; samesite=lax";
-                window.location.replace("/general");
+                document.cookie = "lawyer-token=" + res.token + "; max-age=3600; samesite=lax";
+                window.location.replace("/forlawyer/general");
               }
   	        }
   	      }
@@ -69,8 +69,6 @@ $(document).ready(function () {
   	    })
       }
     });
-
-
 
     const checkPhone = () => {
       return $("#phoneField")[0].value != "";
