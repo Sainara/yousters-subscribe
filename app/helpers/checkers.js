@@ -21,8 +21,8 @@ const isLawyer = async (req, res, next) => {
 
   const errorMessage = Object.assign({}, eMessage);
 
-  const lawyerLVLs = ['economy, profi, premium'];
-  console.log(lawyerLVLs.includes(req.user.level));
+  const lawyerLVLs = ['economy', 'profi', 'premium'];
+  //console.log(lawyerLVLs.includes(req.user.level));
   if (lawyerLVLs.includes(req.user.level)) {
     next();
   } else {
