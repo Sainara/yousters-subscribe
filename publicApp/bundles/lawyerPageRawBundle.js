@@ -13,9 +13,9 @@ Vue.use(VueAxios, Axios.create({
   }
 }));
 
-//Vue.config.devtools = true;
+Vue.config.devtools = true;
 
-import MainPage from '../components/UserPageComponents/MainPage.vue'
+import MainPage from '../components/LawyerPageComponents/MainPage.vue'
 // import CreateAgreement from '../components/UserPageComponents/CreateAgreement.vue'
 // import AgreementPage from '../components/UserPageComponents/AgreementPage.vue'
 // import ValidationPage from '../components/UserPageComponents/UserComponents/SubUserComponents/ValidationPage.vue';

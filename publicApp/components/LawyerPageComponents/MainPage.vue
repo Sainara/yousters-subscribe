@@ -1,6 +1,7 @@
 <template>
   <error-page v-if="nonAuth" message='У вас нет доступа'></error-page>
   <loading-page v-else-if="isLoading"></loading-page>
+  <h5>{{user.phone}}</h5>
   <!-- <primary-user-page v-else-if="!isLoading" v-bind:user='user'></primary-user-page> -->
 </template>
 
@@ -44,7 +45,7 @@ export default {
     if (!this.token) {
       this.nonAuth = true;
     } else {
-      this.axios.defaults.headers['lawyer-token'] = this.token;
+      this.axios.defaults.headers['token'] = this.token;
       this.getUser();
       //console.log(this.token);
     }

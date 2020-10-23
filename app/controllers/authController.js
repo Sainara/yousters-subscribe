@@ -206,7 +206,7 @@ const validateLawyer = async (req, res) => {
 
       dbQuery.query(updateExpire, [moment().subtract(10, 'seconds'), sessionid]);
 
-      const findUserQuery = 'SELECT phone, user_name, email, lawyer_level FROM lawyers WHERE phone = $1';
+      const findUserQuery = 'SELECT id, phone, user_name, email, lawyer_level FROM lawyers WHERE phone = $1';
       const { rows } = await dbQuery.query(findUserQuery, [dbResponse.number]);
 
       const dbResponse2 = rows[0];
@@ -217,7 +217,7 @@ const validateLawyer = async (req, res) => {
         return res.status(status.bad).send(errorMessage);
 
       } else {
-        const token = generateUserToken(dbResponse2.id, dbResponse2.phone, dbResponse2.level);
+        const token = generateUserToken(dbResponse2.id, dbResponse2.phone, dbResponse2.lawyer_level);
         delete dbResponse2.id
         successMessage.data = dbResponse2;
         successMessage.token = token;
