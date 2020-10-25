@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { getDialogs } from '../controllers/offerController';
-import verifyAuth from '../middlewares/verifyAuth'
+import { getDialogs, getOffers } from '../controllers/offerController';
+import verifyAuth from '../middlewares/verifyAuth';
 import {
   isLawyer
 } from '../helpers/checkers';
@@ -13,6 +13,9 @@ const router = express.Router();
 
 // router.post('/payment', verifyAuth, createPayment);
 router.get('/dialog/lawyer', verifyAuth, isLawyer, getDialogs);
+
+router.get('/offer/lawyer', verifyAuth, isLawyer, getOffers);
+//
 // router.get('/pakets/my', primaryLimit, verifyAuth, getMyPaketsAndUsage);
 //
 // router.post('/pakets/use', primaryLimit, verifyAuth, usePaket);

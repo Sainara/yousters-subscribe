@@ -16,7 +16,7 @@
       <div class="uk-container uk-container-small">
           <!-- <router-link v-if="currentTab == 'Документы'" class="main-button full-width-but" to="/add">+ Добавить документ</router-link> -->
           <keep-alive>
-            <component v-bind:is="currentTabComponent" v-bind:user="user" v-bind:av-offers="avOffers"></component>
+            <component v-bind:is="currentTabComponent" v-bind:user="user" v-bind:avoffers="avOffers"></component>
           </keep-alive>
 
       </div>
@@ -27,8 +27,8 @@
 
 <script>
 import Active from './ProfileComponents/Active.vue';
-import ActiveOffers from './OfferComponents/ActiveOffers.vue'
-import AviableOffers from './OfferComponents/AviableOffers.vue'
+import ActiveOffers from './OfferComponents/ActiveOffers.vue';
+import AviableOffers from './OfferComponents/AviableOffers.vue';
 
 export default {
   props: {
@@ -90,6 +90,8 @@ export default {
   },
   components: {
     Active,
+    ActiveOffers,
+    AviableOffers
     // DocsTable
   }
 };

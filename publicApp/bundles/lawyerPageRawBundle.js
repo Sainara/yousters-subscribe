@@ -16,16 +16,16 @@ Vue.use(VueAxios, Axios.create({
 Vue.config.devtools = true;
 
 import MainPage from '../components/LawyerPageComponents/MainPage.vue'
-// import CreateAgreement from '../components/UserPageComponents/CreateAgreement.vue'
+import DialogPage from '../components/LawyerPageComponents/DialogComponents/DialogPage.vue'
 // import AgreementPage from '../components/UserPageComponents/AgreementPage.vue'
 // import ValidationPage from '../components/UserPageComponents/UserComponents/SubUserComponents/ValidationPage.vue';
 
 
 const routes = [
-  { path: '/', name: 'mainPage', component: MainPage }
+  { path: '/', name: 'mainPage', component: MainPage },
   // { path: '/add', component: CreateAgreement},
   // { path: '/validate', component: ValidationPage},
-  // { path: '/agreement/:uid', name: 'agreementPage', component: AgreementPage, props: true}
+  { path: '/dialog/:uid', name: 'dialogPage', component: DialogPage, props: true }
 ]
 
 // 3. Создаём экземпляр маршрутизатора и передаём маршруты в опции `routes`

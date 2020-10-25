@@ -30,6 +30,25 @@ const getDialogs = async (req, res) => {
   }
 };
 
+const getOffers = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const getQuery = 'SELECT * from offers WHERE creator_id = $1';
+
+  try {
+
+    var { rows } = await dbQuery.query(getQuery, [req.user.id]);
+
+    successMessage.data = rows
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 // const createDialog = async (req, res) => {
 //
 //   const errorMessage = Object.assign({}, eMessage);
@@ -147,6 +166,7 @@ const createOffer = async (req, res) => {
 
 export {
   getDialogs,
+  getOffers,
   // createDialog,
   // getMessages,
   // createMessage,
