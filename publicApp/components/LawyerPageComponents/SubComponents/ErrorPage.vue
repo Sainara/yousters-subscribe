@@ -8,7 +8,7 @@
         </g>
     </svg>
     <p id="errorText">Ошибка! {{ message }}</p>
-    <a id="errorLink" href="/">На главную</a>
+    <a id="errorLink" href="/forlawyer">На главную</a>
   </main>
 </template>
 

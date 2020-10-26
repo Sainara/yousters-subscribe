@@ -1,8 +1,8 @@
 <template lang="html">
   <error-page v-if="nonAuth" message='У вас нет доступа'></error-page>
-  <div v-else class="uk-card uk-card-default uk-border-rounded uk-margin-large-top">
-
-      <div class="uk-card-body uk-padding-small">
+  <div v-else>
+    <div class="uk-card uk-card-default uk-border-rounded uk-margin-large-top" style="margin-top: 0px !important;">
+      <div class="uk-card-body uk-padding-small" v-bind:class='[isMobile ? "mobile_padding_from_inp" : "desc_padding_from_inp"]'>
 
         <div v-for="message in messages" v-bind:class="[ message.creator_id == sender ? 'me uk-grid-small uk-flex-bottom uk-flex-right uk-text-right' : 'guest uk-grid-small uk-flex-bottom uk-flex-left' ]" uk-grid>
 
@@ -25,36 +25,20 @@
         </div>
 
       </div>
-
-      <div class="uk-card-footer uk-padding-remove">
-        <div class="uk-grid-small uk-flex-middle" uk-grid>
-          <div class="uk-width-auto">
-            <a href="#" class="uk-icon-link uk-margin-small-left" uk-icon="icon: happy"></a>
-          </div>
-          <div class="uk-width-expand">
-            <div class="uk-padding-small uk-padding-remove-horizontal">
-              <textarea class="uk-textarea uk-padding-remove uk-border-remove" rows="1" placeholder="Escreva a mensagem..."></textarea>
-            </div>
-          </div>
-          <div class="uk-width-auto">
-            <ul class="uk-iconnav uk-margin-small-right">
-              <li>
-                <a href="#" uk-icon="icon: image"></a>
-              </li>
-              <li>
-                <a href="#" uk-icon="icon: location"></a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <offer-view v-if="offer"></offer-view>
+      <offer-create v-else-if="dialog.dialog_status == 'created'"></offer-create>
+      <messaging v-else></messaging>
 
     </div>
+  </div>
 </template>
 
 <script>
 
 import ErrorPage from './../SubComponents/ErrorPage.vue';
+import OfferCreate from './DialogSubComponents/OfferCreate.vue';
+import OfferView from './DialogSubComponents/OfferView.vue';
+import Messaging from './DialogSubComponents/Messaging.vue';
 
 export default {
 
@@ -64,13 +48,18 @@ export default {
   data: function () {
     return {
       socket: null,
-      nonAuth: true,
+      nonAuth: false,
       token: null,
       messages: [],
-      sender: null
+      sender: null,
+      dialog: null,
+      offer: null
     }
   },
   methods: {
+    isMobile: function () {
+      return screen.width <= 960;
+    },
     getCookie: function (name) {
       let matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -85,13 +74,42 @@ export default {
         }).join(''));
 
         return JSON.parse(jsonPayload);
+    },
+    getAllOffers: function () {
+      let self = this;
+      this.axios.get('offer/lawyer')
+        .then(function (response) {
+        if (response.data.success) {
+          for (var i = 0; i < response.data.data.length; i++) {
+            if (response.data.data[i].dialog_uid == self.$route.params.uid) {
+              self.offer = response.data.data[i];
+            }
+          }
+        }
+      });
+    },
+    getDialogs: function () {
+      let self = this;
+      this.axios.get('dialog/lawyer')
+        .then(function (response) {
+          // console.log(response);
+        if (response.data.success) {
+          for (var i = 0; i < response.data.data.length; i++) {
+            if (response.data.data[i].uid == self.$route.params.uid) {
+              self.dialog = response.data.data[i];
+            }
+          }
+        }
+      });
     }
   },
   mounted: function () {
     this.token = this.getCookie('lawyer-token');
-    console.log(this.$route);
+    //console.log(this.$route);
     if (this.token) {
-      this.nonAuth = false;
+      this.axios.defaults.headers['token'] = this.token;
+      this.getDialogs();
+      this.getAllOffers();
       this.socket = new WebSocket("wss://you-scribe.ru/api/v1/dialog/"+ this.$route.params.uid + "?token=" + this.token);
 
       this.sender = this.parseJWT(this.token)['id'];
@@ -127,10 +145,15 @@ export default {
       this.socket.onerror = function(error) {
         //alert("Ошибка " + error.message);
       };
+    } else {
+      this.nonAuth = true;
     }
   },
   components: {
-    ErrorPage
+    ErrorPage,
+    OfferCreate,
+    Messaging,
+    OfferView
   }
 }
 </script>

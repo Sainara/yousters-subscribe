@@ -340,6 +340,23 @@ a.youstersnav {
   }
 }
 
+.offer_inp {
+  position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+}
+
+.offer_inp textarea {
+  resize: none;
+}
+.mobile_padding_from_inp {
+  padding-bottom: 260px;
+}
+.desc_padding_from_inp {
+  padding-bottom: 180px;
+}
 
 .home-about-right p {
     margin-bottom: 40px;

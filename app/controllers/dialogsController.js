@@ -141,7 +141,7 @@ const createOffer = async (req, res) => {
     var { rows } = await dbQuery.query(createQuery, vals);
     successMessage.data = rows[0];
 
-    self.createOffer.server.getWss().clients.forEach(function each(client) {
+    this.createOffer.server.getWss().clients.forEach(function each(client) {
       if (client.d_uid == dialog_id) {
         var response = {};
         response.type = "offer";
