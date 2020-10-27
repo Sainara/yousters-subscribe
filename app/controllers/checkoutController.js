@@ -194,7 +194,18 @@ const createPayment = async (req, res) => {
       // var check = await dbQuery.query(checkExistQuery, [checkPaketdbResponse.id, req.user.id]);
       // const dbResponse = check.rows[check.rows.length - 1];
 
-      const values = [uuidv4(), req.user.id, checkOfferdbResponse.uid, checkOfferdbResponse.price, moment(), checkOfferdbResponse.title];
+      var price = 0;
+      var title = "";
+
+      if (checkOfferdbResponse.status == 'created') {
+        title = "Предоплата: " +  checkOfferdbResponse.description;
+        price = parseInt(parseInt(checkOfferdbResponse.price)/5);
+      } else {
+        title = "Оплата оставшейся части: " +  checkOfferdbResponse.description;
+        price = parseInt(checkOfferdbResponse.price) - parseInt(parseInt(checkOfferdbResponse.price)/5);
+      }
+
+      const values = [uuidv4(), req.user.id, checkOfferdbResponse.uid, price, moment(), title];
       const {rows} = await dbQuery.query(createQuery, values);
 
       successMessage.uid = rows[0].uid;
@@ -238,6 +249,9 @@ const renderCheckout = async (req, res) => {
   const updateAgreementQuery = 'UPDATE agreements set status_id = 5 WHERE uid = $1';
   const addPaketInfo = 'INSERT INTO userpakets(paket_id, user_id, payment_uid) VALUES ($1, $2, $3)';
 
+  const getOffer = 'SELECT * FROM offers WHERE id = $1';
+  const updateOffer = 'UPDATE offers SET status = $1 WHERE id = $2';
+  const updateDialog = 'UPDATE dialog SET dialog_status = $1 WHERE uid = $2';
 
   try {
 
@@ -297,6 +311,7 @@ const renderCheckout = async (req, res) => {
           if (payment.paid) {
             dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
             //dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
+
             if (dbResponse.agr_uid) {
               dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
               if (source == 'web') {
@@ -310,6 +325,25 @@ const renderCheckout = async (req, res) => {
                 return res.redirect('https://you-scribe.ru/general');
               }
               return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+            }
+            if (dbResponse.offer_id) {
+              (async() => {
+                var resp = await dbQuery.query(getOffer, [dbResponse.offer_id]);
+
+                var offer = resp.rows[0];
+
+                if (offer.status == 'created') {
+                  dbQuery.query(updateOffer, ['prepaid', dbResponse.offer_id]);
+                  dbQuery.query(updateDialog, ['prepaid', offer.dialog_uid]);
+                } else if (offer.status == 'prepaid') {
+                  dbQuery.query(updateOffer, ['fullpaid', dbResponse.offer_id]);
+                  dbQuery.query(updateDialog, ['fullpaid', offer.dialog_uid]);
+                }
+                // if (source == 'web') {
+                //   return res.redirect('https://you-scribe.ru/general');
+                // }
+                return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
+              })()
             }
             return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
           } else {
