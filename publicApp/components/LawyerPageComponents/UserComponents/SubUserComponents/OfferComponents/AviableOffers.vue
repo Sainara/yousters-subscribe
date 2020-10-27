@@ -1,10 +1,11 @@
 <template>
   <table class="uk-table uk-table-hover">
     <tbody>
-        <tr v-for="agreement in avoffers" :key="avoffers.id">
+        <tr v-for="agreement in avoffers" :key="avoffers.uid">
           <a class="agreement-cell-a" href="#" v-on:click.prevent="getDialogLink(agreement.uid)" style="display: block;">
             <td class="agreement-cell">
-              <h4>{{agreement.title}}</h4>
+              <h3>{{agreement.title}} <span class="smalltitle" v-if="agreement.isHaveAlreadySentOffer">Предложение уже отправлено</span></h3>
+              <p class="smalltitle">{{getFormatedTime(agreement.created_at)}}</p>
             </td>
           </a>
         </tr>
@@ -13,6 +14,9 @@
 </template>
 
 <script>
+
+import moment from 'moment';
+
 export default {
   props: {
     user: Object,
@@ -21,6 +25,7 @@ export default {
   },
   data: function () {
     return {
+      alloffers: []
       //user: this.user,
     }
   },
@@ -36,14 +41,23 @@ export default {
       console.log(uid);
       this.$router.push({ name: 'dialogPage', params: {uid: uid}}) // -> /user/123
     },
+    getFormatedTime: function (timestamptz) {
+      return moment.utc(timestamptz).local().format("DD.MM.YYYY в HH:mm:ss")
+    },
     getAllOffers: function () {
       let self = this;
       this.axios.get('offer/lawyer')
         .then(function (response) {
-          console.log(response);
         if (response.data.success) {
-          console.log(response.data.data);
-
+          self.alloffers = response.data.data;
+          for (var i = 0; i < self.avoffers.length; i++) {
+            for (var g = 0; g < self.alloffers.length; g++) {
+              if (self.alloffers[g].dialog_uid == self.avoffers[i].uid) {
+                self.avoffers[i].isHaveAlreadySentOffer = true;
+              }
+            }
+          }
+          self.$forceUpdate();
         }
       });
     },

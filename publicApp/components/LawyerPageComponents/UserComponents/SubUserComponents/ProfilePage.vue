@@ -55,7 +55,9 @@ export default {
           console.log(response);
         if (response.data.success) {
           self.avOffers = response.data.data;
-
+          for (var g = 0; g < self.avOffers.length; g++) {
+              self.avOffers[g].isHaveAlreadySentOffer = false;
+          }
         }
       });
     },

@@ -346,6 +346,7 @@ a.youstersnav {
     left: 0;
     right: 0;
     background: #fff;
+    z-index: 999;
 }
 
 .offer_inp textarea {
@@ -361,7 +362,43 @@ a.youstersnav {
 .home-about-right p {
     margin-bottom: 40px;
 }
+.agreement-cell p.smalltitle {
+  font-family: "GilroyMedium" !important;
+    font-size: 15px;
+    margin: 0;
+    color: #6b6b6b;
+}
+.agreement-cell span.smalltitle {
+  font-family: "GilroyMedium" !important;
+    font-size: 13px;
+    margin: 0;
+  background: #212121;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 8px;
+    margin-left: 5px;
+}
+.uk-card {
+  position: relative;
 
+}
+
+.guest .uk-card:after, .me .uk-card:after {
+  width: 10px;
+  height: 45px;
+  position: absolute;
+  bottom: 0;
+}
+.guest .uk-card:after {
+  background: #fff;
+  left: -4px;
+  clip-path: polygon(100% 70%, 0% 100%, 100% 100%);
+}
+.me .uk-card:after {
+  background: #1e87f0;
+  right: -4px;
+  clip-path: polygon(0 70%, 0% 100%, 100% 100%);
+}
 @media print {
   .main-button {
     display: none;

@@ -7,13 +7,18 @@
         <div v-for="message in messages" v-bind:class="[ message.creator_id == sender ? 'me uk-grid-small uk-flex-bottom uk-flex-right uk-text-right' : 'guest uk-grid-small uk-flex-bottom uk-flex-left' ]" uk-grid>
 
           <div class="uk-width-2-3">
-            <div v-bind:class="[ message.creator_id == sender ? 'uk-card uk-card-body uk-card-small uk-card-primary uk-border-rounded' : 'uk-card uk-card-body uk-card-small uk-card-default uk-border-rounded' ]">
-              <p class="uk-margin-remove">{{message.m_content}}</p>
+            <div style="padding: 0" v-bind:class="[ message.creator_id == sender ? 'uk-card uk-card-body uk-card-small uk-card-secondary uk-border-rounded' : 'uk-card uk-card-body uk-card-small uk-card-default uk-border-rounded' ]">
+              <p style="padding: 10px" v-if="message.m_type == 'text'" class="uk-margin-remove">{{message.m_content}}</p>
+              <audio v-if="message.m_type == 'voice'" controls style="width: -webkit-fill-available;">
+                <source v-bind:src="message.m_content" type="audio/x-m4a">
+                Тег audio не поддерживается вашим браузером.
+              </audio>
+              <img v-if="message.m_type == 'image'" :src="message.m_content" :alt="message.m_content">
             </div>
           </div>
         </div>
 
-        <div class="guest uk-grid-small uk-flex-bottom uk-flex-left" uk-grid>
+        <!-- <div class="guest uk-grid-small uk-flex-bottom uk-flex-left" uk-grid>
 
           <div class="uk-width-2-3">
             <div class="uk-card uk-card-body uk-card-small uk-card-default uk-border-rounded">
@@ -22,10 +27,10 @@
               </p>
             </div>
           </div>
-        </div>
+        </div> -->
 
       </div>
-      <offer-view v-if="offer"></offer-view>
+      <offer-view v-if="offer" v-bind:offer="offer"></offer-view>
       <offer-create v-else-if="dialog.dialog_status == 'created'"></offer-create>
       <messaging v-else></messaging>
 
@@ -117,16 +122,18 @@ export default {
       this.socket.onopen = function() {
         alert("Соединение установлено.");
       };
-
+      var self = this;
       this.socket.onclose = function(event) {
         if (event.wasClean) {
           alert('Соединение закрыто чисто');
         } else {
           alert('Обрыв соединения'); // например, "убит" процесс сервера
+          console.log(event);
+          self.socket = new WebSocket("wss://you-scribe.ru/api/v1/dialog/"+ self.$route.params.uid + "?token=" + self.token);
         }
         //alert('Код: ' + event.code + ' причина: ' + event.reason);
       };
-      var self = this;
+
       this.socket.onmessage = function(event) {
         //alert("Получены данные " + event.data);
         var json = JSON.parse(event.data);
@@ -216,25 +223,5 @@ textarea {
   }
 }
 
-.uk-card {
-  position: relative;
-  z-index: 1;
-}
 
-.guest .uk-card:after, .me .uk-card:after {
-  width: 10px;
-  height: 45px;
-  position: absolute;
-  bottom: 0;
-}
-.guest .uk-card:after {
-  background: #fff;
-  left: -4px;
-  clip-path: polygon(100% 70%, 0% 100%, 100% 100%);
-}
-.me .uk-card:after {
-  background: #1e87f0;
-  right: -4px;
-  clip-path: polygon(0 70%, 0% 100%, 100% 100%);
-}
 </style>
