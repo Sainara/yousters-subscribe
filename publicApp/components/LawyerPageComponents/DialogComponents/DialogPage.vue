@@ -35,10 +35,9 @@
         </div> -->
 
       </div>
-      <offer-view v-if="offer" v-bind:offer="offer"></offer-view>
+      <messaging v-if="sender == dialog.executor_id"></messaging>
+      <offer-view v-else-if="offer" v-bind:offer="offer"></offer-view>
       <offer-create v-else-if="dialog.dialog_status == 'created'"></offer-create>
-      <messaging v-else></messaging>
-
     </div>
   </div>
 </template>
@@ -100,9 +99,9 @@ export default {
     },
     getDialogs: function () {
       let self = this;
-      this.axios.get('dialog/lawyer')
+      this.axios.get('dialog/' + self.$route.params.uid + '/lawyer')
         .then(function (response) {
-          // console.log(response);
+         console.log(response);
         if (response.data.success) {
           for (var i = 0; i < response.data.data.length; i++) {
             if (response.data.data[i].uid == self.$route.params.uid) {
@@ -154,6 +153,7 @@ export default {
               }
               if (!isContain) {
                 self.messages.push(json["data"][i]);
+                window.scrollTo(0,document.body.scrollHeight);
               }
             }
 

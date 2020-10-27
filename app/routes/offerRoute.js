@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getDialogs, getOffers, getActiveOffers } from '../controllers/offerController';
+import { getDialogs, getDialog, getOffers, getActiveOffers } from '../controllers/offerController';
 import verifyAuth from '../middlewares/verifyAuth';
 import {
   isLawyer
@@ -13,6 +13,8 @@ const router = express.Router();
 
 // router.post('/payment', verifyAuth, createPayment);
 router.get('/dialog/lawyer', verifyAuth, isLawyer, getDialogs);
+router.get('/dialog/:uid/lawyer', verifyAuth, isLawyer, getDialog);
+
 
 router.get('/offer/lawyer', verifyAuth, isLawyer, getOffers);
 router.get('/offer/active/lawyer', verifyAuth, isLawyer, getActiveOffers);
