@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getDialogs, getOffers } from '../controllers/offerController';
+import { getDialogs, getOffers, getActiveOffers } from '../controllers/offerController';
 import verifyAuth from '../middlewares/verifyAuth';
 import {
   isLawyer
@@ -15,6 +15,8 @@ const router = express.Router();
 router.get('/dialog/lawyer', verifyAuth, isLawyer, getDialogs);
 
 router.get('/offer/lawyer', verifyAuth, isLawyer, getOffers);
+router.get('/offer/active/lawyer', verifyAuth, isLawyer, getActiveOffers);
+
 //
 // router.get('/pakets/my', primaryLimit, verifyAuth, getMyPaketsAndUsage);
 //

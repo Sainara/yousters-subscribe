@@ -4,8 +4,8 @@
         <tr v-for="agreement in avoffers" :key="avoffers.uid">
           <a class="agreement-cell-a" href="#" v-on:click.prevent="getDialogLink(agreement.uid)" style="display: block;">
             <td class="agreement-cell">
-              <h3>{{agreement.title}} <span class="smalltitle" v-if="agreement.isHaveAlreadySentOffer">Предложение уже отправлено</span></h3>
-              <p class="smalltitle">{{getFormatedTime(agreement.created_at)}}</p>
+              <h2 style="margin-bottom: 10px">{{agreement.title}} <span class="smalltitle" v-if="agreement.isHaveAlreadySentOffer">Предложение уже отправлено</span></h2>
+              <p class="smalltitle">Создано: {{getFormatedTime(agreement.created_at)}}</p>
             </td>
           </a>
         </tr>

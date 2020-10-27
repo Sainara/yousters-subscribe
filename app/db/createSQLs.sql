@@ -62,6 +62,7 @@ Create table dialogs(id serial PRIMARY KEY, title VARCHAR, creator_id int, creat
 alter table dialogs add column uid varchar;
 alter table dialogs add column dialog_type varchar;
 alter table dialogs add column dialog_status varchar;
+alter table dialogs add column executor_id int;
 
 Create table messages(id serial PRIMARY KEY, m_content VARCHAR, m_type VARCHAR, is_read bool default false, read_at timestamptz, creator_id int, dialog_id int, created_at timestamptz default CURRENT_TIMESTAMP);
 

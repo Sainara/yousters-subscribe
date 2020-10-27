@@ -70,10 +70,10 @@ export default {
   computed: {
     currentTabComponent: function() {
       switch (this.currentTab) {
-        case 'Активные офферы':
+        case 'Активные заказы':
           return 'ActiveOffers';
           break;
-        case 'Доступные офферы':
+        case 'Доступные заказы':
           return 'AviableOffers'
         case 'Профиль':
           return 'Active';
@@ -87,8 +87,8 @@ export default {
   mounted: function () {
     this.axios.defaults.headers['token'] = this.getCookie('lawyer-token');
     this.getAvOffers();
-    this.tabs = ['Доступные офферы','Активные офферы', 'Профиль'];
-    this.currentTab = 'Профиль';
+    this.tabs = ['Доступные заказы','Активные заказы', 'Профиль'];
+    this.currentTab = 'Доступные заказы';
   },
   components: {
     Active,

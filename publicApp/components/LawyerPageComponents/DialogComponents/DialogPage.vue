@@ -11,12 +11,17 @@
               <p style="padding: 10px" v-if="message.m_type == 'text'" class="uk-margin-remove">{{message.m_content}}</p>
               <audio v-if="message.m_type == 'voice'" controls style="width: -webkit-fill-available;">
                 <source v-bind:src="message.m_content" type="audio/x-m4a">
-                Тег audio не поддерживается вашим браузером.
-              </audio>
-              <img v-if="message.m_type == 'image'" :src="message.m_content" :alt="message.m_content">
+                  Тег audio не поддерживается вашим браузером.
+                </audio>
+                <div v-if="message.m_type == 'image'" uk-lightbox="animation: slide">
+                  <a :href="message.m_content">
+                    <img :src="message.m_content" :alt="message.m_content">
+                  </a>
+                </div>
+
+              </div>
             </div>
           </div>
-        </div>
 
         <!-- <div class="guest uk-grid-small uk-flex-bottom uk-flex-left" uk-grid>
 
@@ -120,14 +125,14 @@ export default {
       this.sender = this.parseJWT(this.token)['id'];
 
       this.socket.onopen = function() {
-        alert("Соединение установлено.");
+        console.log("Соединение установлено.");
       };
       var self = this;
       this.socket.onclose = function(event) {
         if (event.wasClean) {
-          alert('Соединение закрыто чисто');
+          console.log('Соединение закрыто чисто');
         } else {
-          alert('Обрыв соединения'); // например, "убит" процесс сервера
+          console.log('Обрыв соединения'); // например, "убит" процесс сервера
           console.log(event);
           self.socket = new WebSocket("wss://you-scribe.ru/api/v1/dialog/"+ self.$route.params.uid + "?token=" + self.token);
         }
@@ -139,7 +144,19 @@ export default {
         var json = JSON.parse(event.data);
         switch (json["type"]) {
           case "message":
-            self.messages = json["data"];
+            for (var i = 0; i < json["data"].length; i++) {
+              var isContain = false;
+              for (var g = 0; g < self.messages.length; g++) {
+                if (self.messages[g].id == json["data"][i].id) {
+                  isContain = true
+                }
+                self.messages[g]
+              }
+              if (!isContain) {
+                self.messages.push(json["data"][i]);
+              }
+            }
+
             break;
           case "offer":
 

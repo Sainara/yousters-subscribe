@@ -376,7 +376,7 @@ a.youstersnav {
     color: #fff;
     padding: 5px 10px;
     border-radius: 8px;
-    margin-left: 5px;
+    display: inline-block;
 }
 .uk-card {
   position: relative;

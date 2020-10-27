@@ -16,7 +16,7 @@ const getDialogs = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const getQuery = 'SELECT id, title, uid, dialog_type, dialog_status, created_at from dialogs WHERE dialog_status = $1';
+  const getQuery = 'SELECT * from dialogs WHERE dialog_status = $1';
 
   try {
 
@@ -49,6 +49,24 @@ const getOffers = async (req, res) => {
   }
 };
 
+const getActiveOffers = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const getQuery = 'SELECT * from dialogs WHERE executor_id = $1 AND dialog_status = $2';
+
+  try {
+
+    var { rows } = await dbQuery.query(getQuery, [req.user.id, 'exec']);
+
+    successMessage.data = rows
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
 // const createDialog = async (req, res) => {
 //
 //   const errorMessage = Object.assign({}, eMessage);
@@ -167,6 +185,7 @@ const createOffer = async (req, res) => {
 export {
   getDialogs,
   getOffers,
+  getActiveOffers,
   // createDialog,
   // getMessages,
   // createMessage,
