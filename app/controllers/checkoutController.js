@@ -251,7 +251,7 @@ const renderCheckout = async (req, res) => {
 
   const getOffer = 'SELECT * FROM offers WHERE uid = $1';
   const updateOffer = 'UPDATE offers SET status = $1 WHERE uid = $2';
-  const updateDialog = 'UPDATE dialog SET dialog_status = $1 WHERE uid = $2';
+  const updateDialog = 'UPDATE dialogs SET dialog_status = $1, executor_id = $2 WHERE uid = $3';
 
   try {
 
@@ -334,10 +334,10 @@ const renderCheckout = async (req, res) => {
 
                 if (offer.status == 'created') {
                   dbQuery.query(updateOffer, ['prepaid', dbResponse.offer_id]);
-                  dbQuery.query(updateDialog, ['prepaid', offer.dialog_uid]);
+                  dbQuery.query(updateDialog, ['prepaid', offer.creator_id, offer.dialog_uid]);
                 } else if (offer.status == 'prepaid') {
                   dbQuery.query(updateOffer, ['fullpaid', dbResponse.offer_id]);
-                  dbQuery.query(updateDialog, ['fullpaid', offer.dialog_uid]);
+                  dbQuery.query(updateDialog, ['fullpaid', offer.creator_id, offer.dialog_uid]);
                 }
                 // if (source == 'web') {
                 //   return res.redirect('https://you-scribe.ru/general');

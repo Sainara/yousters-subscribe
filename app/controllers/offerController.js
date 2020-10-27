@@ -54,11 +54,11 @@ const getActiveOffers = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const getQuery = 'SELECT * from dialogs WHERE executor_id = $1 AND dialog_status = $2';
+  const getQuery = 'SELECT * from dialogs WHERE executor_id = $1 AND dialog_status != $2';
 
   try {
 
-    var { rows } = await dbQuery.query(getQuery, [req.user.id, 'exec']);
+    var { rows } = await dbQuery.query(getQuery, [req.user.id, 'created']);
 
     successMessage.data = rows
     return res.status(status.success).send(successMessage);
