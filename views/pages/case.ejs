@@ -8,7 +8,14 @@
     const queryString = window.location.search;
 
     const urlParams = new URLSearchParams(queryString);
-    const action = urlParams.get('action')
+    const action = urlParams.get('action');
+
+    const getCookie = (name) => {
+      let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
 
     if (action == "print") {
       window.print()
@@ -16,13 +23,6 @@
       if (getCookie('token')) {
         window.location.replace("/general#/agreement/" + window.location.href.split('/').pop());
       }
-    }
-
-    const getCookie = (name) => {
-      let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-      ));
-      return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
   </script>

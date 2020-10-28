@@ -27,13 +27,14 @@ module.exports = function(app){
 
 
   router.get('/message', primaryLimit, verifyAuth, getMessages);
-  router.post('/message', primaryLimit, verifyAuth, createMessage);
+  createMessage.server = app;
+  router.post('/message/:uid/text', primaryLimit, verifyAuth, createMessage);
 
   createOffer.server = app;
   router.post('/offer', primaryLimit, verifyAuth, createOffer);
 
 
-    return router;
+  return router;
 };
 
 // Routes

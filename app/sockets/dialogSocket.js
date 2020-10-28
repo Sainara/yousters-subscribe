@@ -92,7 +92,7 @@ const connectToDialog = async (ws, req) => {
 
       const boundary = getBoundary(msgLatin1);
       if (!boundary) {
-        endRequestWithError(response, body, 400, 'Boundary information missing', callback)
+        //endRequestWithError(response, body, 400, 'Boundary information missing', callback)
         return
       }
       let result = {}

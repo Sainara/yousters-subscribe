@@ -1,22 +1,22 @@
 <template lang="html">
-  <div class="uk-card-footer uk-padding-remove">
+  <div class="uk-card-footer offer_inp" style="padding: 5px 20px;">
     <div class="uk-grid-small uk-flex-middle" uk-grid>
-      <div class="uk-width-auto">
+      <!-- <div class="uk-width-auto">
         <a href="#" class="uk-icon-link uk-margin-small-left" uk-icon="icon: happy"></a>
-      </div>
+      </div> -->
       <div class="uk-width-expand">
         <div class="uk-padding-small uk-padding-remove-horizontal">
-          <textarea class="uk-textarea uk-padding-remove uk-border-remove" rows="1" placeholder="Escreva a mensagem..."></textarea>
+          <textarea v-model="message" class="uk-textarea uk-border-remove" rows="2" placeholder="Введите сообщение"></textarea>
         </div>
       </div>
       <div class="uk-width-auto">
         <ul class="uk-iconnav uk-margin-small-right">
           <li>
-            <a href="#" uk-icon="icon: image"></a>
+            <a href="#" v-on:click.prevent="sendMessage()" uk-icon="icon: arrow-up; ratio: 2"></a>
           </li>
-          <li>
+          <!-- <li>
             <a href="#" uk-icon="icon: location"></a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -25,8 +25,35 @@
 
 <script>
 export default {
+  props: {
+    token: Object
+  },
+  data: function () {
+    return {
+      message: "",
+    }
+  },
+  methods: {
+    sendMessage: function () {
+      if (message.replace(/^\s+|\s+$/g, '') != "") {
+        let self = this;
+        this.axios.post('message/' + self.$route.params.uid + '/text', {
+          content: message,
+          type: 'text'
+        })
+          .then(function (response) {
+           console.log(response);
+          if (response.data.success) {
+
+          }
+        });
+      }
+    }
+  },
+  mounted: function () {
+    if (this.token) {
+      this.axios.defaults.headers['token'] = this.token;
+    }
+  }
 }
 </script>
-
-<style lang="css" scoped>
-</style>

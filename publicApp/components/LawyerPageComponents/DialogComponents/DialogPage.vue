@@ -2,7 +2,7 @@
   <error-page v-if="nonAuth" message='У вас нет доступа'></error-page>
   <div v-else>
     <div class="uk-card uk-card-default uk-border-rounded uk-margin-large-top" style="margin-top: 0px !important;">
-      <div class="uk-card-body uk-padding-small" v-bind:class='[isMobile ? "mobile_padding_from_inp" : "desc_padding_from_inp"]'>
+      <div class="uk-card-body uk-padding-small" v-bind:style="{ paddingBottom: offset + 'px' }">
 
         <div v-for="message in messages" v-bind:class="[ message.creator_id == sender ? 'me uk-grid-small uk-flex-bottom uk-flex-right uk-text-right' : 'guest uk-grid-small uk-flex-bottom uk-flex-left' ]" uk-grid>
 
@@ -22,7 +22,7 @@
               </div>
             </div>
           </div>
-
+</div>
         <!-- <div class="guest uk-grid-small uk-flex-bottom uk-flex-left" uk-grid>
 
           <div class="uk-width-2-3">
@@ -35,7 +35,7 @@
         </div> -->
 
       </div>
-      <messaging v-if="sender == dialog.executor_id"></messaging>
+      <messaging v-if="sender == dialog.executor_id" v-bind:token="token"></messaging>
       <offer-view v-else-if="offer" v-bind:offer="offer"></offer-view>
       <offer-create v-else-if="dialog.dialog_status == 'created'"></offer-create>
     </div>
@@ -62,8 +62,11 @@ export default {
       messages: [],
       sender: null,
       dialog: null,
-      offer: null
+      offer: null,
+      offset: 0
     }
+  },
+  computed: {
   },
   methods: {
     isMobile: function () {
@@ -122,11 +125,12 @@ export default {
       this.socket = new WebSocket("wss://you-scribe.ru/api/v1/dialog/"+ this.$route.params.uid + "?token=" + this.token);
 
       this.sender = this.parseJWT(this.token)['id'];
-
+      var self = this;
       this.socket.onopen = function() {
         console.log("Соединение установлено.");
+        self.offset = document.getElementsByClassName('offer_inp')[0].clientHeight + 20;
       };
-      var self = this;
+
       this.socket.onclose = function(event) {
         if (event.wasClean) {
           console.log('Соединение закрыто чисто');
