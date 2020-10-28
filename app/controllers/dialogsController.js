@@ -110,6 +110,8 @@ const createMessage = async (req, res) => {
 
   const { content, type } = req.body;
 
+  var self = this;
+
   const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
     try {

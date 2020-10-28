@@ -35,10 +35,10 @@ export default {
   },
   methods: {
     sendMessage: function () {
-      if (message.replace(/^\s+|\s+$/g, '') != "") {
+      if (this.message.replace(/^\s+|\s+$/g, '') != "") {
         let self = this;
         this.axios.post('message/' + self.$route.params.uid + '/text', {
-          content: message,
+          content: self.message,
           type: 'text'
         })
           .then(function (response) {
