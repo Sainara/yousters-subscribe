@@ -138,7 +138,7 @@ const createMessage = async (req, res) => {
 
         var { rows } = await dbQuery.query(createQuery, vals);
 
-        self.connectToDialog.server.getWss().clients.forEach(function each(client) {
+        self.createMessage.server.getWss().clients.forEach(function each(client) {
           if (client.d_uid == req.params.uid) {
             var response = {};
             response.type = "message";
