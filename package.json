@@ -41,6 +41,7 @@
     "node-libcurl": "^2.2.0",
     "nodemon": "^2.0.4",
     "pg": "^7.17.1",
+    "reconnectable-websocket": "^0.1.10",
     "repeat": "^1.2.0",
     "sha256-file": "^1.0.0",
     "sms_ru": "0.0.1",

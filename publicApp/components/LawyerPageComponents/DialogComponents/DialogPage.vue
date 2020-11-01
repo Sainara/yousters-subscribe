@@ -6,10 +6,10 @@
 
         <div v-for="message in messages" v-bind:class="[ message.creator_id == sender ? 'me uk-grid-small uk-flex-bottom uk-flex-right uk-text-right' : 'guest uk-grid-small uk-flex-bottom uk-flex-left' ]" uk-grid>
 
-          <div class="uk-width-2-3">
+          <div class="uk-width-auto" style="max-width: calc(100% * 2 / 3.001);">
             <div style="padding: 0" v-bind:class="[ message.creator_id == sender ? 'uk-card uk-card-body uk-card-small uk-card-secondary uk-border-rounded' : 'uk-card uk-card-body uk-card-small uk-card-default uk-border-rounded' ]">
               <p style="padding: 10px" v-if="message.m_type == 'text'" class="uk-margin-remove">{{message.m_content}}</p>
-              <audio v-if="message.m_type == 'voice'" controls style="width: -webkit-fill-available;">
+              <audio v-if="message.m_type == 'voice'" controls>
                 <source v-bind:src="message.m_content" type="audio/x-m4a">
                   Тег audio не поддерживается вашим браузером.
                 </audio>
@@ -22,24 +22,24 @@
               </div>
             </div>
           </div>
-</div>
+        </div>
         <!-- <div class="guest uk-grid-small uk-flex-bottom uk-flex-left" uk-grid>
 
-          <div class="uk-width-2-3">
-            <div class="uk-card uk-card-body uk-card-small uk-card-default uk-border-rounded">
-              <p class="uk-margin-remove">
-                <span class="etc"><i></i><i></i><i></i></span>
-              </p>
-            </div>
-          </div>
-        </div> -->
-
-      </div>
-      <messaging v-if="sender == dialog.executor_id" v-bind:token="token"></messaging>
-      <offer-view v-else-if="offer" v-bind:offer="offer"></offer-view>
-      <offer-create v-else-if="dialog.dialog_status == 'created'"></offer-create>
+        <div class="uk-width-2-3">
+        <div class="uk-card uk-card-body uk-card-small uk-card-default uk-border-rounded">
+        <p class="uk-margin-remove">
+        <span class="etc"><i></i><i></i><i></i></span>
+      </p>
     </div>
   </div>
+</div> -->
+
+</div>
+<messaging v-if="sender == dialog.executor_id" v-bind:token="token"></messaging>
+<offer-view v-else-if="offer" v-bind:offer="offer"></offer-view>
+<offer-create v-else-if="dialog.dialog_status == 'created'"></offer-create>
+</div>
+</div>
 </template>
 
 <script>
@@ -48,6 +48,8 @@ import ErrorPage from './../SubComponents/ErrorPage.vue';
 import OfferCreate from './DialogSubComponents/OfferCreate.vue';
 import OfferView from './DialogSubComponents/OfferView.vue';
 import Messaging from './DialogSubComponents/Messaging.vue';
+
+import ReconnectableWebSocket from 'reconnectable-websocket'
 
 export default {
 
@@ -122,7 +124,9 @@ export default {
       this.axios.defaults.headers['token'] = this.token;
       this.getDialogs();
       this.getAllOffers();
-      this.socket = new WebSocket("wss://you-scribe.ru/api/v1/dialog/"+ this.$route.params.uid + "?token=" + this.token);
+      var url = "wss://you-scribe.ru/api/v1/dialog/"+ this.$route.params.uid + "?token=" + this.token;
+
+      this.socket = new ReconnectableWebSocket(url, null, {reconnectInterval: 2000});
 
       this.sender = this.parseJWT(this.token)['id'];
       var self = this;
@@ -136,8 +140,8 @@ export default {
           console.log('Соединение закрыто чисто');
         } else {
           console.log('Обрыв соединения'); // например, "убит" процесс сервера
-          console.log(event);
-          self.socket = new WebSocket("wss://you-scribe.ru/api/v1/dialog/"+ self.$route.params.uid + "?token=" + self.token);
+          //console.log(event);
+          //self.socket = new WebSocket("wss://you-scribe.ru/api/v1/dialog/"+ self.$route.params.uid + "?token=" + self.token);
         }
         //alert('Код: ' + event.code + ' причина: ' + event.reason);
       };
@@ -147,6 +151,7 @@ export default {
         var json = JSON.parse(event.data);
         switch (json["type"]) {
           case "message":
+            var newMSG = 0;
             for (var i = 0; i < json["data"].length; i++) {
               var isContain = false;
               for (var g = 0; g < self.messages.length; g++) {
@@ -157,10 +162,14 @@ export default {
               }
               if (!isContain) {
                 self.messages.push(json["data"][i]);
-                window.scrollTo(0,document.body.scrollHeight);
+                newMSG++;
               }
-            }
 
+            }
+            if (newMSG > 0) {
+              setTimeout(window.scrollTo, 3000, 0, document.body.scrollHeight);
+              //setTimeout(console.log, 300, ("!!!"));
+            }
             break;
           case "offer":
 

@@ -395,7 +395,7 @@ a.youstersnav {
   clip-path: polygon(100% 70%, 0% 100%, 100% 100%);
 }
 .me .uk-card:after {
-  background: #1e87f0;
+  background: #222;
   right: -4px;
   clip-path: polygon(0 70%, 0% 100%, 100% 100%);
 }

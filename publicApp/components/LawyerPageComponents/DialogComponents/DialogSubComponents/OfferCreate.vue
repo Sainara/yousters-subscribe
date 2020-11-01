@@ -52,7 +52,7 @@ export default {
           .then(function (response) {
           console.log(response);
           if (response.data.success) {
-
+            location.reload();
           }
         });
       }
