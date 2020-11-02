@@ -61,7 +61,7 @@ const createDialog = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 
-  const content = "Здравствуйте, давайте начнем составление договора!\n\nПока вы будете рассказывать какой договор вам нужен, мы уже будет подбирать вам юристов, чтобы вы могли выбрать исполнител";
+  const content = "Здравствуйте, давайте начнем составление договора!\n\nПока вы будете рассказывать какой договор вам нужен, мы уже будем подбирать вам юристов, чтобы вы могли выбрать исполнителя";
 
   const createQuery = 'INSERT INTO dialogs (title, creator_id, uid, dialog_type, dialog_status) VALUES ($1, $2, $3, $4, $5) RETURNING id, uid';
   const createMessageQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4)';
@@ -184,6 +184,37 @@ const createOffer = async (req, res) => {
   }
 };
 
+const makeWaitFullPay = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const updateQuery = 'UPDATE dialogs SET dialog_status = $1 WHERE uid = $2';
+
+  try {
+    var newStatus = "waitfullpay";
+    var vals = [newStatus, req.params.uid];
+    var { rows } = await dbQuery.query(updateQuery, vals);
+    successMessage.data = newStatus;
+
+    this.makeWaitFullPay.server.getWss().clients.forEach(function each(client) {
+      if (client.d_uid == dialog_id) {
+        var response = {};
+        response.type = "status";
+        response.data = rows;
+
+        client.send(JSON.stringify(response));
+      }
+    });
+
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
+
 
 
 export {
@@ -191,5 +222,6 @@ export {
   createDialog,
   getMessages,
   createMessage,
-  createOffer
+  createOffer,
+  makeWaitFullPay
 };

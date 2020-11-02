@@ -9,6 +9,9 @@
             <div class="uk-width-expand@m">
               <input v-model="price" class="uk-input uk-form-large" type="number" placeholder="Введите сумму" style="border-radius: 7px;">
             </div>
+            <div class="uk-width-expand@m">
+              <textarea v-model="description" class="uk-textarea" rows="2" placeholder="Комментарии к предложению" style="border-radius: 7px;"></textarea>
+            </div>
             <div class="uk-width-auto@m">
               <a href="#" v-on:click.prevent="createOffer()" class="main-button" style="display: block; text-align: center;">Отправить предложение</a>
             </div>
@@ -28,7 +31,8 @@ export default {
   data: function () {
     return {
       token: null,
-      price: null
+      price: null,
+      description: ""
     }
   },
   methods: {
@@ -45,7 +49,7 @@ export default {
       if (this.price) {
         let self = this;
         this.axios.post('offer', {
-          description: "AAAAAA",
+          description: self.description,
           price: self.price,
           dialog_id: self.$route.params.uid
         })

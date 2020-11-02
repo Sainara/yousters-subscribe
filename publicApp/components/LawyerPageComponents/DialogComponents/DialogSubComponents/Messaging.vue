@@ -43,10 +43,8 @@ export default {
         })
           .then(function (response) {
            console.log(response);
-          if (response.data.success) {
-            self.message = "";
-            window.scrollTo(0,document.body.scrollHeight);
-          }
+           self.message = "";
+           window.scrollTo(0,document.body.scrollHeight);
         });
       }
     }

@@ -7,7 +7,8 @@
           <div uk-grid>
             <div class="uk-width-expand@m">
               <h1 style="margin-bottom: 0px">{{offer.price}}₽</h1>
-              <p style="margin-top: 0px">Будет надеяться, что клиент выберет именно вас</p>
+              <p style="margin-top: 0px">{{offer.description}}</p>
+              <p>Будет надеяться, что клиент выберет именно вас</p>
             </div>
           </div>
         </div>

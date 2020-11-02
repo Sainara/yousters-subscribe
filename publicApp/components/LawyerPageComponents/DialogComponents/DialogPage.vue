@@ -1,6 +1,17 @@
 <template lang="html">
   <error-page v-if="nonAuth" message='У вас нет доступа'></error-page>
   <div v-else>
+
+<div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #transparent-sticky-navbar">
+  <nav class="uk-navbar-container uk-margin" uk-navbar style="padding: 5px;">
+  <div class="uk-navbar-left">
+      <p class="uk-navbar-item uk-logo" href="#">{{dialog.title}}</p>
+  </div>
+  <div class="uk-navbar-right">
+    <a href="#" v-if="dialog.dialog_status == 'prepaid'" v-on:click.prevent="makeWaitFullPay(dialog.uid)" class="main-button" style="display: block; text-align: center;">Запросить полную оплату</a>
+  </div>
+</nav>
+</div>
     <div class="uk-card uk-card-default uk-border-rounded uk-margin-large-top" style="margin-top: 0px !important;">
       <div class="uk-card-body uk-padding-small" v-bind:style="{ paddingBottom: offset + 'px' }">
 
@@ -113,6 +124,16 @@ export default {
               self.dialog = response.data.data[i];
             }
           }
+        }
+      });
+    },
+    makeWaitFullPay: function () {
+      let self = this;
+      this.axios.get('dialog/' + self.$route.params.uid + '/waitfullpay')
+        .then(function (response) {
+         console.log(response);
+        if (response.data.success) {
+          location.reload();
         }
       });
     }

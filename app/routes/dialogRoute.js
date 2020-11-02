@@ -1,10 +1,14 @@
 import express from 'express';
 
-import { getDialogs, createDialog, getMessages, createMessage, createOffer } from '../controllers/dialogsController';
+import { getDialogs, createDialog, getMessages, createMessage, createOffer, makeWaitFullPay } from '../controllers/dialogsController';
 import { connectToDialog } from '../sockets/dialogSocket';
 import verifyAuth from '../middlewares/verifyAuth';
 import verifyAuthWS from '../middlewares/verifyAuthWS';
 import { primaryLimit } from '../helpers/rateLimits';
+
+import {
+  isLawyer
+} from '../helpers/checkers';
 
 
 
@@ -24,14 +28,17 @@ module.exports = function(app){
   router.get('/dialog', primaryLimit, verifyAuth, getDialogs);
   router.post('/dialog', primaryLimit, verifyAuth, createDialog);
 
+  makeWaitFullPay.server = app;
+  router.post('/dialog/:uid/waitfullpay', verifyAuth, isLawyer, makeWaitFullPay);
+
 
 
   router.get('/message', primaryLimit, verifyAuth, getMessages);
   createMessage.server = app;
-  router.post('/message/:uid/text', primaryLimit, verifyAuth, createMessage);
+  router.post('/message/:uid/text', verifyAuth, isLawyer, createMessage);
 
   createOffer.server = app;
-  router.post('/offer', primaryLimit, verifyAuth, createOffer);
+  router.post('/offer', verifyAuth, isLawyer, createOffer);
 
 
   return router;
