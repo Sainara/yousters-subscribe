@@ -129,7 +129,7 @@ export default {
     },
     makeWaitFullPay: function () {
       let self = this;
-      this.axios.get('dialog/' + self.$route.params.uid + '/waitfullpay')
+      this.axios.post('dialog/' + self.$route.params.uid + '/waitfullpay')
         .then(function (response) {
          console.log(response);
         if (response.data.success) {
