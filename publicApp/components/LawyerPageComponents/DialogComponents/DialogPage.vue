@@ -9,6 +9,7 @@
   </div>
   <div class="uk-navbar-right">
     <a href="#" v-if="dialog.dialog_status == 'prepaid'" v-on:click.prevent="makeWaitFullPay(dialog.uid)" class="main-button" style="display: block; text-align: center;">Запросить полную оплату</a>
+    <p v-if="dialog.dialog_status == 'waitfullpay'" >Ожидаем полной оплаты от клиента</p>
   </div>
 </nav>
 </div>
@@ -131,10 +132,10 @@ export default {
       let self = this;
       this.axios.post('dialog/' + self.$route.params.uid + '/waitfullpay')
         .then(function (response) {
-         console.log(response);
-        if (response.data.success) {
+    // console.log(response);
+        //./if (response.data.success) {
           location.reload();
-        }
+        //}
       });
     }
   },

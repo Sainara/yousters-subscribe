@@ -211,7 +211,7 @@ const makeWaitFullPay = async (req, res) => {
     successMessage.data = newStatus;
 
     this.makeWaitFullPay.server.getWss().clients.forEach(function each(client) {
-      if (client.d_uid == dialog_id) {
+      if (client.d_uid == req.params.uid) {
         var response = {};
         response.type = "status";
         response.data = newStatus;
