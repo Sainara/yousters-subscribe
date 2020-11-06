@@ -3,9 +3,9 @@
   <div v-else>
 
 <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #transparent-sticky-navbar">
-  <nav class="uk-navbar-container uk-margin" uk-navbar style="padding: 5px;">
+  <nav class="uk-navbar-container uk-margin" uk-navbar style="padding: 15px;">
   <div class="uk-navbar-left">
-      <p class="uk-navbar-item uk-logo" href="#">{{dialog.title}}</p>
+      <h3>{{dialog.title}}</h3>
   </div>
   <div class="uk-navbar-right">
     <a href="#" v-if="dialog.dialog_status == 'prepaid'" v-on:click.prevent="makeWaitFullPay(dialog.uid)" class="main-button" style="display: block; text-align: center;">Запросить полную оплату</a>
@@ -30,7 +30,7 @@
                     <img :src="message.m_content" :alt="message.m_content">
                   </a>
                 </div>
-
+                <a style="padding: 10px; display: block" target="_blank" :href="message.m_content" v-if="message.m_type == 'document'">{{message.m_content}}</a>
               </div>
             </div>
           </div>
@@ -154,7 +154,7 @@ export default {
       var self = this;
       this.socket.onopen = function() {
         console.log("Соединение установлено.");
-        self.offset = document.getElementsByClassName('offer_inp')[0].clientHeight + 20;
+
       };
 
       this.socket.onclose = function(event) {
@@ -189,12 +189,9 @@ export default {
 
             }
             if (newMSG > 0) {
-              setTimeout(window.scrollTo, 3000, 0, document.body.scrollHeight);
-              //setTimeout(console.log, 300, ("!!!"));
+              setTimeout(window.scrollTo, 3000, 0, document.body.scrollHeight || document.documentElement.scrollHeight);
+              self.offset = document.getElementsByClassName('offer_inp')[0].clientHeight + 20;
             }
-            break;
-          case "offer":
-
             break;
           default:
             break;

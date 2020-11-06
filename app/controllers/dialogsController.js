@@ -114,42 +114,45 @@ const createMessage = async (req, res) => {
 
   const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
 
-    try {
-        var vals;
+  try {
+    var vals;
 
-        switch (type) {
-          case "text":
-            if (content == "") {
-              return ;
-            }
-            vals = [content, type, req.user.id, req.params.uid];
+    switch (type) {
+      case "text":
+      if (content == "") {
+        return ;
+      }
+      vals = [content, type, req.user.id, req.params.uid];
 
-            break;
-          // case "image":
-          // case "document":
-          // case "voice":
-          //   var uid = "message-media-" + result['type'] + uuidv4();
-          //   var imageData = await s3upload(Buffer.from(result.files[0]['content'], 'latin1'), result.files[0]['Content-Type'], uid);
-          //   vals = [imageData.Location, result['type'], req.user.id, req.params.uid];
-          //   break;
-          default:
-            return
-        }
-
-        var { rows } = await dbQuery.query(createQuery, vals);
-
-        self.createMessage.server.getWss().clients.forEach(function each(client) {
-          if (client.d_uid == req.params.uid) {
-            var response = {};
-            response.type = "message";
-            response.data = rows;
-
-            client.send(JSON.stringify(response));
-          }
-        });
-    } catch (error) {
-      console.error(error);
+      break;
+      // case "image":
+      // case "document":
+      // case "voice":
+      //   var uid = "message-media-" + result['type'] + uuidv4();
+      //   var imageData = await s3upload(Buffer.from(result.files[0]['content'], 'latin1'), result.files[0]['Content-Type'], uid);
+      //   vals = [imageData.Location, result['type'], req.user.id, req.params.uid];
+      //   break;
+      default:
+      return
     }
+
+    var { rows } = await dbQuery.query(createQuery, vals);
+
+    self.createMessage.server.getWss().clients.forEach(function each(client) {
+      if (client.d_uid == req.params.uid) {
+        var response = {};
+        response.type = "message";
+        response.data = rows;
+
+        client.send(JSON.stringify(response));
+      }
+    });
+
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
 };
 
 const createOffer = async (req, res) => {
