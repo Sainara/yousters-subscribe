@@ -169,7 +169,7 @@ const createOffer = async (req, res) => {
 
     var check = await dbQuery.query(checkQuery, [req.user.id, dialog_id]);
 
-    if (check.rows[0].id) {
+    if (check.rows[0]) {
       errorMessage.message = "offerAlreadyExist";
       return res.status(status.bad).send(errorMessage);
     }
