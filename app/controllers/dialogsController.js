@@ -159,15 +159,18 @@ const createOffer = async (req, res) => {
 
   const { description, price, dialog_id } = req.body;
 
+  const getLawyer = 'SELECT * FROM lawyers WHERE id = $1';
   const createQuery = 'INSERT INTO offers (title, price, description, status, uid, dialog_uid, creator_id, level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *';
 
   try {
 
-    var vals = ["title", price, description, "created", uuidv4(), dialog_id, req.user.id, req.user.level];
+    var data = await dbQuery.query(getLawyer, [req.user.id]);
+
+    var vals = [data.rows[0].user_name, price, description, "created", uuidv4(), dialog_id, req.user.id, req.user.level];
     var { rows } = await dbQuery.query(createQuery, vals);
     successMessage.data = rows[0];
 
-    this.createOffer.server.getWss().clients.forEach(function each(client) {
+    self.createOffer.server.getWss().clients.forEach(function each(client) {
       if (client.d_uid == dialog_id) {
         var response = {};
         response.type = "offer";
