@@ -160,9 +160,19 @@ const createOffer = async (req, res) => {
   const { description, price, dialog_id } = req.body;
 
   const getLawyer = 'SELECT * FROM lawyers WHERE id = $1';
+  const checkQuery = 'SELECT * FROM offers WHERE creator_id = $1 AND dialog_uid = $2';
   const createQuery = 'INSERT INTO offers (title, price, description, status, uid, dialog_uid, creator_id, level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *';
 
+  var self = this;
+
   try {
+
+    var check = await dbQuery.query(checkQuery, [req.user.id, dialog_id]);
+
+    if (check.rows[0].id) {
+      errorMessage.message = "offerAlreadyExist";
+      return res.status(status.bad).send(errorMessage);
+    }
 
     var data = await dbQuery.query(getLawyer, [req.user.id]);
 
