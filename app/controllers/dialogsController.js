@@ -214,7 +214,7 @@ const makeWaitFullPay = async (req, res) => {
       if (client.d_uid == dialog_id) {
         var response = {};
         response.type = "status";
-        response.data = rows;
+        response.data = newStatus;
 
         client.send(JSON.stringify(response));
       }
