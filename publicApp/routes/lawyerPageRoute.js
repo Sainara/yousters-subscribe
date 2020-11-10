@@ -3,7 +3,7 @@ import express from 'express';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  res.render('pages/web_app/lawyerView/sign');
+  res.render('pages/web_app/lawyerView/index');
 });
 
 router.get('/sign', async (req, res) => {

@@ -17,6 +17,7 @@ import checkoutRoute from './app/routes/checkoutRoute';
 import offerRoute from './app/routes/offerRoute';
 import paketRoute from './app/routes/paketRoute';
 import pushRoute from './app/routes/pushRoute';
+import repaimentRoute from './app/routes/repaimentRoute';
 import reportRoute from './app/routes/reportRoute';
 
 //import kassaData from './static/merchant.ru.yandex.kassa'
@@ -88,6 +89,7 @@ app.use(API_PATH, checkoutRoute);
 app.use(API_PATH, offerRoute);
 app.use(API_PATH, paketRoute);
 app.use(API_PATH, pushRoute);
+app.use(API_PATH, repaimentRoute);
 app.use(API_PATH, reportRoute);
 
 

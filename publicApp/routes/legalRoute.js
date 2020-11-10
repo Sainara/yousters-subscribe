@@ -8,6 +8,9 @@ router.get('/user-agreement', (req, res) =>
 router.get('/user-agreement/web', (req, res) =>
   res.render('pages/legal/user-agreement/user-agreement-web', {page_title: "Лицензионное соглашение для веб-приложения"})
 );
+router.get('/user-agreement/forlawyer', (req, res) =>
+  res.render('pages/legal/user-agreement/user-agreement-lawyers', {page_title: "Лицензионное соглашение для веб-приложения"})
+);
 router.get('/termsofuse', (req, res) =>
   res.render('pages/legal/termsofuse/termsofuse', {page_title: "Условия использования"})
 );
