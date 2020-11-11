@@ -119,19 +119,17 @@ const createMessage = async (req, res) => {
 
     switch (type) {
       case "text":
-      if (content == "") {
-        return ;
-      }
-      vals = [content, type, req.user.id, req.params.uid];
+        if (content == "") {
+          return ;
+        }
+        vals = [content, type, req.user.id, req.params.uid];
 
-      break;
-      // case "image":
-      // case "document":
-      // case "voice":
-      //   var uid = "message-media-" + result['type'] + uuidv4();
-      //   var imageData = await s3upload(Buffer.from(result.files[0]['content'], 'latin1'), result.files[0]['Content-Type'], uid);
-      //   vals = [imageData.Location, result['type'], req.user.id, req.params.uid];
-      //   break;
+        break;
+      case "image":
+      case "document":
+        var uid = "message-media-" + type + uuidv4();
+        vals = [req.file.location, type, req.user.id, req.params.uid];
+        break;
       default:
       return
     }

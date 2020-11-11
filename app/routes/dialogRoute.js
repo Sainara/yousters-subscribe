@@ -5,6 +5,7 @@ import { connectToDialog } from '../sockets/dialogSocket';
 import verifyAuth from '../middlewares/verifyAuth';
 import verifyAuthWS from '../middlewares/verifyAuthWS';
 import { primaryLimit } from '../helpers/rateLimits';
+import {uploader} from '../helpers/s3';
 
 import {
   isLawyer
@@ -36,6 +37,7 @@ module.exports = function(app){
   router.get('/message', primaryLimit, verifyAuth, getMessages);
   createMessage.server = app;
   router.post('/message/:uid/text', verifyAuth, isLawyer, createMessage);
+  router.post('/message/:uid/file', verifyAuth, isLawyer, uploader.single('file'), createMessage);
 
   createOffer.server = app;
   router.post('/offer', verifyAuth, isLawyer, createOffer);
