@@ -180,16 +180,16 @@ export default {
                 if (self.messages[g].id == json["data"][i].id) {
                   isContain = true
                 }
-                self.messages[g]
+                self.messages[g];
               }
               if (!isContain) {
-                self.messages.push(json["data"][i]);
+                self.messages = [json["data"][i]].concat(self.messages);
                 newMSG++;
               }
 
             }
             if (newMSG > 0) {
-              setTimeout(window.scrollTo, 3000, 0, document.body.scrollHeight || document.documentElement.scrollHeight);
+              //setTimeout(window.scrollTo, 3000, 0, document.body.scrollHeight || document.documentElement.scrollHeight);
               self.offset = document.getElementsByClassName('offer_inp')[0].clientHeight + 20;
             }
             break;

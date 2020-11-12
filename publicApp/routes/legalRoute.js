@@ -9,7 +9,7 @@ router.get('/user-agreement/web', (req, res) =>
   res.render('pages/legal/user-agreement/user-agreement-web', {page_title: "Лицензионное соглашение для веб-приложения"})
 );
 router.get('/user-agreement/forlawyer', (req, res) =>
-  res.render('pages/legal/user-agreement/user-agreement-lawyers', {page_title: "Лицензионное соглашение для веб-приложения"})
+  res.render('pages/legal/user-agreement/user-agreement-lawyers', {page_title: "Лицензионное соглашение для веб-приложения для юристов"})
 );
 router.get('/termsofuse', (req, res) =>
   res.render('pages/legal/termsofuse/termsofuse', {page_title: "Условия использования"})
@@ -19,6 +19,9 @@ router.get('/confidential', (req, res) =>
 );
 router.get('/faq', async (req, res) => {
   res.render('pages/legal/faq/faq', { page_title: "F.A.Q." });
+});
+router.get('/faq/documentservice', async (req, res) => {
+  res.render('pages/legal/faq/documentservice', { page_title: "F.A.Q. - Сервис договоров" });
 });
 
 export default router;

@@ -16,7 +16,7 @@ const getDialogs = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const getQuery = 'SELECT * from dialogs WHERE dialog_status = $1';
+  const getQuery = 'SELECT * from dialogs WHERE dialog_status = $1 ORDER BY created_at DESC';
 
   try {
 
@@ -73,7 +73,7 @@ const getActiveOffers = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const getQuery = 'SELECT * from dialogs WHERE executor_id = $1 AND dialog_status != $2';
+  const getQuery = 'SELECT * from dialogs WHERE executor_id = $1 AND dialog_status != $2 ORDER BY created_at DESC';
 
   try {
 

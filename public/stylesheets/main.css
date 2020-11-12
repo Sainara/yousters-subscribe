@@ -399,6 +399,29 @@ a.youstersnav {
   right: -4px;
   clip-path: polygon(0 70%, 0% 100%, 100% 100%);
 }
+
+.overlay-tommy {
+  position: fixed;
+    background: #00000073;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.wrapper-tommy {
+  height: 100vh;
+    width: 100vw;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
 @media print {
   .main-button {
     display: none;

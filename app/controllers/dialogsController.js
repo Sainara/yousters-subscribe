@@ -31,7 +31,7 @@ const getDialogs = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const getQuery = 'SELECT id, title, uid, dialog_type, dialog_status from dialogs WHERE creator_id = $1';
+  const getQuery = 'SELECT id, title, uid, dialog_type, dialog_status from dialogs WHERE creator_id = $1 ORDER BY created_at DESC';
 
   try {
 
