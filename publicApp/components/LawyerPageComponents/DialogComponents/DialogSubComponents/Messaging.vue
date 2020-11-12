@@ -32,8 +32,8 @@
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <h2 class="uk-modal-title">Загрузить фотографию</h2>
       <div uk-form-custom="target: true">
-        <input type="file" accept="image/*" @change="handleFile($event)">
-        <input class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
+        <input id="photo_inp" type="file" accept="image/*" @change="handleFile($event)">
+        <input id="photo_inp_title" class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
       </div>
       <a href="#" v-on:click.prevent="sendPhoto()" class="main-button" style="margin-top: 20px; display: block; text-align: center;">Отправить</a>
     </div>
@@ -43,8 +43,8 @@
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <h2 class="uk-modal-title">Загрузить файл</h2>
       <div uk-form-custom="target: true">
-        <input type="file" accept="application/pdf" @change="handleFile($event)">
-        <input class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
+        <input id="file_inp" type="file" accept="application/pdf" @change="handleFile($event)">
+        <input id="file_inp_title" class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
       </div>
       <a href="#" v-on:click.prevent="sendDoc()" class="main-button" style="margin-top: 20px; display: block; text-align: center;">Отправить</a>
     </div>
@@ -97,6 +97,8 @@ export default {
           if (response.data.success) {
             UIkit.modal(document.getElementById('modal-photo')).hide();
             self.file = null;
+            document.getElementById("photo_inp").value = "";
+            document.getElementById("photo_inp_title").value = "";
             self.$forceUpdate();
           } else {
             UIkit.notification({message: 'Ошибка(', status: 'danger'});
@@ -120,6 +122,8 @@ export default {
           if (response.data.success) {
             UIkit.modal(document.getElementById('modal-doc')).hide();
             self.file = null;
+            document.getElementById("file_inp").value = "";
+            document.getElementById("file_inp_title").value = "";
             self.$forceUpdate();
           } else {
             UIkit.notification({message: 'Ошибка(', status: 'danger'});

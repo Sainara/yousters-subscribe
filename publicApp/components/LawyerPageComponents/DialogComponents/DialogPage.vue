@@ -10,6 +10,7 @@
   <div class="uk-navbar-right">
     <a href="#" v-if="dialog.dialog_status == 'prepaid'" v-on:click.prevent="makeWaitFullPay(dialog.uid)" class="main-button" style="display: block; text-align: center;">Запросить полную оплату</a>
     <p v-if="dialog.dialog_status == 'waitfullpay'" >Ожидаем полной оплаты от клиента</p>
+    <p v-if="dialog.dialog_status == 'fullpaid'" >Оплачен полностью</p>
   </div>
 </nav>
 </div>
