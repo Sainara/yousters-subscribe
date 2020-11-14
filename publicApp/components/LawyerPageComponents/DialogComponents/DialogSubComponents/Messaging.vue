@@ -31,20 +31,26 @@
     <div class="uk-modal-dialog uk-modal-body">
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <h2 class="uk-modal-title">Загрузить фотографию</h2>
-      <div uk-form-custom="target: true">
-        <input id="photo_inp" type="file" accept="image/*" @change="handleFile($event)">
-        <input id="photo_inp_title" class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
+      <span v-if="isLoading" class="uk-margin-small-right" uk-spinner="ratio: 3"></span>
+      <div v-else>
+        <div uk-form-custom="target: true">
+          <input id="photo_inp" type="file" accept="image/*" @change="handleFile($event)">
+          <input id="photo_inp_title" class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
+        </div>
+        <a href="#" v-on:click.prevent="sendPhoto()" class="main-button" style="margin-top: 20px; display: block; text-align: center;">Отправить</a>
       </div>
-      <a href="#" v-on:click.prevent="sendPhoto()" class="main-button" style="margin-top: 20px; display: block; text-align: center;">Отправить</a>
     </div>
   </div>
   <div id="modal-doc" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <h2 class="uk-modal-title">Загрузить файл</h2>
-      <div uk-form-custom="target: true">
-        <input id="file_inp" type="file" accept="application/pdf" @change="handleFile($event)">
-        <input id="file_inp_title" class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
+      <span v-if="isLoading" class="uk-margin-small-right" uk-spinner="ratio: 3"></span>
+      <div v-else>
+        <div uk-form-custom="target: true">
+          <input id="file_inp" type="file" accept="application/pdf" @change="handleFile($event)">
+          <input id="file_inp_title" class="uk-input uk-form-width-medium" type="text" placeholder="Выберите файл">
+        </div>  
       </div>
       <a href="#" v-on:click.prevent="sendDoc()" class="main-button" style="margin-top: 20px; display: block; text-align: center;">Отправить</a>
     </div>
@@ -62,6 +68,7 @@ export default {
       message: "",
       isShowDocUpload: false,
       isShowPhotoUpload: false,
+      isLoading: false,
       file: ''
     }
   },
@@ -74,9 +81,8 @@ export default {
           content: self.message,
           type: 'text'
         }).then(function (response) {
-          console.log(response);
           self.message = "";
-          window.scrollTo(0,document.body.scrollHeight);
+          self.$forceUpdate();
         });
       } else {
         UIkit.notification({message: 'Введите сообщение', status: 'danger'})
