@@ -113,25 +113,28 @@ const createMessage = async (req, res) => {
   var self = this;
 
   const createQuery = 'INSERT INTO messages (m_content, m_type, creator_id, dialog_uid) VALUES ($1, $2, $3, $4) RETURNING *';
+  const getDialogInfo = 'SELECT * FROM dialogs WHERE uid = $1';
 
   try {
     var vals;
+    var notificationText = "";
 
     switch (type) {
       case "text":
         if (content == "") {
-          return ;
+          return res.status(status.bad).send(errorMessage);
         }
         vals = [content, type, req.user.id, req.params.uid];
-
+        notificationText = content;
         break;
       case "image":
       case "document":
         var uid = "message-media-" + type + uuidv4();
         vals = [req.file.location, type, req.user.id, req.params.uid];
+        notificationText = "📎 Вложение"
         break;
       default:
-      return
+        return res.status(status.bad).send(errorMessage);
     }
 
     var { rows } = await dbQuery.query(createQuery, vals);
@@ -145,6 +148,14 @@ const createMessage = async (req, res) => {
         client.send(JSON.stringify(response));
       }
     });
+
+    var dialogRaw = await dbQuery.query(getDialogInfo, [req.params.uid]);
+
+    var dialog = dialog.row[0];
+
+    if (dialog) {
+      sendNotification(dialog.title, notificationText, dialog.creator_id, {deepLink: "https://you-scribe.ru/dialog/" + req.params.uid});
+    }
 
     return res.status(status.success).send(successMessage);
   } catch (error) {
