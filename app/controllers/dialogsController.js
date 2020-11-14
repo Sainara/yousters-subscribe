@@ -151,7 +151,7 @@ const createMessage = async (req, res) => {
 
     var dialogRaw = await dbQuery.query(getDialogInfo, [req.params.uid]);
 
-    var dialog = dialog.row[0];
+    var dialog = dialogRaw.row[0];
 
     if (dialog) {
       sendNotification(dialog.title, notificationText, dialog.creator_id, {deepLink: "https://you-scribe.ru/dialog/" + req.params.uid});
