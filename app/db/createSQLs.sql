@@ -40,6 +40,7 @@ alter table payments add column tnkf_id varchar;
 alter table payments add column paket_id integer;
 alter table payments add column title varchar;
 alter table payments add column offer_id varchar;
+alter table payments add column promocode varchar;
 
 
 CREATE TABLE sberAuthSessions(id serial PRIMARY KEY, nonce VARCHAR, state VARCHAR, scope VARCHAR);
