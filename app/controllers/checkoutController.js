@@ -198,10 +198,10 @@ const createPayment = async (req, res) => {
       var title = "";
 
       if (checkOfferdbResponse.status == 'created') {
-        title = "Предоплата: " +  checkOfferdbResponse.description;
+        title = "Предоплата: " +  checkOfferdbResponse.title;
         price = parseInt(parseInt(checkOfferdbResponse.price)/5);
       } else {
-        title = "Оплата оставшейся части: " +  checkOfferdbResponse.description;
+        title = "Оплата оставшейся части: " +  checkOfferdbResponse.title;
         price = parseInt(checkOfferdbResponse.price) - parseInt(parseInt(checkOfferdbResponse.price)/5);
       }
 
