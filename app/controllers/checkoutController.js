@@ -28,6 +28,38 @@ AppleReceiptVerify.config({
     secret: env.iap_secret,
 });
 
+const checkPromoCode  = async (req, res) => {
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const { promoCode } = req.body;
+
+  const getPromoCodeQuery = 'SELECT * FROM promocodes WHERE value = $1';
+//  const getPaketIAPID = 'SELECT iap_id FROM paketplans WHERE id = $1';
+
+  try {
+
+    const {rows} = await dbQuery.query(getPromoCodeQuery, [promoCode]);
+
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "promoCodeNotFound";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    if (!dbResponse.is_active) {
+      errorMessage.message = "promoCodeNotActive";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    return res.status(status.success).send(successMessage);
+
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
 
 const checkIAP  = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
@@ -100,7 +132,7 @@ const createPayment = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  const { type } = req.body;
+  const { type, promo_code } = req.body;
 
   if (!type) {
     errorMessage.message = "missingType";
@@ -112,7 +144,7 @@ const createPayment = async (req, res) => {
     const { agr_uid } = req.body;
 
     const checkExistQuery = 'SELECT uid, status FROM payments WHERE agr_uid = $1';
-    const createQuery = 'INSERT INTO payments (uid, user_id, agr_uid, amount, created_at, title) VALUES ($1, $2, $3, $4, $5, $6) returning uid';
+    const createQuery = 'INSERT INTO payments (uid, user_id, agr_uid, amount, created_at, title, promocode) VALUES ($1, $2, $3, $4, $5, $6, $7) returning uid';
 
     try {
       if (!await isAgreementExist(agr_uid)) {
@@ -130,7 +162,7 @@ const createPayment = async (req, res) => {
         }
       }
 
-      const values = [uuidv4(), req.user.id, agr_uid, '75.00', moment(), 'Разовое подписание'];
+      const values = [uuidv4(), req.user.id, agr_uid, '75.00', moment(), 'Разовое подписание', promo_code];
       const {rows} = await dbQuery.query(createQuery, values);
 
       successMessage.uid = rows[0].uid;
@@ -147,7 +179,7 @@ const createPayment = async (req, res) => {
 
     const checkPaketQuery = 'SELECT * FROM paketplans WHERE iap_id = $1';
     const checkExistQuery = 'SELECT uid, status FROM payments WHERE paket_id = $1 AND user_id = $2';
-    const createQuery = 'INSERT INTO payments (uid, user_id, paket_id, amount, created_at, title) VALUES ($1, $2, $3, $4, $5, $6) returning uid';
+    const createQuery = 'INSERT INTO payments (uid, user_id, paket_id, amount, created_at, title, promocode) VALUES ($1, $2, $3, $4, $5, $6, $7) returning uid';
 
     try {
 
@@ -162,7 +194,7 @@ const createPayment = async (req, res) => {
       var check = await dbQuery.query(checkExistQuery, [checkPaketdbResponse.id, req.user.id]);
       const dbResponse = check.rows[check.rows.length - 1];
 
-      const values = [uuidv4(), req.user.id, checkPaketdbResponse.id, checkPaketdbResponse.price, moment(), checkPaketdbResponse.title];
+      const values = [uuidv4(), req.user.id, checkPaketdbResponse.id, checkPaketdbResponse.price, moment(), checkPaketdbResponse.title, promo_code];
       const {rows} = await dbQuery.query(createQuery, values);
 
       successMessage.uid = rows[0].uid;
@@ -179,7 +211,7 @@ const createPayment = async (req, res) => {
 
     const checkOfferQuery = 'SELECT * FROM offers WHERE uid = $1';
     // const checkExistQuery = 'SELECT uid, status FROM payments WHERE paket_id = $1 AND user_id = $2';
-    const createQuery = 'INSERT INTO payments (uid, user_id, offer_id, amount, created_at, title) VALUES ($1, $2, $3, $4, $5, $6) returning uid';
+    const createQuery = 'INSERT INTO payments (uid, user_id, offer_id, amount, created_at, title, promocode) VALUES ($1, $2, $3, $4, $5, $6, $7) returning uid';
 
     try {
 
@@ -205,7 +237,7 @@ const createPayment = async (req, res) => {
         price = parseInt(checkOfferdbResponse.price) - parseInt(parseInt(checkOfferdbResponse.price)/5);
       }
 
-      const values = [uuidv4(), req.user.id, checkOfferdbResponse.uid, price, moment(), title];
+      const values = [uuidv4(), req.user.id, checkOfferdbResponse.uid, price, moment(), title, promo_code];
       const {rows} = await dbQuery.query(createQuery, values);
 
       successMessage.uid = rows[0].uid;
@@ -508,5 +540,6 @@ const renderCheckout = async (req, res) => {
 export {
   createPayment,
   renderCheckout,
-  checkIAP
+  checkIAP,
+  checkPromoCode
 };

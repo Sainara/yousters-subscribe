@@ -43,6 +43,7 @@
     "pg": "^7.17.1",
     "reconnectable-websocket": "^0.1.10",
     "repeat": "^1.2.0",
+    "ruscryptojs": "^2.2.9",
     "sha256-file": "^1.0.0",
     "sms_ru": "0.0.1",
     "socket.io": "^2.3.0",
