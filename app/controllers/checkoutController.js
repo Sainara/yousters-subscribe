@@ -482,7 +482,7 @@ const renderCheckout = async (req, res) => {
         "Token": tfToken,
       };
 
-      console.log(createTinkof);
+      console.log(checkTinkof);
       request({
         url: "https://securepay.tinkoff.ru/v2/GetState",
         method: "POST",
