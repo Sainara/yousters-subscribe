@@ -199,7 +199,7 @@ const connectToDialog = async (ws, req) => {
     console.error(error);
   }
 
-  const getOffersQuery = 'SELECT * from offers WHERE dialog_uid = $1 AND status != $2';
+  const getExecOffersQuery = 'SELECT * from offers WHERE dialog_uid = $1 AND status != $2';
 
   try {
     var { rows } = await dbQuery.query(getExecOffersQuery, [req.params.uid, 'created']);

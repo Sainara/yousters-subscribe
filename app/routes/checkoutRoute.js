@@ -4,8 +4,6 @@ import { renderCheckout, createPayment, checkIAP, checkPromoCode } from '../cont
 import verifyAuth from '../middlewares/verifyAuth';
 import { primaryLimit } from '../helpers/rateLimits';
 
-export default router;
-
 var expressWs = require('express-ws')(express.Router());
 
 module.exports = function(app){
@@ -19,6 +17,6 @@ module.exports = function(app){
 
   router.post('/payment/iap', primaryLimit, verifyAuth, checkIAP);
   router.post('/promocode', primaryLimit, verifyAuth, checkPromoCode);
-  
+
   return router;
 };
