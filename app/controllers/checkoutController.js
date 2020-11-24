@@ -2,6 +2,8 @@ import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import dbQuery from '../db/dbQuery';
 
+var crypto = require('crypto');
+
 import {
   hashPassword,
   isValidEmail,
