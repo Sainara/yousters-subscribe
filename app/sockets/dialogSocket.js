@@ -187,6 +187,30 @@ const connectToDialog = async (ws, req) => {
     console.error(error);
   }
 
+  const getDialog = 'SELECT * FROM dialogs WHERE uid = $1';
+
+  try {
+    var { rows } = await dbQuery.query(getDialog, [req.params.uid]);
+    var response = {};
+    response.type = "status";
+    response.data = rows[0].dialog_status;
+    ws.send(JSON.stringify(response));
+  } catch (error) {
+    console.error(error);
+  }
+
+  const getOffersQuery = 'SELECT * from offers WHERE dialog_uid = $1 AND status != $2';
+
+  try {
+    var { rows } = await dbQuery.query(getExecOffersQuery, [req.params.uid, 'created']);
+    var response = {};
+    response.type = "execOffer";
+    response.data = rows;
+    ws.send(JSON.stringify(response));
+  } catch (error) {
+    console.error(error);
+  }
+
   const getOffersQuery = 'SELECT * from offers WHERE dialog_uid = $1';
 
   try {

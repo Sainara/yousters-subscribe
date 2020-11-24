@@ -434,6 +434,7 @@ const renderCheckout = async (req, res) => {
   const updateOffer = 'UPDATE offers SET status = $1 WHERE uid = $2';
   const updateDialog = 'UPDATE dialogs SET dialog_status = $1, executor_id = $2 WHERE uid = $3';
 
+  var self = this;
 
   try {
 
@@ -516,10 +517,38 @@ const renderCheckout = async (req, res) => {
               if (offer.status == 'created') {
                 dbQuery.query(updateOffer, ['prepaid', dbResponse.offer_id]);
                 dbQuery.query(updateDialog, ['prepaid', offer.creator_id, offer.dialog_uid]);
+
+                self.renderCheckout.server.getWss().clients.forEach(function each(client) {
+                  if (client.d_uid == req.params.uid) {
+                    var response = {};
+                    response.type = "status";
+                    response.data = "prepaid";
+                    client.send(JSON.stringify(response));
+                  }
+                });
+                self.renderCheckout.server.getWss().clients.forEach(function each(client) {
+                  if (client.d_uid == req.params.uid) {
+                    var response = {};
+                    response.type = "execOffer";
+                    response.data = offer;
+                    client.send(JSON.stringify(response));
+                  }
+                });
+
               } else if (offer.status == 'prepaid') {
                 dbQuery.query(updateOffer, ['fullpaid', dbResponse.offer_id]);
                 dbQuery.query(updateDialog, ['fullpaid', offer.creator_id, offer.dialog_uid]);
+
+                self.renderCheckout.server.getWss().clients.forEach(function each(client) {
+                  if (client.d_uid == req.params.uid) {
+                    var response = {};
+                    response.type = "status";
+                    response.data = "fullpaid";
+                    client.send(JSON.stringify(response));
+                  }
+                });
               }
+
               // if (source == 'web') {
               //   return res.redirect('https://you-scribe.ru/general');
               // }

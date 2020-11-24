@@ -13,7 +13,6 @@ import authRoute from './app/routes/authRoute';
 import docsValidationRoute from './app/routes/docsValidationRoute';
 import agreementsRoute from './app/routes/agreementsRoute';
 import publicAgreementRoute from './app/routes/publicAgreementRoute';
-import checkoutRoute from './app/routes/checkoutRoute';
 import offerRoute from './app/routes/offerRoute';
 import paketRoute from './app/routes/paketRoute';
 import pushRoute from './app/routes/pushRoute';
@@ -80,12 +79,14 @@ repeat()
 app.use(API_PATH, authRoute);
 
 var dialogRoute = require('./app/routes/dialogRoute')(expressWs);
-
 app.use(API_PATH, dialogRoute);
+
+var checkoutRoute = require('./app/routes/checkoutRoute')(expressWs);
+app.use(API_PATH, checkoutRoute);
+
 
 app.use(API_PATH, docsValidationRoute);
 app.use(API_PATH, agreementsRoute);
-app.use(API_PATH, checkoutRoute);
 app.use(API_PATH, offerRoute);
 app.use(API_PATH, paketRoute);
 app.use(API_PATH, pushRoute);
