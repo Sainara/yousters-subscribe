@@ -25,7 +25,7 @@ const AppleReceiptVerify = require('node-apple-receipt-verify');
 
 // Common initialization, later you can pass options for every request in options
 AppleReceiptVerify.config({
-    secret: env.iap_secret,
+  secret: env.iap_secret,
 });
 
 const checkPromoCode  = async (req, res) => {
@@ -35,7 +35,7 @@ const checkPromoCode  = async (req, res) => {
   const { promoCode } = req.body;
 
   const getPromoCodeQuery = 'SELECT * FROM promocodes WHERE value = $1';
-//  const getPaketIAPID = 'SELECT iap_id FROM paketplans WHERE id = $1';
+  //  const getPaketIAPID = 'SELECT iap_id FROM paketplans WHERE id = $1';
 
   try {
 
@@ -440,10 +440,10 @@ const renderCheckout = async (req, res) => {
     }
 
     if (uid == "failure") {
-        var data = req.query;
-        data.PaymentURL = "https://you-scribe.ru/api/v1/checkout/" + data.OrderId;
-        console.log(data);
-        return res.status(status.success).render('pages/static/paymentFailure', data);
+      var data = req.query;
+      data.PaymentURL = "https://you-scribe.ru/api/v1/checkout/" + data.OrderId;
+      console.log(data);
+      return res.status(status.success).render('pages/static/paymentFailure', data);
     }
 
     const {rows} = await dbQuery.query(getPaymentQuery, [uid]);
@@ -471,50 +471,24 @@ const renderCheckout = async (req, res) => {
       successURL += '?source=web';
     }
 
-    var myJSONObject = {
-      "TerminalKey": env.tnkf_terminal_id,
-      "Amount": amount,
-      "OrderId": uid,
-      "Description": dbResponse.title,
-      "SuccessURL": successURL,
-      "DATA": {
-          "Phone": userData.phone,
-          "Email": userData.email
-      },
-      "Receipt": {
-          "Email": userData.email,
-          "Phone": userData.phone,
-          "EmailCompany": "info@you-scribe.ru",
-          "Taxation": "usn_income",
-          "Items": [
-              {
-                  "Name": dbResponse.title,
-                  "Price": amount,
-                  "Quantity": 1.00,
-                  "Amount": amount,
-                  "PaymentMethod": "full_prepayment",
-                  "PaymentObject": "service",
-                  "Tax": "none"
-              }
-          ]
-      }
-  };
+    if (dbResponse.tnkf_id) {
+      var tfToken = crypto.createHash('sha256').update(env.tnkf_terminal_id + dbResponse.tnkf_id).digest('base64');;
 
-  console.log(myJSONObject);
-    request({
-        url: "https://securepay.tinkoff.ru/v2/Init",
+      var checkTinkof = {
+        "TerminalKey": env.tnkf_terminal_id,
+        "PaymentId": dbResponse.tnkf_id,
+        "Token": tfToken,
+      };
+
+      console.log(createTinkof);
+      request({
+        url: "https://securepay.tinkoff.ru/v2/GetState",
         method: "POST",
         json: true,   // <--Very important!!!
-        body: myJSONObject
-    }, function (error, response, body){
-      console.log(body);
-      if (body.Success) {
-        console.log(body.PaymentId);
-        console.log(body.PaymentURL);
-        dbQuery.query(updatePaymentQuery, [body.PaymentId, dbResponse.uid]);
-        return res.redirect(body.PaymentURL);
-      } else {
-        if (body.ErrorCode == '8') {
+        body: checkTinkof
+      }, function (error, response, body){
+        console.log(body);
+        if (body.Status == "CONFIRMED") {
           dbQuery.query(updatePaymentStatusQuery, ['success', dbResponse.uid]);
           if (dbResponse.agr_uid) {
             dbQuery.query(updateAgreementQuery, [dbResponse.agr_uid]);
@@ -549,10 +523,59 @@ const renderCheckout = async (req, res) => {
               return res.redirect('https://you-scribe.ru/api/v1/checkout/success');
             })()
           }
-          return res.status(status.success).render('pages/static/errorPage', {Message: 'Что-то пошло не так'});
         }
-      }
-    });
+      })
+
+
+    } else {
+
+      var createTinkof = {
+        "TerminalKey": env.tnkf_terminal_id,
+        "Amount": amount,
+        "OrderId": uid,
+        "Description": dbResponse.title,
+        "SuccessURL": successURL,
+        "DATA": {
+          "Phone": userData.phone,
+          "Email": userData.email
+        },
+        "Receipt": {
+          "Email": userData.email,
+          "Phone": userData.phone,
+          "EmailCompany": "info@you-scribe.ru",
+          "Taxation": "usn_income",
+          "Items": [
+            {
+              "Name": dbResponse.title,
+              "Price": amount,
+              "Quantity": 1.00,
+              "Amount": amount,
+              "PaymentMethod": "full_prepayment",
+              "PaymentObject": "service",
+              "Tax": "none"
+            }
+          ]
+        }
+      };
+
+      console.log(createTinkof);
+      request({
+        url: "https://securepay.tinkoff.ru/v2/Init",
+        method: "POST",
+        json: true,   // <--Very important!!!
+        body: createTinkof
+      }, function (error, response, body){
+        console.log(body);
+        if (body.Success) {
+          console.log(body.PaymentId);
+          console.log(body.PaymentURL);
+          dbQuery.query(updatePaymentQuery, [body.PaymentId, dbResponse.uid]);
+          return res.redirect(body.PaymentURL);
+        } else {
+          return res.status(status.success).render('pages/static/errorPage', {Message: body.Message});
+        }
+      });
+    }
 
   } catch (error) {
     console.error(error);
