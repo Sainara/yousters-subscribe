@@ -237,6 +237,8 @@ const createPayment = async (req, res) => {
         price = parseInt(checkOfferdbResponse.price) - parseInt(parseInt(checkOfferdbResponse.price)/5);
       }
 
+      price = price + ".00";
+
       const values = [uuidv4(), req.user.id, checkOfferdbResponse.uid, price, moment(), title, promo_code];
       const {rows} = await dbQuery.query(createQuery, values);
 
@@ -253,7 +255,7 @@ const createPayment = async (req, res) => {
   return res.status(status.bad).send(errorMessage);
 
 };
-// 
+//
 // const renderCheckout = async (req, res) => {
 //
 //   const errorMessage = Object.assign({}, eMessage);
