@@ -474,7 +474,7 @@ const renderCheckout = async (req, res) => {
     }
 
     if (dbResponse.tnkf_id) {
-      var tfToken = crypto.createHash('sha256').update(env.tnkf_terminal_id + dbResponse.tnkf_id).digest('base64');;
+      var tfToken = crypto.createHash('sha256').update(env.tnkf_terminal_secret + dbResponse.tnkf_id + env.tnkf_terminal_id).digest('base64');;
 
       var checkTinkof = {
         "TerminalKey": env.tnkf_terminal_id,
