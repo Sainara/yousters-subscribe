@@ -175,6 +175,8 @@ const createOffer = async (req, res) => {
   const checkQuery = 'SELECT * FROM offers WHERE creator_id = $1 AND dialog_uid = $2';
   const createQuery = 'INSERT INTO offers (title, price, description, status, uid, dialog_uid, creator_id, level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *';
 
+  const getDialogInfo = 'SELECT * FROM dialogs WHERE uid = $1';
+
   var self = this;
 
   try {
@@ -201,6 +203,14 @@ const createOffer = async (req, res) => {
         client.send(JSON.stringify(response));
       }
     });
+
+    var dialogRaw = await dbQuery.query(getDialogInfo, [req.params.uid]);
+    var dialog = dialogRaw.rows[0];
+
+    if (dialog) {
+      var notificationText = "Поступило предложение от юриста: " + price + "₽";
+      sendNotification(dialog.title, notificationText, dialog.creator_id, {deepLink: "https://you-scribe.ru/dialog/" + req.params.uid});
+    }
 
     return res.status(status.success).send(successMessage);
   } catch (error) {
