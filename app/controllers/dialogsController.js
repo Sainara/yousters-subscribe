@@ -204,7 +204,7 @@ const createOffer = async (req, res) => {
       }
     });
 
-    var dialogRaw = await dbQuery.query(getDialogInfo, [req.params.uid]);
+    var dialogRaw = await dbQuery.query(getDialogInfo, [dialog_id]);
     var dialog = dialogRaw.rows[0];
 
     if (dialog) {
