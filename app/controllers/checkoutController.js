@@ -569,10 +569,8 @@ const renderCheckout = async (req, res) => {
         "SuccessURL": successURL,
         "DATA": {
           "Phone": userData.phone,
-          "Email": userData.email
         },
         "Receipt": {
-          "Email": userData.email,
           "Phone": userData.phone,
           "EmailCompany": "info@you-scribe.ru",
           "Taxation": "usn_income",
@@ -590,6 +588,11 @@ const renderCheckout = async (req, res) => {
         }
       };
 
+      if (userData.email) {
+        createTinkof["DATA"]["Email"] = userData.email
+        createTinkof["Receipt"]["Email"] = userData.email
+      }
+      
       console.log(createTinkof);
       request({
         url: "https://securepay.tinkoff.ru/v2/Init",

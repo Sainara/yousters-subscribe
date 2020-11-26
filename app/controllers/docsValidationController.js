@@ -63,7 +63,7 @@ const uploadDocs = async (req, res) => {
     }
 
     const updateQuery = 'UPDATE users SET email = $1, main_passport = $2, second_passport = $3, video_passport = $4, is_on_validation = true, validation_type = $5 WHERE id = $6';
-    const values = [email, req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location, 'phiz', req.user.id]
+    const values = [email.trim(), req.files['main'][0].location, req.files['secondary'][0].location, req.files['video'][0].location, 'phiz', req.user.id]
     const result = await dbQuery.query(updateQuery, values);
 
     sendMail('ceo@you-scribe.ru', 'info@you-scribe.ru', 'Загружены документы на проверку', 'Профиль с номером ' + dbResponse3.phone + "прислал документы на проверку");
@@ -106,7 +106,7 @@ const uploadNonPhizData = async (req, res) => {
     }
 
     const updateQuery = 'UPDATE users SET inn = $1, email = $2, video_passport = $3, is_on_validation = true, validation_type = $4 WHERE id = $5';
-    const values = [inn, email, req.files['video'][0].location, 'nonPhiz', req.user.id]
+    const values = [inn.trim(), email.trim(), req.files['video'][0].location, 'nonPhiz', req.user.id]
     const result = await dbQuery.query(updateQuery, values);
 
     return res.status(status.success).send(successMessage);
