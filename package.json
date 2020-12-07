@@ -38,6 +38,8 @@
     "multer-storage-cloudinary": "^2.2.1",
     "multiparty": "^4.2.2",
     "node-apple-receipt-verify": "^1.7.4",
+    "node-cryptopro": "^0.1.17",
+    "node-gost-crypto": "^1.0.2",
     "node-libcurl": "^2.2.0",
     "nodemon": "^2.0.4",
     "pg": "^7.17.1",

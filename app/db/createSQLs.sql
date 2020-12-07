@@ -77,5 +77,6 @@ CREATE TABLE lawyers(id serial PRIMARY KEY, phone VARCHAR, user_name VARCHAR, la
 
 ALTER TABLE lawyers add COLUMN created_on timestamptz default CURRENT_TIMESTAMP;
 ALTER TABLE lawyers add COLUMN email VARCHAR;
+ALTER TABLE lawyers add COLUMN uid VARCHAR;
 
 CREATE TABLE promocodes(id serial PRIMARY KEY, value VARCHAR, referals_of varchar is_active Boolean, created_at timestamptz default CURRENT_TIMESTAMP);
