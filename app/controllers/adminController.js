@@ -264,7 +264,7 @@ const dialogWithDK = async (req, res) => {
 
   try {
 
-    const { rows } = await dbQuery.query(getUserQuery, [id]);
+    const { rows } = await dbQuery.query(getQuery, [id]);
     const dbResponse = rows[0];
 
     if (!dbResponse) {
