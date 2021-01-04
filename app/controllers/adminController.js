@@ -273,7 +273,7 @@ const dialogWithDK = async (req, res) => {
     }
 
     console.log(dbResponse);
-    const result = JSON.parse(dbResponse);
+    const result = JSON.parse(dbResponse["last15k_message_with_dk"]);
 
     res.render('pages/messages', { page_title: "Main", data: result});
 
