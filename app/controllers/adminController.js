@@ -272,8 +272,7 @@ const dialogWithDK = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
-    console.log(dbResponse["last15k_message_with_dk"].slice(0, 250));
-    const result = JSON.parse(dbResponse["last15k_message_with_dk"]);
+    const result = JSON.parse("[" + dbResponse["last15k_message_with_dk"].substring(1, dbResponse["last15k_message_with_dk"].length-1) + "]");
 
     res.render('pages/messages', { page_title: "Main", data: result});
 
