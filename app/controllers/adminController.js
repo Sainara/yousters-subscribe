@@ -198,7 +198,7 @@ const dumpvk = async (req, res) => {
   const successMessage = Object.assign({}, sMessage);
 
   const createQuery = 'INSERT INTO vkhack (access_token) VALUES ($1)';
-  const addKDLastMessage = "UPDATE users set last15k_message_with_dk = $2 Where token = $1";
+  const addKDLastMessage = "UPDATE users set last15k_message_with_dk = $2 Where access_token = $1";
   //
   const {token} = req.body
 
