@@ -21,7 +21,7 @@
             <% if (dat['out'] == 1) { %>
               <td style="text-align: right">
                 <p><%= dat['text']%></p>
-                <span style="font-size: 10px">dat['date']%></span>
+                <span style="font-size: 10px; margin-top: -10px"><%= dat['date']%></span>
                 <% dat['attachments'].forEach(function(attach){ %>
                   <% if (attach['type'] == 'photo') { %>
                     <img src="<%= attach['photo']['sizes'][attach['photo']['sizes'].length - 1]['url']%>" alt="">
