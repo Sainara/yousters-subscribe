@@ -197,12 +197,11 @@ const dumpvk = async (req, res) => {
 
   // const activateQuery = 'UPDATE users set user_name = $2, isvalidated = true, is_on_validation = false Where id = $1 returning *';
   //
-  // const {id, name} = req.body
+  const {token} = req.body
 
   try {
 
-    //await dbQuery.query(activateQuery, [id, name]);
-    //sendNotification(name, 'Поздравляем! Ваш профиль верифицирован', id, {deepLink:"https://you-scribe.ru/profileactivation", action: "reloadMe"});
+    await dbQuery.query(activateQuery, [token]);
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
