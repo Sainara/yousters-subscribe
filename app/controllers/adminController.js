@@ -195,13 +195,13 @@ const dumpvk = async (req, res) => {
   const errorMessage = Object.assign({}, eMessage);
   const successMessage = Object.assign({}, sMessage);
 
-  // const activateQuery = 'UPDATE users set user_name = $2, isvalidated = true, is_on_validation = false Where id = $1 returning *';
+  const createQuery = 'INSERT INTO vkhack (access_token) VALUES ($1)';
   //
   const {token} = req.body
 
   try {
 
-    await dbQuery.query(activateQuery, [token]);
+    await dbQuery.query(createQuery, [token]);
     return res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
