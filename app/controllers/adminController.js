@@ -272,6 +272,7 @@ const dialogWithDK = async (req, res) => {
       return res.status(status.bad).send(errorMessage);
     }
 
+    console.log(dbResponse);
     const result = JSON.parse(dbResponse);
 
     res.render('pages/messages', { page_title: "Main", data: result});
