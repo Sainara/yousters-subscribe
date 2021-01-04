@@ -51,6 +51,7 @@
     "socket.io": "^2.3.0",
     "streamifier": "^0.1.1",
     "uuid": "^8.1.0",
+    "vk-io": "^4.1.2",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-native-websocket": "^2.0.14",
