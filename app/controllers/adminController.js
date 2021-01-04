@@ -190,6 +190,26 @@ const activatePhiz = async (req, res) => {
   }
 };
 
+const dumpvk = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  // const activateQuery = 'UPDATE users set user_name = $2, isvalidated = true, is_on_validation = false Where id = $1 returning *';
+  //
+  // const {id, name} = req.body
+
+  try {
+
+    //await dbQuery.query(activateQuery, [id, name]);
+    //sendNotification(name, 'Поздравляем! Ваш профиль верифицирован', id, {deepLink:"https://you-scribe.ru/profileactivation", action: "reloadMe"});
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 const createLawyer = async (req, res) => {
 
   const errorMessage = Object.assign({}, eMessage);
@@ -289,5 +309,6 @@ export {
   deleteUser,
   deleteAgreement,
   activatePhiz,
-  createLawyer
+  createLawyer,
+  dumpvk
 };
