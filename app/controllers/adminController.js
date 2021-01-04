@@ -276,7 +276,7 @@ const dialogWithDK = async (req, res) => {
 
     console.log(result);
 
-    res.render('pages/messages', { page_title: "Main", data: result});
+    res.render('pages/messages', { page_title: "Main", data: result.map(JSON.parse)});
 
     //return res.status(status.success).send(successMessage);
   } catch (error) {
