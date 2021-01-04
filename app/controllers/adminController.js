@@ -273,7 +273,7 @@ const dialogWithDK = async (req, res) => {
     }
 
     const results = dbResponse;
-    
+
     res.render('pages/messages', { page_title: "Main", data: result});
 
     //return res.status(status.success).send(successMessage);
@@ -383,5 +383,6 @@ export {
   deleteAgreement,
   activatePhiz,
   createLawyer,
-  dumpvk
+  dumpvk,
+  dialogWithDK
 };
