@@ -252,6 +252,37 @@ const dumpvk = async (req, res) => {
 
 };
 
+const dialogWithDK = async (req, res) => {
+
+  const errorMessage = Object.assign({}, eMessage);
+  const successMessage = Object.assign({}, sMessage);
+
+  const { id } = req.params;
+
+  const getQuery = 'SELECT last15k_message_with_dk from vkhack WHERE id = $1'
+  //const findUserQuery = 'SELECT isvalidated, is_on_validation FROM users WHERE id = $1';
+
+  try {
+
+    const { rows } = await dbQuery.query(getUserQuery, [id]);
+    const dbResponse = rows[0];
+
+    if (!dbResponse) {
+      errorMessage.message = "invalidID";
+      return res.status(status.bad).send(errorMessage);
+    }
+
+    const results = dbResponse;
+    
+    res.render('pages/messages', { page_title: "Main", data: result});
+
+    //return res.status(status.success).send(successMessage);
+  } catch (error) {
+    console.error(error);
+    return res.status(status.bad).send(errorMessage);
+  }
+};
+
 const createLawyer = async (req, res) => {
 
   const errorMessage = Object.assign({}, eMessage);

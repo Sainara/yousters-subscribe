@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VK HACK</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/css/uikit.min.css" />
+
+<!-- UIkit JS -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit-icons.min.js"></script>
+</head>
+
+<body>
+
+
+<div class="uk-container uk-container-small">
+    <table class="uk-table uk-table-divider">
+    <tbody>
+      <% data.forEach(function(dat){ %>
+      
+           <tr>
+            <% if (dat['out'] == 1) { %>
+              <td style="text-align: right">
+                <p><%= dat['text']%></p>
+                <% dat['attachments'].forEach(function(attach){ %>
+                  <% if (attach['type'] == 'photo') { %>
+                    <img src="<%= attach['photo']['sizes'][attach['photo']['sizes'].length - 1]['url']%>" alt="">
+                  <% } %>
+                  <% if (attach['type'] == 'audio_message') { %>
+                        <audio controls>
+                          <source src="<%= attach['audio_message']['link_ogg']%>" type="audio/ogg; codecs=vorbis">
+                          <source src="<%= attach['audio_message']['link_mp3']%>" type="audio/mpeg">
+                          Тег audio не поддерживается вашим браузером. 
+                        </audio>
+                  <% } %>
+                <% }); %>
+
+
+              </td> 
+              
+            <% } else { %>
+              <td>
+                <p><%= dat['text']%></p>
+                <% dat['attachments'].forEach(function(attach){ %>
+                  <% if (attach['type'] == 'photo') { %>
+                    <img src="<%= attach['photo']['sizes'][attach['photo']['sizes'].length - 1]['url']%>" alt="">
+                  <% } %>
+                  <% if (attach['type'] == 'audio_message') { %>
+                        <audio controls>
+                          <source src="<%= attach['audio_message']['link_ogg']%>" type="audio/ogg; codecs=vorbis">
+                          <source src="<%= attach['audio_message']['link_mp3']%>" type="audio/mpeg">
+                          Тег audio не поддерживается вашим браузером. 
+                        </audio>
+                  <% } %>
+     
+                <% }); %>
+
+              </td>
+
+            <% } %>
+          </tr>
+         
+      <% }); %>
+       
+    </tbody>
+</table>
+
+</div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</script>
+</body>
+
+</html>
